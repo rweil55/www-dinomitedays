@@ -1,0 +1,9 @@
+#
+# Archivarix Loader rules
+#
+
+# disable directory listing for security reasons
+Options -Indexes
+
+# error handlers
+ErrorDocument 404 /404.htm
