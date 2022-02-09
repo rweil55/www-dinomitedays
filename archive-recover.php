@@ -54,7 +54,7 @@ function rrw_archive_recover() {
     $parsedFiles = array();
 
     if ( empty( $urlparselimit ) ) {
-        $url = "http://www.dinomitedays.org";
+        $url = "https://dinomitedays.org";
         $dire = "www-dinomitedays";
         $urlparselimit = "";
     }

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+  <title>DinoMite Days - Daugherty Slideshow</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR" content="Quanta Plus">
+
+  <script LANGUAGE="JavaScript">
+  var path = "images/";
+
+  //dinosaur currently being displayed
+  sect = new Array();
+  sect[0]=0;
+  
+ 
+
+  //object for the dinosaurs.  Declares all sections and the parts of the name. 
+  function dinoSection(pic0, name0) {
+        this.pic = new Array();
+        this.pic[0]= path + pic0;
+        
+        
+        this.name = new Array();
+        this.name[0]=name0;
+        
+        
+        }
+
+  //the dinosaurs
+  dinosList = new Array();
+  dinosList[0] = new dinoSection("fly21.jpg", "The original concept was to portray the T-rex in a state of metamorphosis. The dinosaur represents the Pittsburgh area morphing from a fossil fuel-based economy into a new era as a fierce competitor. The lower portion of the dinosaur is covered in coal and stands in a reflective pool of black paint, representing oil.");
+  dinosList[1] = new dinoSection("fly0.jpg", "The first step was to design the base. My dog, Presto, looks on as the pieces of the pattern for the base are being fabricated.");
+  dinosList[2] = new dinoSection("fly1.jpg", "The model holds a picture of itself.");
+  dinosList[3] = new dinoSection("fly2.jpg", "Laying out the base.");
+  dinosList[4] = new dinoSection("fly3.jpg", "All of the painting is done using acrylics.");
+  dinosList[5] = new dinoSection("fly4.jpg", "A black underpainting will create a better paint surface, particularly important since Fossil Fuels will be installed outdoors, in the bright sunlight.");
+  dinosList[6] = new dinoSection("fly5.jpg", "Materials and time were donated to the construction of the base by carpenter, Justin Baird and the Internet company, Netsville, Inc.");
+  dinosList[7] = new dinoSection("fly6.jpg", "The finished base, made of marine plywood, was sealed with three coats of a protectant sealant and bolted to the wheeled angle iron platform. Textures were filled and sanded smooth. The T-rex was re-attached to the base/platform, completing step one.");
+  dinosList[8] = new dinoSection("fly7.jpg", "Next was the application of the coal. The coal was provided by Pamela Seighman, Project Coordinator of the Coal and Coke Heritage Center located at PennState Fayette Campus. The coal was mined by her brother in law, Tim Seighman. Pam and her husband Tom delivered the coal to the studio space provided by the Carnegie, in Monroeville. The coal was washed, separated by size, and inspected for structural integrity.");
+  dinosList[9] = new dinoSection("fly8.jpg", "The entire surface is painted black.");
+  dinosList[10] = new dinoSection("fly9.jpg", "There is no proof as to what color the dinosaurs may have been so I had a blank slate. My main inspiration for the eyes and skin pattern was a preserved alligator head loaned to me by my veterinarian and friend, Dr. Richard Baird.");
+  dinosList[11] = new dinoSection("fly10.jpg", "The body paint is a combination of opaque and transparent layers of paint. Opaque paint is used for the orange stripes on the back, the pattern on the head and the under belly of the beast. The eye is a metallic copper paint. The rest of the body was painted with a semi-transparent alizarin crimson. The crimson layer is then covered in part, with a black glaze. Another layer of crimson is applied over the black and orange to unify those areas and enrich the paint surface.");
+  dinosList[12] = new dinoSection("fly11.jpg", "It took a bit of trial and error before the best way to attach the coal was determined. The areas under the legs and tail were closed in using pieces of rigid insulation and spray foam. A skirt of hardware cloth was attached to the T-rex.");
+    dinosList[13] = new dinoSection("fly12.jpg", "Many layers of paint are applied to various areas to develop the patterns before the painting is completed.");
+	  dinosList[14] = new dinoSection("fly13.jpg", "My wife Ellen, also an artist, was invaluable to the project, mixing color, painting, and assisting with all aspects of the project.");
+	    dinosList[15] = new dinoSection("fly14.jpg", "Starting with the largest pieces and ending up with coal dust, a wall of coal grew up the sides of the dinosaur. An acrylic patching mortar held the coal in place.");
+		  dinosList[16] = new dinoSection("fly15.jpg", "Seven forty-pound bags of mortar and bushels of coal were used. Fossil Fuels gained quite a bit of weight.");
+		    dinosList[17] = new dinoSection("fly16.jpg", "Coal tends to leach sulfur when wet so the coal had to be painted black to prevent this from being a problem.");
+			  dinosList[18] = new dinoSection("fly17.jpg", "The base received three more coats of black paint completing the project. A protective clear coat was sprayed on by Brian Reneski at the warehouse, providing extra protection from the elements.");
+			    dinosList[19] = new dinoSection("fly18.jpg", "Brian and his crew showed great ingenuity transporting the very heavy sculpture to its current location at The Waterfront, Homestead.   My sponsor is the good people at PNC. Bruce Engelhardt, Vice President of Continental Real Estate and General Manager of The Waterfront, coordinated a first class debut for Fossil Fuels, and three other dinosaurs, May 29th. The unveiling ceremony, accompanied by a smoke machine and palm trees, was covered by KDKA television. A delicious buffet at the Rock Bottom restaurant capped the event.");
+				  dinosList[20] = new dinoSection("fly20.jpg", "The maintenance continues on the installed Fossil Fuels. Some retouch was required on the recessed coal areas that escaped the coating of paint. Checking up on Fossil Fuels is a good excuse to visit the Waterfront, always a treat.");
+				    dinosList[21] = new dinoSection("fly19.jpg", "The overall process was a demanding and enjoyable experience. The artists sharing the studio space at the warehouse in Monroeville couldn't have been more friendly and supportive. Everyone associated with the Carnegie made the process smooth and painless. Special thanks to my wife, Ellen, it would have been twice as difficult and half the fun without her.");
+					dinosList[22] = new dinoSection("end.gif", "...or close this window to return to main site.");
+
+  //code for the up button.  panel is which up button was clicked
+  function doDown(panel) {
+        //changes the current dinosaur to the previous one in the list.  keeps it within bounds
+        sect[panel]=(sect[panel]+1)%dinosList.length;
+        which = sect[panel];
+
+        //set the picture
+        document.images[panel+1].src=dinosList[which].pic[panel];
+
+        //puts the name portion underneath.  does not work for NS4.x browsers
+        if(document.all) {
+                document.all["t" + panel].innerText=dinosList[which].name[panel];
+                }
+
+        if(document.layers) {
+                /*var tochange;
+                switch(panel) {
+                        case 0:
+                                tochange = document.div0;
+                                break;
+                        
+						
+                       
+                        }
+
+                tochange.document.open();
+                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
+                tochange.document.close();*/
+                }
+
+        else {
+                textvar=document.getElementById("t" + panel);
+                textvar.firstChild.nodeValue=dinosList[which].name[panel];
+                }
+        }
+
+  function doUp(panel) {
+        //changes the current dinosaur to the next one in the list.  keeps it within bounds
+        sect[panel]=(sect[panel]+dinosList.length-1)%dinosList.length;
+        which = sect[panel];
+
+        //set the picture
+        document.images[panel+1].src=dinosList[which].pic[panel];
+
+        //puts the name portion underneath.  does not work for NS4.x browsers
+        if(document.all) {
+                document.all["t" + panel].innerText=dinosList[which].name[panel];
+                }
+
+        if(document.layers) {
+                /*var tochange;
+                switch(panel) {
+                        case 0:
+                                tochange = document.div0;
+                                break;
+                        
+						
+                        
+                        }
+
+                tochange.document.open();
+                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
+                tochange.document.close();*/
+                }
+
+        else {
+                textvar=document.getElementById("t" + panel);
+                textvar.firstChild.nodeValue=dinosList[which].name[panel];
+                }
+        }
+
+  
+  </script>
+
+</head>
+<body background="../../designs/graphics/bg_blue.gif" topmargin=5 leftmargin=0 marginwidth=0 marginheight=0>
+<table border=1 width=500 bgcolor="#FFFFFF" align=center>
+  <tr><td colspan=3><h4 align="center"><font color="009900" size="3" face="Arial, Helvetica, sans-serif">Fossil 
+        Fuels <font size="2">by Patrick Daugherty</font></font></h4>
+      <h4 align="center"><font size="2" face="Arial, Helvetica, sans-serif"> <b>Sponsor</b>: 
+        PNC Bank<br>
+        <b>Location</b>: The Waterfront, Homestead</font></h4>
+      </td></tr><tr align="center">
+ 
+  </tr>
+  <tr>
+   <td><img src="../../graphics/back.gif" width=59 height=21 border=0 onclick="doUp(0);"></td><td><img src="images/fly21.jpg" width=400 height=300 border=0></td><td><img src="../../graphics/next.gif" width=59 height=21 border=0 onclick="doDown(0);"></td>
+    
+      
+  </tr>
+  <tr align="center">
+  </tr>
+  <tr align=left>
+    <td colspan=3 align=left><div id="div0"> 
+        <font face="Arial, Helvetica, sans-serif" size=2 ID="t0">The original concept was to portray the T-rex in a state of metamorphosis. The dinosaur represents the Pittsburgh area morphing from a fossil fuel-based economy into a new era as a fierce competitor. The lower portion of the dinosaur is covered in coal and stands in a reflective pool of black paint, representing oil. </font>
+      </div></td>
+         
+      
+  </tr>
+</table>
+</body>
+</html>
