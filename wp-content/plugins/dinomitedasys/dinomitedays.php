@@ -31,8 +31,9 @@ require_once "freewheelingeasy-wpdpExtra.php";
 require_once "dinomitedays-fix.php";
 require_once "dinomitedays-upload.php";
 require_once "dinomitedays-make-html.php";
+print "shortcodes";
 
-add_shortcode( 'dinomitedays-fix', array("dinomitedys_fix", "fix") );
+add_shortcode( 'dinomitedaysfix', array("dinomitedys_fix", "fix") );
 add_shortcode( 'dinomitedays-make-html', array("dinomitedys_make_html_class", "make_html_files") );
 add_shortcode( 'dinomitedays-process-upload', array("dinomitedys_upload", "process_upload") );
 add_shortcode( 'dinomitedays-upload', array("dinomitedys_upload", "upload") );
