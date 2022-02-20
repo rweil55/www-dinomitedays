@@ -6,7 +6,7 @@ error_reporting( E_ALL | E_STRICT );
 class dinomitedys_upload {
     const rrw_dino = "wpprrj_00rrwdinos";
     const siteDir = "/home/pillowan/www-dinomitedays/";
-    const imagePath = "designs/images/";
+    const imagePath = "designs/images";
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
@@ -57,11 +57,14 @@ class dinomitedys_upload {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         global $dropdownList;
+        $rrw_dinos = self::rrw_dino;
         $msg = "";
         try {
-            $debug = true;
+            $debug = false;
+            $debugProgress = false;
             $wpdbExtra = new wpdbExtra;
             $dino = rrwUtil::fetchparameterString( "dino" );
+            print "Dino os $dino $eol";
             $plugDire = "/wp-content/plugins/dinomitedasys";
             $jsFile = "$plugDire/dropzone.js";
             $cssFile = "$plugDire/dropzone.css";
@@ -96,13 +99,14 @@ class dinomitedys_upload {
                     $msg .= " selected=$dino ";
                 $msg .= "> $name </option>\n";
             }
+            if ( $debugProgress ) print "after dino select output $eol";
             $msg .= "</select> 
             </td>
           <td>";
             if ( empty( $dino ) )
                 $source = "/graphics/white.gif";
             else {
-                $source = self::pictureFileUrl( $dino );
+                $source = self::imagePath . "/$dino" . "_sm.jpg";
             }
             $msg .= "
                 <img src='$source' height='150px' />
@@ -110,11 +114,22 @@ class dinomitedys_upload {
         </tr>
         </table> 
         <br />
-            </form>
+            </form>";
+            if ( $debugProgress ) print "after first form okay $eol";
+            if ( empty( $dino ) )
+                return $msg;
+
+            $msg .= "dino os now $dino $eol
 
             <form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" > 
         ";
-
+            $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
+            $recDinos = $wpdbExtra->get_resultsA( $sqldino );
+            if ( 1 != $wpdbExtra->num_rows )
+                throw new Exception( "$msg $errorBeg E#664 did not find the
+                            dinosauer $errorEnd $sqldino $eoj" );
+            $recDino = $recDinos[ 0 ];
+            $mapLoc = $recDino[ "Maploc" ];
             $limit = 140;
             $size = 50;
             $msg .= "
@@ -127,7 +142,7 @@ class dinomitedys_upload {
                 <br> &nbsp; &nbsp;building name with guide to where inside.<br \>
                 <font color=pink >optional</font><br>
                 <input type='text' maxlength='$limit' size='$size' 
-                    name='locationDesc'  id='locationDesc'
+                    name='locationDesc'  id='locationDesc' value='$mapLoc'
                    onkeyup='countChars(\"locationDesc\",\"locationLeft\", $limit);'
                    onkeydown='countChars(\"locationDesc\",\"locationLeft\", $limit);'
                    onmouseout='countChars(\"locationDesc\",\"locationLeft\", $limit);' />
@@ -140,7 +155,9 @@ class dinomitedys_upload {
                     Will not be uased in the collection of photographs on  the detail page.
                <table><tr><td width=\"60 px\" >
                ";
+            if ( $debugProgress ) print "About to first fropzone $eol";
             $msg .= self::dropzone_div( "coordinates" );
+            if ( $debugProgress ) print "after first dropzone $eol";
             $msg .= "</td><td align='left' valign='center' >Drop file or click to upload</td>
                 </tr>
                 </table>
@@ -153,31 +170,56 @@ class dinomitedys_upload {
     <div class='rrwDinoGrid' >
        ";
             for ( $ii = 0; $ii < 6; $ii++ ) {
-                $msg .= self::dropzone_div( 'picture$ii' );
+                $msg .= self::dropzone_div( "picture$ii" );
             }
+            if ( $debugProgress ) print "after input drop zones $eol";
             $msg .= "
         </div>
 
        <br/>
        <input type=\"submit\" value=\"Click to process this data\" 
-                onclick=\"submitClick(this);\" />
-    
-       <div id=existingPics > ";
+                onclick=\"submitClick(this);\" />";
+            $dire = self::siteDir . self::imagePath;
+            if ( $debugProgress ) print "find related $eol";
+            $filelist = dinomitedys_make_html_class::findRelated( $dino );
+            if ( $debugProgress ) print "after find related $eol";
+            unset( $filelist[ "$dino.jpg" ] ); // remove the auto display 
+            unset( $filelist[ "$dino" . "_pic.jpg" ] ); // fro the list
+            unset( $filelist[ "$dino" . "_sm.jpg" ] );
+
+            // --------------------------------------  existing photos
+             if ( $debugProgress )print "about to existing photos$$eol";
+             if ( $debugProgress )print rrwUtil::print_r($filelist, true, "found files");
             if ( !empty( $dino ) ) {
+                $msg .= "<br />
+ <hr width='2px'><h2> Existing photographs</h2><br />
+<div class='rrwDinoGrid' id=existingPics >
+    <div class='rrwDinoItem' >
+        <img src='/" . self::imagePath . "/$dino.jpg' width='270px' />
+        <br /> Existing photograph on detail page. </div>
+
+    <div class='rrwDinoItem' align='left'  maxwidth='130px'>
+        <img src='/" . self::imagePath . "/$dino" . "_sm.jpg'  width='130px' /> 
+        <br />picture selection</div>
+        ";
+                    // -----------------------------  display the collection
+                    foreach ( $filelist as $pic=>$value ) {
+                        $size = getimagesize(self::imageDire . "/$pic");
+                        $w_pic = min($size[0], 250);
+                        $msg .= "
+    <div class='rrwDinoItem' >
+        <a href='" . self::imagePath . "/$pic' target='image' >
+        <img src='/" . self::imagePath . "/$pic' width='$w_pic" . "px' /> </a>
+        <br />$pic </div>
+    ";
+                } // end    foreach ($list as $pic) {
                 $msg .= "
-                <table width='400px'><tr>
-                <td  width='270px'> <h2> Existing photograph on detail page. </h2><br />
-<img src='" . self::detailFileUrl( $dino ) . "' width='270px' />
-</td><td align='left'  width='130px'><h2>image used in the picture selection Page</h2><br />
-<img src='" . self::pictureFileUrl( $dino ) . "' width='130px' /> <br />
-                </td></td>
-                </table>
-";
-            }
-            $msg .=
-                "</div>           
- 
-  <script src=\"$jsFile\"></script>
+</div>\n";  /* match the rrwDinoGrid  */
+            } //     if ( !empty( $dino ) ) {
+             if ( $debugProgress )print "two picture okay$eol";
+            $msg .= "
+  <script src=\"$jsFile\">
+  </script>
        </form>
 <script>
     ";
@@ -196,10 +238,9 @@ class dinomitedys_upload {
 </script>
 <br />
 ";
-
-
         } catch ( Exception $ex ) {
-            throw new Exception( "$msg $errorBeg E#825 dinomitedys_upload:upload: $errorEnd" );
+            throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
+                "$errorBeg E#825 dinomitedys_upload:upload: $errorEnd" );
         }
         return $msg;
     } // end upload
@@ -293,40 +334,41 @@ class dinomitedys_upload {
         $msg .= $eol;
         return $msg;
     }
-
-    private static function detailFileUrl( $filename ) {
-        foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
-            $fileFull = self::siteDir . self::imagePath . "$filename$ext";
-            if ( file_exists( $fileFull ) )
-                return self::http . self::imagePath . "$filename$ext";
+    /*
+        private static function detailFileUrl( $filename ) {
+            foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
+                $fileFull = . "$filename$ext";
+                if ( file_exists( $fileFull ) )
+                    return self::http . self::imagePath . "$filename$ext";
+            }
+            return $fileURL;
         }
-        return $fileURL;
-    }
-    private static function pictureFileUrl( $filename ) {
-        $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
-        return $fileFull;
-    }
-    private static function listofFileFull( $filename ) {
-        $igonore1 = detailFilefull( $filename );
-        $igonore2 = pictureFileFull( $filename );
-        $list = array();
-
-        $hd = opendir( $self::imagedir );
-        while ( false !== ( $entry = readdir( $hd ) ) ) {
-            if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
-                continue;
-            if ( $ignore1 == $entry || $ignore2 == $entry )
-                continue;
-            array_push( $list, $self::http . self::imagePath . "$entry" );
+        private static function pictureFileUrl( $filename ) {
+            $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
+            return $fileFull;
         }
-        return $list;
-    }
-    private static function fileURL( $fileFull ) {
-        $url = str_replace( self::imagedire, "design/images/", $fileFull );
-        $url = get_site_url() . "$url";
-        return $url;
+        private static function listofFileFull( $filename ) {
+            $igonore1 = detailFilefull( $filename );
+            $igonore2 = pictureFileFull( $filename );
+            $list = array();
 
-    }
+            $hd = opendir( $self::imagedir );
+            while ( false !== ( $entry = readdir( $hd ) ) ) {
+                if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
+                    continue;
+                if ( $ignore1 == $entry || $ignore2 == $entry )
+                    continue;
+                array_push( $list, $self::http . self::imagePath . "$entry" );
+            }
+            return $list;
+        }
+        private static function fileURL( $fileFull ) {
+            $url = str_replace( self::imagedire, "design/images/", $fileFull );
+            $url = get_site_url() . "$url";
+            return $url;
+
+        }
+        */
 } // end class
 
 ?>
