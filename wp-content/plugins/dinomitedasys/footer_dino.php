@@ -5,7 +5,7 @@
 }
 </style>
 
-<div id="dinofooter"  class="dinoFotter" >
+<div id="dinofooter"  class="dinoFooter" >
     <div align=center><font size="2" face="Arial, Helvetica, sans-serif"
                             style="background-color:orange;" ><b>Dinosaurs:&nbsp; 
         </b> <a href="/map/">map</a> . <a href="/auctions.htm">gala &amp; auction</a> . <a href="/pictures.htm">dino pictures</a> . <a href="/fun.htm">fun 
@@ -19,9 +19,9 @@
         rex</a> . <a href="/map/">location</a> . <a href="/artist.htm">artist</a> . <a href="/sponsor.htm">sponsor</a></font> <br align="center">
         <font size="2" face="Arial, Helvetica, sans-serif"><a name="floor"></a>&copy; 
         
-        2003 Carnegie Museum of Natural History<sup>&reg;</sup> and DinoMite 
+        2003 Carnegie Museum of Natural History<sup>&reg;</sup>, DinoMite 
         
-        Days<sup>SM</sup> hosted by<a href='https://freewheelingeasy.com' class="external" > freewheeling Easy</a></a></font>
+        Days<sup>SM</sup>, hosted by<a href='https://freewheelingeasy.com' class="external" > freewheeling Easy</a></a></font>
             <br /> </p>
    
     </div>
