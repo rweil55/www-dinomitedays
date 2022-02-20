@@ -1,6 +1,7 @@
 <?php
 
 require_once "display_stuff_class.php";
+
 class dinomitedys_fix {
     const rrw_dinomites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays/";
@@ -15,6 +16,7 @@ class dinomitedys_fix {
         $debug = true;
         ini_set( "display_errors", true );
         error_reporting( E_ALL | E_STRICT );
+        print "start fix";
 
         $options = "";
         $task = rrwUtil::fetchparameterString( "task" );
@@ -23,7 +25,11 @@ class dinomitedys_fix {
             $msg .= self::SearchForQuery( $query );
             return $msg;
         }
+        $msg .= "task of $task $eol ";
         switch ( $task ) {
+            case "designfooter":
+                $msg .= self::designfooter();
+                return $msg;
             case "find_filename":
                 $dir = "/home/pillowan/www-dinomitedays/designs";
                 $fix = "find_filename";
@@ -110,6 +116,65 @@ class dinomitedys_fix {
         return $msg;
     }
 
+    private static function designfooter() {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+
+        $home = "/home/pillowan/www-dinomitedays"; 
+        $dire = "$home/designs";
+        $direNew = $dire . "new";
+        $hd = opendir( "$dire" );
+        $cnt = 0;
+        $list = array();
+        while ( false !== ( $entry = readdir( $hd ) ) ) {
+            $cnt++;
+            if ( $cnt > 500 )
+                break;
+            $File = "$dire/$entry";
+            if ( is_dir( $File ) ) 
+                continue;
+            if ( strpos( $File, "LCK" ) !== false )
+                continue;
+            array_push( $list, $entry );
+            $buffer = file_get_contents( $File );
+            $iifoot=  strpos( $buffer, ".dinoFotte" );
+            if (false != $iifoot) {
+                $iiClose = $iifoot -9;
+            } else {
+                $iiClose = strrpos( $buffer, "Close", -1 );
+                if ( false === $iiClose ) {
+                    $msg .= "$errorBeg E#655 $entry no close $errorEnd";
+                    continue;
+                }
+                $iiClose = $iiClose - 3;
+            }   // start of therreplace has been found
+            $iitr = strpos( $buffer, "</tr", $iiClose );    // get end
+            $msg .= "len is " . strlen( $buffer ) . "close at $iiClose,  
+                        tr at $iitr $eol";
+            $footer = file_get_contents(
+                "$home/wp-content/plugins/dinomitedasys/footer_dino.php" );
+            $buffernew = substr( $buffer, 0, $iiClose ) . "\n" .
+            $footer . "</td>\n" . substr( $buffer, $iitr );
+
+            $newfile = "$direNew/$entry";
+            $fpout = fopen( $newfile, "w" );
+            $msg .= fwrite( $fpout, $buffernew );
+            $msg .= "created $newfile $eol";
+        } // end while ( false !== ( $entry = readdir( $hd ) ) ) {
+     
+        $cnt = 0;
+        ksort($list);
+        foreach ( $list as $item ) {
+            $cnt++;
+            if ( ( $cnt % 22 ) == 0 )
+                $msg .= "$eol $eol $eol";
+            $msg .= "URL GOTO=https://dinomitedays.org/designs/$item$eol
+            WAIT SECONDS=3$eol
+            ";
+        }
+        return $msg;
+    }
+
     private static function geocoded() {
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
@@ -175,7 +240,7 @@ class dinomitedys_fix {
             $recnames = $wpdb->get_results( $sql, ARRAY_A );
             $recname = $recnames[ 0 ];
             $cnt++;
-            $Filename = $recname[ "Filename" ]; 
+            $Filename = $recname[ "Filename" ];
             $name = $recname[ "name" ];
             $author = $recname[ "author" ];
             $file = "/head_$Filename.gif";
@@ -188,17 +253,17 @@ class dinomitedys_fix {
             }
         } // end directory lok up
         $tempdir = "temp2_files/graphics";
-        foreach ( array( "merch" => "Dino Store", 
-                        "media"=> "News & Information",
-                        "owned"=> "Purchased by Sponsors", 
-                        "pics"=> "Pictures",
-                        "dug"=> "Duquesne",
-                        "edmund"=>"SEAWolfasaurus", "morris"=>"I Want You",
-                        "fun"=>"Fun Stuff", "live"=>"Live Auction",
-                        "lot1"=>"Auction Lot 1",
-                        "lot2"=>"Auction Lot 2",
-                        "lot3"=>"Auction Lot 3",
-                         ) as $file=>$name ) {
+        foreach ( array( "merch" => "Dino Store",
+                "media" => "News & Information",
+                "owned" => "Purchased by Sponsors",
+                "pics" => "Pictures",
+                "dug" => "Duquesne",
+                "edmund" => "SEAWolfasaurus", "morris" => "I Want You",
+                "fun" => "Fun Stuff", "live" => "Live Auction",
+                "lot1" => "Auction Lot 1",
+                "lot2" => "Auction Lot 2",
+                "lot3" => "Auction Lot 3",
+            ) as $file => $name ) {
             $file = "head_$file.gif";
             $author = "";
             // needs more code to match the fifferent head of these guys
@@ -224,7 +289,7 @@ class dinomitedys_fix {
         $draw1->setStrokeWidth( 5 );
         $draw1->setGravity( Imagick::GRAVITY_WEST );
 
-        $bgColor = new ImagickPixel( "#f8ac05"); //"#eb9909" );
+        $bgColor = new ImagickPixel( "#f8ac05" ); //"#eb9909" );
         $image->newImage( 551, 58, $bgColor );
         $image->annotateImage( $draw1, 10, 0, 0, $name );
         $image->setImageFormat( 'gif' );
@@ -343,7 +408,7 @@ WAIT SECONDS=4$eol";
         while ( ( $entry = readdir( $handle ) ) !== false ) {
             $cnt++;
             if ( $cnt > 2000 )
-                throw new Exception( "$msg E#303 - $entry Too mnay times $cnt in the while loop $eol" );
+                throw new Exception( "$msg E#615 - $entry Too mnay times $cnt in the while loop $eol" );
             if ( ( "." == substr( $entry, 0, 1 ) ) || ( "fix" == $entry ) || ( "wp" == substr( $entry, 0, 2 ) ) )
                 continue;
             $file = "$dir/$entry";
