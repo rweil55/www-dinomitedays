@@ -109,6 +109,7 @@ class dinomitedys_fix {
                 $msg .= "<a href='/test.htm' target='test' >test.htm</a>";
                 break;
             default:
+                
                 $msg .= "$errorBeg Unknown task of $task $errorEnd";
                 break;
         } // end switch     
