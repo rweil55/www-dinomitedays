@@ -31,7 +31,7 @@ require_once "../dinomitedasys/rrw_util_inc.php";
 class rrwParse {
     static $buffer;
     static $debugParse= false;
-    static $trace =  "";
+    static $trace =  "";   
 
     public static function recursiveDirectoryIterator( $directory = null, $files = array() ) {
         if ( !is_dir( $directory ) )
