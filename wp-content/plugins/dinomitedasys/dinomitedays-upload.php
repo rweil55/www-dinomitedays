@@ -4,82 +4,37 @@ ini_set( "display_errors", true );
 error_reporting( E_ALL | E_STRICT );
 
 class dinomitedys_upload {
-    const rrw_dino = "wpprrj_00rrwdinos";
+    const rrw_dinos = "wpprrj_00rrwdinos";
     const siteDir = "/home/pillowan/www-dinomitedays/";
     const imagePath = "designs/images";
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
-    public static function last_seen( $attr ) {
-        global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra;
-        $msg = "";
-        $debugLast = false;
-
-        try {
-            ini_set( "display_errors", true );
-            error_reporting( E_ALL | E_STRICT );
-            $msg = "";
-
-            $sql = "select name, filename, mapdate, maploc, latitude, longitude from " .
-            self::rrw_dino . " order by year(mapDate) ";
-            $sql .= " desc ";
-            $sql .= ", name asc ";
-            if ( $debugLast )$msg .= "$sql $eol";
-            $recs = $wpdbExtra->get_resultsA( $sql );
-            if ( $debugLast )$msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
-
-            $yearPast = "not yet";
-            foreach ( $recs as $rec ) {
-                $name = $rec[ "name" ];
-                $filename = $rec[ "filename" ];
-                $mapdate = $rec[ "mapdate" ];
-                $maploc = $rec[ "maploc" ];
-                $latitude = $rec[ "latitude" ];
-                $longitude = $rec[ "longitude" ];
-
-                $mapYear = new DateTime( $mapdate );
-                $mapYear = $mapYear->format( "Y" );
-                if ( $mapYear != $yearPast )
-                    $msg .= "<spam style='font-weight:bold; ' > $mapYear </span>$eol";
-                $yearPast = $mapYear;
-                $msg .= "<a href='/designs/$filename.htm' > $name</a> $maploc
-                 <a href='/map/?dino=true&latitude=$latitude&longitude=$longitude' > map</a> $eol";
-            }
-
-        } catch ( Exception $ex ) {
-            throw new Exception( "$msg $errorBeg E#825 dinomitedys_upload:upload: $errorEnd" );
-        }
-        return $msg;
-    } // end last_seen
-
     public static function upload( $attr ) {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
-        global $dropdownList;
-        $rrw_dinos = self::rrw_dino;
-        $msg = "";
+        global $dropdownList ; // used to create the scriptfile with this input
+         $msg = "";
         try {
             $debug = false;
             $debugProgress = false;
             $wpdbExtra = new wpdbExtra;
             $dino = rrwUtil::fetchparameterString( "dino" );
-            print "Dino os $dino $eol";
+            $submit = rrwUtil::fetchparameterString( "submit" );
+            if ( $debugProgress ) {
+                $msg .= "dino = $dino, submit = $submit $eol ";
+                $msg .= rrwUtil::print_r( $_POST, true, "post data " );
+            }
             $plugDire = "/wp-content/plugins/dinomitedasys";
             $jsFile = "$plugDire/dropzone.js";
             $cssFile = "$plugDire/dropzone.css";
 
             if ( !is_array( $dropdownList ) )
                 $dropdownList = array();
-            $msg .= "
-<link rel='stylesheet' id='dropzone-css'  href='$cssFile' />
-
-        ";
-
-
-            $msg .= "<form method=\"post\" action=\"/upload\" > 
-        ";
-            $sql = "select * from " . self::rrw_dino . " order by name ";
+            $msg .= "<link rel='stylesheet' id='dropzone-css'  href='$cssFile' />";
+            // display a dino selection form
+            $msg .= "<form method=\"post\" action=\"/upload\" > ";
+            $sql = "select * from " . self::rrw_dinos . " order by name ";
             $recs = $wpdbExtra->get_resultsA( $sql );
             //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol "; 
             $msg .= "<table style=\"border-collapse: collapse; \">
@@ -99,40 +54,57 @@ class dinomitedys_upload {
                     $msg .= " selected=$dino ";
                 $msg .= "> $name </option>\n";
             }
-            if ( $debugProgress ) print "after dino select output $eol";
             $msg .= "</select> 
             </td>
-          <td>";
+            <td>";
             if ( empty( $dino ) )
                 $source = "/graphics/white.gif";
             else {
                 $source = self::imagePath . "/$dino" . "_sm.jpg";
             }
             $msg .= "
-                <img src='$source' height='150px' />
+                <img src='$source' height='150px' /> 
             </td>
         </tr>
         </table> 
         <br />
             </form>";
-            if ( $debugProgress ) print "after first form okay $eol";
+            if ( $debugProgress )$msg .= "after first form, okay $eol";
             if ( empty( $dino ) )
                 return $msg;
+            if ( empty( $submit ) ) {
+                $msg .= self::displayPhotosForm( $dino );
+            } else {
+                $msg .= self::processInputPhotos( $dino );
+            }
+            $msg .= "dino is now $dino $eol";
+            $msg .= self::displayExisting( $dino, $jsFile ) ;
+        } // end try
+        catch ( Exception $ex ) {
+            $msg .= $ex->getMessage() . "$errorBeg  E#430 main upload $errorEnd";
+        }
+        return $msg;
+    } // end upload
 
-            $msg .= "dino os now $dino $eol
+    private static function displayPhotosForm( $dino ) {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
+        $msg = "";
 
-            <form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" > 
+        $debugProgress= false;
+        $msg .= "<form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" > 
+            <input type='hidden' name='dino' value='$dino' />
         ";
-            $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
-            $recDinos = $wpdbExtra->get_resultsA( $sqldino );
-            if ( 1 != $wpdbExtra->num_rows )
-                throw new Exception( "$msg $errorBeg E#664 did not find the
-                            dinosauer $errorEnd $sqldino $eoj" );
-            $recDino = $recDinos[ 0 ];
-            $mapLoc = $recDino[ "Maploc" ];
-            $limit = 140;
-            $size = 50;
-            $msg .= "
+        $sqldino = "select * from " . self::rrw_dinos . " where filename = '$dino' ";
+        $recDinos = $wpdbExtra->get_resultsA( $sqldino );
+        if ( 1 != $wpdbExtra->num_rows )
+            throw new Exception( "$msg $errorBeg E#664 did not find the
+                            dinosauer $errorEnd $sqldino $eol" );
+        $recDino = $recDinos[ 0 ];
+        $mapLoc = $recDino[ "Maploc" ];
+        $limit = 140;
+        $size = 50;
+        $msg .= "
         <table>
         <tr>
             <td class=\"freewheel_td\" >
@@ -155,58 +127,80 @@ class dinomitedys_upload {
                     Will not be uased in the collection of photographs on  the detail page.
                <table><tr><td width=\"60 px\" >
                ";
-            if ( $debugProgress ) print "About to first fropzone $eol";
-            $msg .= self::dropzone_div( "coordinates" );
-            if ( $debugProgress ) print "after first dropzone $eol";
-            $msg .= "</td><td align='left' valign='center' >Drop file or click to upload</td>
+        if ( $debugProgress )$msg .= "About to first fropzone $eol";
+        $msg .= self::dropzone_div( "coordinates" );
+        if ( $debugProgress )$msg .= "after first dropzone $eol";
+        $msg .= "</td><td align='left' valign='center' >Drop file or click to upload</td>
                 </tr>
                 </table>
             </td> 
         </tr>
-       </table> 
-       Pictures to be include on the full description page.
-       Take pictures from various side of the dinasaur. Avoid shots that show the same image.
-       Drop here or click to add.</td> 
-    <div class='rrwDinoGrid' >
-       ";
+       </table> ";
+
+        return $msg;
+    } //end displayPhotosForm
+
+    private static function displayExisting( $dino, $jsFile ) {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
+        global $dropdownList;
+        $msg = "";
+        try {
+            $debugProgress = false;
+            $filelist = dinomitedys_make_html_class::findRelated( $dino );
+            $fileCount = count($Filelist);
+            $msg .= "<div class='rrwDinoGrid' > ";
             for ( $ii = 0; $ii < 6; $ii++ ) {
                 $msg .= self::dropzone_div( "picture$ii" );
             }
-            if ( $debugProgress ) print "after input drop zones $eol";
-            $msg .= "
-        </div>
-
-       <br/>
-       <input type=\"submit\" value=\"Click to process this data\" 
-                onclick=\"submitClick(this);\" />";
+            if ( $debugProgress )$msg .= "after input drop zones $eol";
+            $msg .= " </div>
+                    <br/>
+                    <input type='hidden' name='filecount' value='$fileCount' />
+                    <input type=\"submit\" value=\"Click to process this data\" 
+                            name=\"submit\" onclick=\"submitClick(this);\" />";
             $dire = self::siteDir . self::imagePath;
-            if ( $debugProgress ) print "find related $eol";
-            $filelist = dinomitedys_make_html_class::findRelated( $dino );
-            if ( $debugProgress ) print "after find related $eol";
+            if ( $debugProgress )$msg .= "find related $eol";
+            if ( $debugProgress )$msg .= "after find related $eol";
             unset( $filelist[ "$dino.jpg" ] ); // remove the auto display 
             unset( $filelist[ "$dino" . "_pic.jpg" ] ); // fro the list
             unset( $filelist[ "$dino" . "_sm.jpg" ] );
 
             // --------------------------------------  existing photos
-             if ( $debugProgress )print "about to existing photos$$eol";
-             if ( $debugProgress )print rrwUtil::print_r($filelist, true, "found files");
+            if ( $debugProgress )$msg .= "about to existing photos$$eol";
+            if ( $debugProgress )$msg .= rrwUtil::print_r( $filelist, true, 
+                                                          "found files" );
             if ( !empty( $dino ) ) {
                 $msg .= "<br />
- <hr width='2px'><h2> Existing photographs</h2><br />
-<div class='rrwDinoGrid' id=existingPics >
-    <div class='rrwDinoItem' >
-        <img src='/" . self::imagePath . "/$dino.jpg' width='270px' />
-        <br /> Existing photograph on detail page. </div>
+ <hr width='2px'><h2> Existing photographs on page 
+ <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2><br />
+<div class='rrwDinoGrid' id=existingPics >";
+                $pics = array(
+                    "$dino.jpg",
+                    "$dino" . "_pic.jpg",
+                    "$dino" . "_sm.jpg",
+                );
+                array_merge( $pics, $filelist );
+                foreach ( $pics as $pic ) {
+                    $filesize = self::imageDire . "/$pic";
+                    if ( file_exists( $filesize ) ) {
+                        $size = getimagesize( $filesize );
+                        $meta = $size[ 0 ] . " X " . $size[ 1 ];
+                    } else {
+                        $meta = "";
+                    }
+                    $msg .= "
+                    <div class='rrwDinoItem' >
+                        <img src='/" . self::imagePath . "/$pic' width='270px' />
+                        <br />default  $pic $meta</div>
+                    ";
+                }
 
-    <div class='rrwDinoItem' align='left'  maxwidth='130px'>
-        <img src='/" . self::imagePath . "/$dino" . "_sm.jpg'  width='130px' /> 
-        <br />picture selection</div>
-        ";
-                    // -----------------------------  display the collection
-                    foreach ( $filelist as $pic=>$value ) {
-                        $size = getimagesize(self::imageDire . "/$pic");
-                        $w_pic = min($size[0], 250);
-                        $msg .= "
+                // -----------------------------  display the collection
+                foreach ( $filelist as $pic => $value ) {
+                    $size = getimagesize( self::imageDire . "/$pic" );
+                    $w_pic = min( $size[ 0 ], 250 );
+                    $msg .= "
     <div class='rrwDinoItem' >
         <a href='" . self::imagePath . "/$pic' target='image' >
         <img src='/" . self::imagePath . "/$pic' width='$w_pic" . "px' /> </a>
@@ -214,9 +208,9 @@ class dinomitedys_upload {
     ";
                 } // end    foreach ($list as $pic) {
                 $msg .= "
-</div>\n";  /* match the rrwDinoGrid  */
+</div>\n"; /* match the rrwDinoGrid  */
             } //     if ( !empty( $dino ) ) {
-             if ( $debugProgress )print "two picture okay$eol";
+            if ( $debugProgress )$msg .= "Existing  picture done $eol";
             $msg .= "
   <script src=\"$jsFile\">
   </script>
@@ -240,15 +234,15 @@ class dinomitedys_upload {
 ";
         } catch ( Exception $ex ) {
             throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
-                "$errorBeg E#825 dinomitedys_upload:upload: $errorEnd" );
+                "$errorBeg E#825 dinomitedys_:displayExisting $errorEnd" );
         }
         return $msg;
-    } // end upload
+    } // end displayExisting
 
 
     // ------------------------------------------------ create the div
     static private function dropzone_div( $name ) {
-        global $dropdownList;
+        global $dropdownList;   // used to create the scriptfile with this input
         $msg = "";
         $msg .= "
 
@@ -259,9 +253,9 @@ class dinomitedys_upload {
 ";
         array_push( $dropdownList, $name );
         return $msg;
-    }
+    } // end dropzone_div
 
-    static public function process_upload( $atr ) {
+    static public function processInputPhotos( $atr ) {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
         $debugSave = true;
@@ -333,7 +327,7 @@ class dinomitedys_upload {
         } // end foreash ($files)
         $msg .= $eol;
         return $msg;
-    }
+    } // end process_upload
     /*
         private static function detailFileUrl( $filename ) {
             foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {

@@ -31,12 +31,13 @@ require_once "freewheelingeasy-wpdpExtra.php";
 require_once "dinomitedays-fix.php";
 require_once "dinomitedays-upload.php";
 require_once "dinomitedays-make-html.php";
+require_once "dinomitedays_mics_pages.php";
 
 add_shortcode( 'dinomitedaysfix', array("dinomitedys_fix", "fix") );
 add_shortcode( 'dinomitedays-make-html', array("dinomitedys_make_html_class", "make_html_files") );
 add_shortcode( 'dinomitedays-process-upload', array("dinomitedys_upload", "process_upload") );
 add_shortcode( 'dinomitedays-upload', array("dinomitedys_upload", "upload") );
-add_shortcode( 'dinomitedays-last-seen', array("dinomitedys_upload", "last_seen") );
+add_shortcode( 'dinomitedays-last-seen', array("dinomitedays_mics_pages", "last_seen") );
 
 /* -------------------------------------  cause it to happen
 
