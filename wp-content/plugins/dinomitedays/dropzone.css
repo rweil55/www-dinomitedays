@@ -5,10 +5,10 @@
     vertical-align: top;
 }
 .drop-zone {
-    height: 180px;
+     height: 180px;
     width: 180px;
     padding: 5px;
-    display: flex;
+   display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -58,11 +58,11 @@
     grid-row-gap: 1px;
     padding: 0;
 }
-.rrwDinoItem li {
+.rrwDinoItem {
+    padding: 5px;
     margin: 0;
     white-space: nowrap;
     list-style-type: none;
-    padding: 0;
     text-overflow: clip;
     background-color: white;
     grid-column-gap: 1px;

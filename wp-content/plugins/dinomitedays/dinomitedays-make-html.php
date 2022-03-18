@@ -17,7 +17,7 @@ class dinomitedys_make_html_class {
             $msg .= self::updateLocatonMap();
             $msg .= self::detailPageLocation();
         } catch ( Exception $ex ) {
-            $msg .= "E#400 xxx catch " . $ex->getMessage ();
+            $msg .= "E#400 xxx catch " . $ex->getMessage();
         }
         return $msg;
     }
@@ -35,11 +35,11 @@ class dinomitedys_make_html_class {
 
         $from = "/home/pillowan/www-freewheel-dev/prebuilt/data/dinomites.txt";
         $to = "/home/pillowan/www-freewheelingeasy/prebuilt/data/dinomites.txt";
-        
+
         $msg .= "copy ($from, $to); $eol";
-        $result = copy($from, $to);
-        if (false === $result)
-            throw new Exception ("$msg $errorBeg E#842 copy failed $errorEnd");
+        $result = copy( $from, $to );
+        if ( false === $result )
+            throw new Exception( "$msg $errorBeg E#842 copy failed $errorEnd" );
         $msg .= "copy worked $eol";
 
         return $msg;
@@ -98,6 +98,26 @@ class dinomitedys_make_html_class {
 
         return $msg;
     } // end  geocoded
+
+    public static function findRelated( $dino ) {
+        // returns a list of filename that aresub pistures for a dino
+        $dire = ABSPATH . "/designs/images";
+
+        $numChars = strlen( $dino );
+        $list = array();
+        foreach ( new DirectoryIterator( $dire ) as $fileInfo ) {
+            $entry = $fileInfo->getFilename();
+            if ( strncasecmp( $dino, $entry, $numChars ) != 0 )
+                continue;
+            if (strpos($entry,"LCK") !== false)
+                continue;
+           if (strpos($entry,"_th.") !== false)
+                continue;
+            $list[ "$entry" ] = 1;
+        }
+        ksort($list);
+        return $list;
+    } // end findRelated
 
 } // end class
 ?>
