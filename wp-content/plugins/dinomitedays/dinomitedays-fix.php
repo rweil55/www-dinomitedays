@@ -1,6 +1,6 @@
 <?php
 
-require_once "display_stuff_class.php";
+require_once "../dinomitedasys/display_stuff_class.php";
 
 class dinomitedys_fix {
     const rrw_dinomites = "wpprrj_00rrwdinos";
@@ -16,7 +16,8 @@ class dinomitedys_fix {
         $debug = true;
         ini_set( "display_errors", true );
         error_reporting( E_ALL | E_STRICT );
-        print "start fix";
+        if ( rrwUtil::NotallowedToEdit( " fix things", "any" ) )
+            return "$msg not allowed to fix things";
 
         $options = "";
         $task = rrwUtil::fetchparameterString( "task" );
@@ -36,13 +37,10 @@ class dinomitedys_fix {
                 $msg .= self::doFixLoop( $fix, $dir, $options );
                 break;
             case "http2https":
+                $msg .= "this got broken when it fif it to itselg";
+                return $msg;
                 $dir = "/home/pillowan/www-dinomitedays";
                 $fix = "http2https";
-                $msg .= self::doFixLoop( $fix, $dir, $options );
-                break;
-            case "auction":
-                $dir = "/home/pillowan/www-dinomitedays";
-                $fix = "dinomitedaysauction";
                 $msg .= self::doFixLoop( $fix, $dir, $options );
                 break;
             case "drivingtour":
@@ -50,15 +48,16 @@ class dinomitedys_fix {
                 $fix = "drivingtour";
                 $msg .= self::doFixLoop( $fix, $dir, $options );
                 break;
+            case "replacefooter":
+                $dir = "/home/pillowan/www-dinomitedays/designs";
+                $fix = "replacefooter";
+                $msg .= self::doFixLoop( $fix, $dir, $options );
+                break;
             case "geocoded":
                 $msg .= self::geocoded();
-                break;
+                break; 
             case "heads":
                 $msg .= self::heads();
-                break;
-            case "locatin":
-                $msg .= self::setLocation( "phillips.htm", "4501 Forbes AVe", "2022", "40.44435,-79.9498" );
-                //	$msg .= applyURLfixrs();
                 break;
             case "imacro":
                 $msg .= self::makeImacro();
@@ -99,30 +98,100 @@ class dinomitedys_fix {
                 $msg .= self::missing_sm( $attr );
                 break;
             case "test":
-                $basedire = "/home/pillowan/www-dinomitedays";
-                $pluginDire = "$basedire/wp-content/plugins/dinomitedasys";
-                $buffer = file_get_contents( "$pluginDire/includes/footer.htm" );
-                $fp = fopen( "$basedire/test.htm", "w" );
-                $content = "<html><head></head><body>\n$buffer\n</body></html>\n";
-                fwrite( $fp, $content );
-                fclose( $fp );
-                $msg .= "<a href='/test.htm' target='test' >test.htm</a>";
+                $msg .= "<img src='file://P:/digipix-trips/lake-pleasant/P8070586-adj-1067x800.jpg' width='768px'>
+                <img src='http://127.0.0.1/validate/success.png' />
+                    test file";
+                return $msg;
                 break;
             default:
-                $msg .= "$errorBeg Unknown task of $task $errorEnd";
+                $msg .= "
+<a href='/fixit/?task=designfooter' >Update the footers</a> - durrently only workd on the the 200 detail pages<br />
+<a href='/fixit/?task=test' >Some random test</a> of one off code <br />
+<a href='/fixit/?task=missing_sm' >Create am _sm </a>file if not one there<br />
+<a href='/fixit/?task=find_images' >given a dino </a>find all images<br />
+<a href='/fixit/?task=imacro' >make 100</a> imacro commands <br />
+<a href='/fixit/?task=head' >generate the missing </a>'head' images <<br />
+<a href='/fixit/?task=http2https' >Change http: to </a>https: and other mechanical actions<br />
+<a href='/fixit/?task=replacefooter' >update the footers </a><br />$eol
+<strong> obsolete </strong><br />
+<a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng <br />
+<a href='/fixit/?task=drivingtour' >update the driving tour</a> links<br />
+$eol $eol
+";
+                $msg .= self::SearchForQuery( "" );
                 break;
         } // end switch     
 
         return $msg;
+    } // end function fixit
+
+    private static function replaceFooter( & $buffer ) {
+        global $eol, $errorBeg, $errorEnd;
+        global $footer;
+        $msg = "";
+        $pluginDire = "/wp-content/plugins/dinomitedasys";
+        if ( empty( $footer ) )
+            $footer = file_get_contents( self::baseDire .
+                "$pluginDire/footer_dino.php" );
+        // addin call to style sheet
+        if ( false == strpos( $buffer, "dinomitedays.css" ) ) {
+            $iiHead = strpos( $buffer, "</head" );
+            $buffer = substr( $buffer, 0, $iiHead ) .
+            "\n<link rel='stylesheet' id='dinomidays-style-css'  href='https://dinomitedays.org/$pluginDire/dinomitedays.css' media='all' />\n" . substr( $buffer, $iiHead );
+        }
+        // remove inline styles
+        for ( $ii = 0; $ii < 3; $ii++ ) {
+            $iiStyle = strpos( $buffer, "<style" );
+            if ( $iiStyle !== false ) {
+                $iiEndStyle = strpos( $buffer, "</style>", $iiStyle );
+                $iiEndStyle = strpos( $buffer, "</style>", $iiEndStyle + 2 );
+                $buffer = substr( $buffer, 0, $iiStyle ) .
+                substr( $buffer, $iiEndStyle + 8 );
+            }
+        }
+        // replace the footer
+        if ( false !== ( $iiDiv = strpos( $buffer, '<div id="dinofooter"' ) ) ) {
+            // replace it
+            $iienddiv = strpos( $buffer, "</div>", $iiDiv );
+
+            $iienddiv = strpos( $buffer, "</div>", $iienddiv + 2 );
+            $buffer = substr( $buffer, 0, $iiDiv ) . $footer .
+            substr( $buffer, $iienddiv + 6 );
+        }
+        return $msg;
     }
+
+    private static function tryDomDocument() {
+
+        $file = "/home/pillowan//www-dinomitedays/designs/stanford.htm";
+
+        $dom = new DomDocument();
+        $buffer = file_get_contents( $file );
+        $check = $dom->loadHTML( $buffer );
+        if ( $check )
+            $msg .= "good load $eol";
+        else
+            $msg = "$errorBeg E#749 load of dom sodument failed $errorEnd";
+        $div = $dom->getElementById( 'dinofooter' );
+        print "<pre>";
+        $cnt++;
+        print "---------------------------------  $eol";
+        var_dump( $div );
+        print "</pre>";
+        return $msg;
+    }
+
 
     private static function designfooter() {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
 
-        $home = "/home/pillowan/www-dinomitedays"; 
+        $home = "/home/pillowan/www-dinomitedays";
         $dire = "$home/designs";
         $direNew = $dire . "new";
+        $hdNew = opendir( $direNew );
+        closedir( $hdNew );
+        $msg .= "Output new files to the directory $direNew $eol";
         $hd = opendir( "$dire" );
         $cnt = 0;
         $list = array();
@@ -131,15 +200,15 @@ class dinomitedys_fix {
             if ( $cnt > 500 )
                 break;
             $File = "$dire/$entry";
-            if ( is_dir( $File ) ) 
+            if ( is_dir( $File ) )
                 continue;
             if ( strpos( $File, "LCK" ) !== false )
                 continue;
             array_push( $list, $entry );
             $buffer = file_get_contents( $File );
-            $iifoot=  strpos( $buffer, ".dinoFotte" );
-            if (false != $iifoot) {
-                $iiClose = $iifoot -9;
+            $iifoot = strpos( $buffer, ".dinoFotte" );
+            if ( false != $iifoot ) {
+                $iiClose = $iifoot - 9;
             } else {
                 $iiClose = strrpos( $buffer, "Close", -1 );
                 if ( false === $iiClose ) {
@@ -147,8 +216,8 @@ class dinomitedys_fix {
                     continue;
                 }
                 $iiClose = $iiClose - 3;
-            }   // start of therreplace has been found
-            $iitr = strpos( $buffer, "</tr", $iiClose );    // get end
+            } // start of therreplace has been found
+            $iitr = strpos( $buffer, "</tr", $iiClose ); // get end
             $msg .= "len is " . strlen( $buffer ) . "close at $iiClose,  
                         tr at $iitr $eol";
             $footer = file_get_contents(
@@ -161,9 +230,9 @@ class dinomitedys_fix {
             $msg .= fwrite( $fpout, $buffernew );
             $msg .= "created $newfile $eol";
         } // end while ( false !== ( $entry = readdir( $hd ) ) ) {
-     
+
         $cnt = 0;
-        ksort($list);
+        ksort( $list );
         foreach ( $list as $item ) {
             $cnt++;
             if ( ( $cnt % 22 ) == 0 )
@@ -194,8 +263,8 @@ class dinomitedys_fix {
             $key = $data[ 0 ];
             $lat = $data[ 2 ];
             $long = $data[ 3 ];
-            $sql = " update " . self::rrw_dinomites . " set latitude = $lat, longitude = $long
-                             where keyid = $key ";
+            $sql = " update " . self::rrw_dinomites .
+            " set latitude = $lat, longitude = $long                              where keyid = $key ";
             $answer = $wpdb->query( $sql );
             $msg .= rrwFormat::CellRow( $key, $lat, $long, $answer, $sql );
             $wpdb->query( $sql );
@@ -323,14 +392,24 @@ class dinomitedys_fix {
         return $msg;
     }
 
-    private static function SearchForQuery( $query ) {
+    private static function SearchForQuery( $query = "" ) {
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
         $msg = "";
+
+        if ( empty( $query ) ) {
+            $msg .= "
+            <form method='get' >
+            <input type='text' name='q' id='q' />
+            <input type='submit' name='submit value='Enter patial filename for search' />
+            ";
+            return $msg;
+        }
         $sqlTrys = array(
             "name" => "filename",
             "filename" => "name",
         );
+
         $msg .= "also try: ";
         foreach ( $sqlTrys as $name => $filename ) {
             $sql = " select $name from " . self::rrw_dinomites . " where $filename like '%$query%'
@@ -409,16 +488,24 @@ WAIT SECONDS=4$eol";
             $cnt++;
             if ( $cnt > 2000 )
                 throw new Exception( "$msg E#615 - $entry Too mnay times $cnt in the while loop $eol" );
-            if ( ( "." == substr( $entry, 0, 1 ) ) || ( "fix" == $entry ) || ( "wp" == substr( $entry, 0, 2 ) ) )
+            if ( ( "." == substr( $entry, 0, 1 ) ) || ( "wp" == substr( $entry, 0, 2 ) ) )
+                continue;
+            if ( strpos( $entry, "fix" ) !== false )
+                continue; //  go not mess with me
+            if ( substr( $entry, 0, 2 ) == "wp" )
                 continue;
             $file = "$dir/$entry";
+            $direNew = "$dir" . "_new/";
+            $fileNew = "$direNew/$entry"; // make a seperate directory for changes
             if ( $debugWhile )$msg .= "$file $eol";
             if ( is_dir( $file ) ) {
                 $msg .= self::doFixLoop( $fix, "$dir/$entry", $options );
                 continue;
             }
+            $ext = substr( $entry, -3 );
             $buffer = file_get_contents( $file );
             $originalLength = strlen( $buffer );
+            $replace = false;
             switch ( $fix ) {
                 case "find_related":
                     // display a collectio of files, whose name contains q= 
@@ -435,53 +522,26 @@ WAIT SECONDS=4$eol";
                     }
                     break;
 
-                case "dinomitedaysauction":
-                    // no longer done
-                    break;
-                case "":
+                case "http2https":
                     // changes for the archive/backup version to make itwork
                     $ext = substr( $entry, -3 );
                     if ( "htm" != $ext )
                         continue 2; // next flle
-                    $buffer = file_get_contents( $file );
-                    $len1 = strlen( $buffer );
 
-                    $buffer = str_replace( 'https://carnegiemnh"', 'https://carnegiemnh.org"', $buffer );
-                    $buffer = str_replace( "dinomitedaysauction", "dinomitedays/auction", $buffer );
-                    $buffer = str_replace( "dinomiteday/sauction", "dinomitedays/auction", $buffer );
+                    $buffer = str_replace( 'http://carnegiemnh"', 'https://carnegiemnh"', $buffer );
+                    $buffer = str_replace( "dinomitedaysauction", "/auction", $buffer );
                     $buffer = str_replace( "www.CarnegieMNH", "carnegiemnh", $buffer );
                     $buffer = str_replace( "http://carnegiemuseums", "https://carnegiemnh", $buffer );
                     $buffer = str_replace( "http://www.carnegiemuseums", "https://carnegiemnh", $buffer );
                     $buffer = str_replace( "http://carnegiemnh", "https://carnegiemnh", $buffer );
-                    //         $buffer = str_replace( "https://.carnegiemnh", "https://carnegiemnh", $buffer );
                     $buffer = str_replace( "https://carnegiemnh/", "https://carnegiemnh.org", $buffer );
-                    //         $buffer = str_replace( "https://carnegiemnh.org/cmnh", "https://carnegiemnh.org", $buffer );
                     $buffer = str_replace( "https://carnegiemnh.org/index.htm", "https://carnegiemnh.org", $buffer );
                     $buffer = str_replace( "https://carnegiemuseums.org/cmnh", "https://carnegiemnh", $buffer );
 
                     $len2 = strlen( $buffer );
-                    //            $msg .= "$len1, $len2, $file $eol";
-                    if ( $len1 != $len2 ) {
-                        $fp = fopen( $file, "w" );
-                        fwrite( $fp, $buffer );
-                        fclose( $fp );
-                        $msg .= "$cnt - updated file $file$eol";
-                    }
+                    $replace = true;
                     break;
-                case "find_filename":
-                    // update the data base base, extracting information from dino info fles
-                    $ext = substr( $entry, -3 );
-                    if ( "htm" != $ext )
-                        continue 2; // next flle
-                    $buffer = file_get_contents( $file );
-                    $len1 = strlen( $buffer );
-                    $iidip = strpos( $buffer, "src=\"graphics/dip" );
-                    if ( $iidip !== false ) {
-                        $number = ( int )substr( $buffer, $iidip + 17, 2 );
-                        $dinoname = substr( $entry, 0, -4 );
-                        $msg .= "update `dinos` set Filename = '$dinoname' where keyid = $number ; $eol";
-                    }
-                    break;
+
                 case "find_images":
                     // display a collectio of images
                     $ext = substr( $entry, -3 );
@@ -499,11 +559,15 @@ WAIT SECONDS=4$eol";
                     if ( "htm" != $ext )
                         continue 2; // next flle
                     if ( false !== strpos( $buffer, "tour was" ) ) {
+                        $msg .= "$errorBeg tour on $file $errorEnd";
+                        continue 2;
                         $iiSlash = strrpos( $file, "/" );
                         $link = "https://dinomitedays.org/" . substr( $file, $iiSlash );
                         $msg .= "check [ <a href='$link' target='new' >$file</a> ] $eol";
                         continue 2; // next flle
                     }
+                    $msg .= "not $file $$eol";
+                    continue 2;
                     $iiLoc = strpos( $buffer, "locations of the" );
                     if ( false === $iiLoc )
                         break;
@@ -520,27 +584,25 @@ WAIT SECONDS=4$eol";
                     $buffer = substr( $buffer, 0, $iidino + $step ) .
                     "However some of the dinosaurs were
 					located in 2010, and $tour " . substr( $buffer, $iidino + $step );
-                    $newFile = "${file}l";
-                    //			$fp = fopen ($newFile, "w");
-                    //				fwrite ($fp, $buffer);
-                    //				fclose($fp);
-                    $iiSlash = strrpos( $file, "/" );
-                    $link = "https://dinomitedays.org/" . substr( $file, $iiSlash );
-                    $msg .= "[ <a href='$link' target='new' >$file</a> ] ";
-                    $iiSlash = strrpos( $newFile, "/" );
-                    $link = "https://dinomitedays.org/" . substr( $newFile, $iiSlash );
-                    $msg .= "[ <a href='$link' target='new' >$newFile</a> ] $eol";
+                    break;
+                case "replacefooter":
+                    $msg .= self::replaceFooter( $buffer );
                     break;
                 default:
-                    print "no fix selected ";
-                    continue 2; // next flle
-                    ;
+                    Throw new Exception( "$msg $errorBeg #E751 no fix selected 
+                    $errorEnd" );
             } // end switch
             // write the file ifchanges have been made
             $fianlLength = strlen( $buffer );
             if ( $originalLength != $fianlLength ) {
                 $msg .= "$file length changed $originalLength != $fianlLength $eol";
-                $fp = fopen( $file, "w" );
+                if ( $replace )
+                    $fp = fopen( $file, "w" );
+                else {
+                    if ( !is_dir( $direNew ) )
+                        mkdir( $direNew );
+                    $fp = fopen( $fileNew, "w" );
+                }
                 $cntWriten = fwrite( $fp, $buffer );
                 fclose( $fp );
                 $msg .= "Write $cntWriten bytes of information $eol";

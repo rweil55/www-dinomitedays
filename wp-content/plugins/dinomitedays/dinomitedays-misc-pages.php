@@ -3,7 +3,7 @@
 ini_set( "display_errors", true );
 error_reporting( E_ALL | E_STRICT );
 
-class dinomitedays_mics_pages {
+class dinomitedays_misc_pages {
     const rrw_dinos = "wpprrj_00rrwdinos";
     const siteDir = "/home/pillowan/www-dinomitedays/";
     const imagePath = "designs/images";

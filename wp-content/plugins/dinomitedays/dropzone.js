@@ -50,7 +50,7 @@ function submitClick(e) {
     console.log ("inot submit routie " + e);
     e.value = "procesing the file, this may take some time.";
     e.disable = true;
-    return false;
+    return true;
 }
 
 function dropzoneDragOver(e) {
