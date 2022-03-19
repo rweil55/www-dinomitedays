@@ -132,10 +132,12 @@ $eol $eol
             $footer = file_get_contents( self::baseDire .
                 "$pluginDire/footer_dino.php" );
         // addin call to style sheet
+        $buffer = str_replace ("dinomitedasys", "dinomitedays", $buffer);
+        $buffer = str_replace ("freewheelingdays", "freewheelingeasy", $buffer);
         if ( false == strpos( $buffer, "dinomitedays.css" ) ) {
             $iiHead = strpos( $buffer, "</head" );
             $buffer = substr( $buffer, 0, $iiHead ) .
-            "\n<link rel='stylesheet' id='dinomidays-style-css'  href='https://dinomitedays.org/$pluginDire/dinomitedays.css' media='all' />\n" . substr( $buffer, $iiHead );
+            "\n<link rel='stylesheet' id='dinomitedays-style-css'  href='https://dinomitedays.org/$pluginDire/dinomitedays.css' media='all' />\n" . substr( $buffer, $iiHead );
         }
         // remove inline styles
         for ( $ii = 0; $ii < 3; $ii++ ) {
