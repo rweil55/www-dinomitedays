@@ -9,8 +9,7 @@ class dinomitedys_upload {
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
-    public function _construct_() {}
-
+ 
     public static function upload( $attr ) {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList; // used to create the scriptfile with this input
@@ -21,7 +20,7 @@ class dinomitedys_upload {
             $debugProgress = false;
             $wpdbExtra = new wpdbExtra;
             $rrw_dinos = "wpprrj_00rrwdinos";
-            $cssFile = self::http . "/plugins/dinomitedays/dropzone.css";
+            $cssFile = self::http . "wp-content/plugins/dinomitedays/dropzone.css";
             $msg .= "<link rel='stylesheet' id='dropzone-css'  href='$cssFile' />";
 
             $dino = rrwUtil::fetchparameterString( "dino" );
@@ -30,7 +29,7 @@ class dinomitedys_upload {
                 $msg .= "dino = $dino, submit = $submit $eol ";
                 $msg .= rrwUtil::print_r( $_POST, true, "post data " );
             }
-            $plugDire = "/wp-content/plugins/dinomitedasys";
+            $plugDire = "/wp-content/plugins/dinomitedays";
             $jsFile = "$plugDire/dropzone.js";
 
             if ( !is_array( $dropdownList ) )

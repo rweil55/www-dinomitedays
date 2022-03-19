@@ -62,7 +62,7 @@ class dinomitedys_upload {
             $debug = true;
             $wpdbExtra = new wpdbExtra;
             $dino = rrwUtil::fetchparameterString( "dino" );
-            $plugDire = "/wp-content/plugins/dinomitedasys";
+            $plugDire = "/wp-content/plugins/dinomitedays";
             $jsFile = "$plugDire/dropzone.js";
             $cssFile = "$plugDire/dropzone.css";
 
