@@ -20,8 +20,7 @@
         <font size="2" face="Arial, Helvetica, sans-serif"><a name="floor"></a>&copy; 
         
         2003 Carnegie Museum of Natural History<sup>&reg;</sup>, DinoMite 
-        
-        Days<sup>SM</sup>, hosted by<a href='https://freewheelingdays.com' class="external" > freewheeling Easy</a></font>
+        Days<sup>SM</sup>, hosted by<a href='https://freewheelingeasy.com' class="external" > freewheeling Easy</a></font>
             <br />
    
     </div>
