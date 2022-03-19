@@ -100,7 +100,7 @@ class dinomitedys_fix {
                 break;
             case "test":
                 $basedire = "/home/pillowan/www-dinomitedays";
-                $pluginDire = "$basedire/wp-content/plugins/dinomitedasys";
+                $pluginDire = "$basedire/wp-content/plugins/dinomitedays";
                 $buffer = file_get_contents( "$pluginDire/includes/footer.htm" );
                 $fp = fopen( "$basedire/test.htm", "w" );
                 $content = "<html><head></head><body>\n$buffer\n</body></html>\n";
@@ -152,7 +152,7 @@ class dinomitedys_fix {
             $msg .= "len is " . strlen( $buffer ) . "close at $iiClose,  
                         tr at $iitr $eol";
             $footer = file_get_contents(
-                "$home/wp-content/plugins/dinomitedasys/footer_dino.php" );
+                "$home/wp-content/plugins/dinomitedays/footer_dino.php" );
             $buffernew = substr( $buffer, 0, $iiClose ) . "\n" .
             $footer . "</td>\n" . substr( $buffer, $iitr );
 
@@ -181,7 +181,7 @@ class dinomitedys_fix {
         $msg = "";
 
         $febugGeo = true;
-        $fp = fopen( "/home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedasys/Dinolats.csv", "r" );
+        $fp = fopen( "/home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/Dinolats.csv", "r" );
         $line = fgets( $fp );
         $line = fgets( $fp );
         $msg .= "<table>";

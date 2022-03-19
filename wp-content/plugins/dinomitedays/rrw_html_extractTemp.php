@@ -25,8 +25,7 @@
  * function recursiveDirectoryIterator ($directory, $files
  *		return a list of all files under directory
  */
-require_once "../dinomitedasys/rrw_util_inc.php";
-//require_once "../dinomitedasys/simple_html_dom.php";
+require_once "rrw_util_inc.php";
 
 class rrwParse {
     static $buffer;

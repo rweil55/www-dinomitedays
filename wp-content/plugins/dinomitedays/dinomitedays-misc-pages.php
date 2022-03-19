@@ -10,11 +10,11 @@ class dinomitedays_misc_pages {
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
-    public static function last_seen( $attr ) {
+    public static function last_seen( $attr ) { 
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         $msg = "";
-        $debugLast = false;
+        $debugLast = false;  
 
         try {
             ini_set( "display_errors", true );

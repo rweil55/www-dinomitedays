@@ -1,7 +1,5 @@
 <?php
 
-require_once "../dinomitedasys/display_stuff_class.php";
-
 class dinomitedys_fix {
     const rrw_dinomites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays/";
@@ -129,7 +127,7 @@ $eol $eol
         global $eol, $errorBeg, $errorEnd;
         global $footer;
         $msg = "";
-        $pluginDire = "/wp-content/plugins/dinomitedasys";
+        $pluginDire = "/wp-content/plugins/dinomitedays";
         if ( empty( $footer ) )
             $footer = file_get_contents( self::baseDire .
                 "$pluginDire/footer_dino.php" );
@@ -221,7 +219,7 @@ $eol $eol
             $msg .= "len is " . strlen( $buffer ) . "close at $iiClose,  
                         tr at $iitr $eol";
             $footer = file_get_contents(
-                "$home/wp-content/plugins/dinomitedasys/footer_dino.php" );
+                "$home/wp-content/plugins/dinomitedass/footer_dino.php" );
             $buffernew = substr( $buffer, 0, $iiClose ) . "\n" .
             $footer . "</td>\n" . substr( $buffer, $iitr );
 
@@ -250,7 +248,7 @@ $eol $eol
         $msg = "";
 
         $febugGeo = true;
-        $fp = fopen( "/home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedasys/Dinolats.csv", "r" );
+        $fp = fopen( "/home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedass/Dinolats.csv", "r" );
         $line = fgets( $fp );
         $line = fgets( $fp );
         $msg .= "<table>";

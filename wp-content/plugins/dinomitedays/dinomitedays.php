@@ -24,14 +24,15 @@ Domain Path: /lang
         error_reporting( E_ALL | E_STRICT );
     global $eol, $errorBeg, $errorEnd;
 
-require_once "../dinomitedasys/rrw_util_inc.php";
-require_once "../dinomitedasys/freewheelingeasy-wpdpExtra.php";
- 
- 
-require_once "../dinomitedasys/dinomitedays-fix.php";
-require_once "../dinomitedasys/dinomitedays-upload.php";
-require_once "../dinomitedasys/dinomitedays-make-html.php";
-require_once "../dinomitedasys/dinomitedays-misc-pages.php";
+require_once "rrw_util_inc.php";
+require_once "freewheelingeasy-wpdpExtra.php";
+require_once "display_stuff_class.php";
+
+     
+require_once "dinomitedays-fix.php";
+require_once "dinomitedays-upload.php";
+require_once "dinomitedays-make-html.php";
+require_once "dinomitedays-misc-pages.php";
 
 add_shortcode( 'dinomitedaysfix', array("dinomitedys_fix", "fix") );
 add_shortcode( 'dinomitedays-make-html', array("dinomitedys_make_html_class", "make_html_files") );
@@ -41,7 +42,7 @@ add_shortcode( 'dinomitedays-last-seen', array("dinomitedays_misc_pages", "last_
 
 /* -------------------------------------  cause it to happen
 
-require_once "../dinomitedasys/plugin_update_check.php";
+require_once "../dinomitedass/plugin_update_check.php";
 $MyUpdateChecker = new PluginUpdateChecker_2_0(
     'https://pluginserver.royweil.com/dinomitedays.php',
     __FILE__,
