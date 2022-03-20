@@ -14,8 +14,6 @@ class dinomitedys_fix {
         $debug = true;
         ini_set( "display_errors", true );
         error_reporting( E_ALL | E_STRICT );
-        if ( rrwUtil::NotallowedToEdit( " fix things", "any" ) )
-            return "$msg not allowed to fix things";
 
         $options = "";
         $task = rrwUtil::fetchparameterString( "task" );
@@ -24,8 +22,13 @@ class dinomitedys_fix {
             $msg .= self::SearchForQuery( $query );
             return $msg;
         }
+        if ( rrwUtil::NotallowedToEdit( " fix things", "any", true ) )
+            return "$msg not allowed to fix things";
         $msg .= "task of $task $eol ";
         switch ( $task ) {
+            case "deletedesginimage":
+                $msg .= self::deleteDesginImage();
+                return $msg;
             case "designfooter":
                 $msg .= self::designfooter();
                 return $msg;
@@ -53,7 +56,7 @@ class dinomitedys_fix {
                 break;
             case "geocoded":
                 $msg .= self::geocoded();
-                break; 
+                break;
             case "heads":
                 $msg .= self::heads();
                 break;
@@ -132,8 +135,8 @@ $eol $eol
             $footer = file_get_contents( self::baseDire .
                 "$pluginDire/footer_dino.php" );
         // addin call to style sheet
-        $buffer = str_replace ("dinomitedasys", "dinomitedays", $buffer);
-        $buffer = str_replace ("freewheelingdays", "freewheelingeasy", $buffer);
+        $buffer = str_replace( "dinomitedasys", "dinomitedays", $buffer );
+        $buffer = str_replace( "freewheelingdays", "freewheelingeasy", $buffer );
         if ( false == strpos( $buffer, "dinomitedays.css" ) ) {
             $iiHead = strpos( $buffer, "</head" );
             $buffer = substr( $buffer, 0, $iiHead ) .
@@ -180,7 +183,27 @@ $eol $eol
         print "</pre>";
         return $msg;
     }
-
+    private static function deleteDesginImage() {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        $imagename = rrwPara::String( "file" );
+        $siteDir = "/home/pillowan/www-dinomitedays/";
+        $imagePath = "designs/images";
+        $fileName = "$siteDir/$imagePath/$imagename";
+        if (file_exists($fileName)) {
+            unlink($fileName);
+            $msg .=  " $fileName deleted $eol";
+        } else {
+            $msg .= "$errorBeg E#756 file '$fileName' not found to delete $errorEnd";
+        }
+        $iiSlash = strrpos($fileName, "/");
+        $dino = substr($fileName,$iiSlash+1);
+        $iiUnder = strpos($dino, "_");
+        $dino = substr($dino, 0, $iiUnder);
+        $msg .= dinomitedys_make_html_class::UpdateImages($dino);
+        $msg .= "<a href='/upload?dinofile=$dino' > Display images <a> $eol";
+        return $msg;
+    }
 
     private static function designfooter() {
         global $eol, $errorBeg, $errorEnd;

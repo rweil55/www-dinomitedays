@@ -45,6 +45,38 @@ class dinomitedys_make_html_class {
         return $msg;
     }
 
+    public static function UpdateImages($dinofile) {
+            global $wpdbExtra, $rrw_dino;
+        global $eol, $errorBeg, $errorEnd;
+        $dirDesignNew = "/home/pillowan/www-dinomitedays/design_new";
+        $msg = "";
+        
+        $buffer = fread($filename);
+        $iiDiv = strpos($buffer, "<div class=dinoImages");
+        if (fasle === $iidiv) {
+            return "$msg $errorBeg E#769 no place to insert image$errorEnd";
+            //work to find the right place
+        } else {
+            $iidivend = strpos($buffer, "end dinoImages");
+            if (false === $iidivend)
+                throw new Exception ("$msg $errorBeg 
+                        E#762 did not find end dnImages' $errorEnd" );
+            $iidivend = $iidivend + 14;
+        }
+        
+        $newdiv = "<div class=dinoImages >  images here 
+        </div> //end dinoImages 
+        ";
+        $buffer = substr($buffer,0, $iiDiv) . $newdiv . substr($buffer, $iidivend);
+        $filenameNew = str_replace ("designs", "designs_new", $filename);
+        if (! is_dir($dirDesignNew))
+            mkdir($dirDesignNew);
+        $fp = fopen($filenameNew, "w");
+        fwrite($fp, $buffer);
+        fclose($fp);
+        $msg .= "<a href='/design_new/$dino.htm' >$dino.htm</a> has been updated ";
+        return $msg;
+    }
     static private function detailPageLocation() {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;

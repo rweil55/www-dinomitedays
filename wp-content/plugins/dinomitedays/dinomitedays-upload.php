@@ -9,7 +9,7 @@ class dinomitedys_upload {
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
- 
+
     public static function upload( $attr ) {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList; // used to create the scriptfile with this input
@@ -73,6 +73,7 @@ class dinomitedys_upload {
         if ( empty( $dino ) )
             $msg .= '<option value="" disabled selected >Pick a dinosaur. </option>
         ';
+        $msg .= dinomitedys_make_html_class::UpdateImages($dino);
         foreach ( $recs as $rec ) {
             $name = $rec[ "Name" ];
             $file = $rec[ "Filename" ];
@@ -189,12 +190,15 @@ class dinomitedys_upload {
  <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2><br />
 <div class='rrwDinoGrid' id=existingPics >";
                 $pics = array(
-                    "$dino.jpg",
-                    "$dino" . "_pic.jpg",
-                    "$dino" . "_sm.jpg",
+                    "$dino.jpg" => 1,
+                    "$dino" . "_pic.jpg" => 1,
+                    "$dino" . "_sm.jpg" => 1,
                 );
-                array_merge( $pics, $filelist );
-                foreach ( $pics as $pic ) {
+                $pics = array_merge( $pics, $filelist );
+                $cntImage = 0;
+                // -----------------------------  display the collection
+                foreach ( $pics as $pic=>$dummy ) {
+                    $cntImage++;
                     $filesize = self::imageDire . "/$pic";
                     if ( file_exists( $filesize ) ) {
                         $size = getimagesize( $filesize );
@@ -202,27 +206,15 @@ class dinomitedys_upload {
                     } else {
                         $meta = "";
                     }
-                    $msg .= "
-                    <div class='rrwDinoItem' >
+                    $msg .= "<div class='rrwDinoItem' >
                         <img src='/" . self::imagePath . "/$pic' width='270px' />
-                        <br />default  $pic $meta</div>
-                    ";
-                }
-
-                // -----------------------------  display the collection
-                foreach ( $filelist as $pic => $value ) {
-                    $size = getimagesize( self::imageDire . "/$pic" );
-                    $w_pic = min( $size[ 0 ], 250 );
-                    $msg .= "
-    <div class='rrwDinoItem' >
-        <a href='" . self::imagePath . "/$pic' target='image' >
-        <img src='/" . self::imagePath . "/$pic' width='$w_pic" . "px' /> </a>
-        <br />$pic </div>
-    ";
-                } // end    foreach ($list as $pic) {
-                $msg .= "
-</div>\n"; /* match the rrwDinoGrid  */
-            } //     if ( !empty( $dino ) ) {
+                        <br />$pic $meta";
+                    if ( $cntImage > 3 )
+                        $msg .= "<a href='/fixit/?task=deletedesginimage&amp;file=$pic' > delete<a>";
+                    $msg .= " </div>";
+                }   // for each impage to display
+                $msg .= "</div>\n"; /* match the rrwDinoGrid  */
+            } //  end   if ( !empty( $dino ) ) {
             if ( $debugProgress )$msg .= "Existing  picture done $eol";
             $msg .= "
   <script src=\"$jsFile\">
@@ -241,8 +233,7 @@ class dinomitedys_upload {
         dropRegion.addEventListener( 'drop', dropzone_drop, false );
         ";
             }
-            $msg .= "
-</script>
+            $msg .= "</script>
 <br />
 ";
         } catch ( Exception $ex ) {
@@ -272,7 +263,7 @@ class dinomitedys_upload {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra, $rrw_dinos;
         $msg = "";
-        $debugSave = true;
+        $debugSave = false;
 
         if ( $debugSave ) {
             $msg .= rrwUtil::print_r( $_POST, true, "What was gottem by the submit _post" );
@@ -289,7 +280,7 @@ class dinomitedys_upload {
         }
 
         $msg .= "There are $fileCount files already on the 
-                <a href='/designs/$dino' >dinosaur's page < /a> $eol";
+                <a href='/designs/$dino' >dinosaur $dino's  page < /a> $eol";
         $uploads_dir = '/home/pillowan/www-dinomitedays/designs/images';
         foreach ( $_FILES as $key => $fileInfo ) {
             if ( $debugSave ) {
@@ -327,7 +318,7 @@ class dinomitedys_upload {
                 continue; // next file
             }
             $fileCount++;
-            $newname = "$uploads_dir/" . $dino . "$number" . "_$filename";
+            $newname = "$uploads_dir/" . $dino . "_$fileCount" . "_$filename";
             $answer = move_uploaded_file( $tmp_name, $newname );
             if ( $debugSave )$msg .= "moving $tmp_name to $newname $eol";
             if ( false === $answer ) {
