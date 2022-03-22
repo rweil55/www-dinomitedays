@@ -26,12 +26,17 @@ class dinomitedys_fix {
             return "$msg not allowed to fix things";
         $msg .= "task of $task $eol ";
         switch ( $task ) {
-            case "deletedesginimage":
-                $msg .= self::deleteDesginImage();
+            case "rejectdesginimage":
+                $msg .= self::rejectDesginImage();
                 return $msg;
             case "designfooter":
                 $msg .= self::designfooter();
                 return $msg;
+            case "drivingtour":
+                $dir = "/home/pillowan/www-dinomitedays";
+                $fix = "drivingtour";
+                $msg .= self::doFixLoop( $fix, $dir, $options );
+                break;
             case "find_filename":
                 $dir = "/home/pillowan/www-dinomitedays/designs";
                 $fix = "find_filename";
@@ -44,17 +49,7 @@ class dinomitedys_fix {
                 $fix = "http2https";
                 $msg .= self::doFixLoop( $fix, $dir, $options );
                 break;
-            case "drivingtour":
-                $dir = "/home/pillowan/www-dinomitedays";
-                $fix = "drivingtour";
-                $msg .= self::doFixLoop( $fix, $dir, $options );
-                break;
-            case "replacefooter":
-                $dir = "/home/pillowan/www-dinomitedays/designs";
-                $fix = "replacefooter";
-                $msg .= self::doFixLoop( $fix, $dir, $options );
-                break;
-            case "geocoded":
+           case "geocoded":
                 $msg .= self::geocoded();
                 break;
             case "heads":
@@ -98,6 +93,14 @@ class dinomitedys_fix {
             case "missing_sm":
                 $msg .= self::missing_sm( $attr );
                 break;
+             case "renamenewdino":
+                $msg .= self::renameNewDino();
+                break;
+            case "replacefooter":
+                $dir = "/home/pillowan/www-dinomitedays/designs";
+                $fix = "replacefooter";
+                $msg .= self::doFixLoop( $fix, $dir, $options );
+                break;
             case "test":
                 $msg .= "<img src='file://P:/digipix-trips/lake-pleasant/P8070586-adj-1067x800.jpg' width='768px'>
                 <img src='http://127.0.0.1/validate/success.png' />
@@ -140,8 +143,10 @@ $eol $eol
         if ( false == strpos( $buffer, "dinomitedays.css" ) ) {
             $iiHead = strpos( $buffer, "</head" );
             $buffer = substr( $buffer, 0, $iiHead ) .
-            "\n<link rel='stylesheet' id='dinomitedays-style-css'  href='https://dinomitedays.org/$pluginDire/dinomitedays.css' media='all' />\n" . substr( $buffer, $iiHead );
+            "\n<link rel='stylesheet' id='dinomitedays-style-css'  href='https://dinomitedays.org$pluginDire/dinomitedays.css' media='all' />\n" . substr( $buffer, $iiHead );
         }
+        $buffer = str_replace("//wp-content", "/wp-content", $buffer);
+        $buffer = str_replace("dinomitedasys","dinomitedays", $buffer);
         // remove inline styles
         for ( $ii = 0; $ii < 3; $ii++ ) {
             $iiStyle = strpos( $buffer, "<style" );
@@ -183,28 +188,7 @@ $eol $eol
         print "</pre>";
         return $msg;
     }
-    private static function deleteDesginImage() {
-        global $eol, $errorBeg, $errorEnd;
-        $msg = "";
-        $imagename = rrwPara::String( "file" );
-        $siteDir = "/home/pillowan/www-dinomitedays/";
-        $imagePath = "designs/images";
-        $fileName = "$siteDir/$imagePath/$imagename";
-        if (file_exists($fileName)) {
-            unlink($fileName);
-            $msg .=  " $fileName deleted $eol";
-        } else {
-            $msg .= "$errorBeg E#756 file '$fileName' not found to delete $errorEnd";
-        }
-        $iiSlash = strrpos($fileName, "/");
-        $dino = substr($fileName,$iiSlash+1);
-        $iiUnder = strpos($dino, "_");
-        $dino = substr($dino, 0, $iiUnder);
-        $msg .= dinomitedys_make_html_class::UpdateImages($dino);
-        $msg .= "<a href='/upload?dinofile=$dino' > Display images <a> $eol";
-        return $msg;
-    }
-
+  
     private static function designfooter() {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -415,6 +399,46 @@ $eol $eol
         return $msg;
     }
 
+  private static function rejectDesginImage() {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        $imagename = rrwPara::String( "file" );
+        $siteDir = "/home/pillowan/www-dinomitedays/";
+        $imagePath = "designs/images";
+        $fileName = "$siteDir/$imagePath/$imagename";
+        $filenameNew = "$siteDir/$imagePath-rejected/$imagename"; 
+        if (file_exists($fileName)) {
+            rename($fileName, $filenameNew);
+            $msg .=  " $fileName rejected $eol";
+        } else {
+            $msg .= "$errorBeg E#756 file '$fileName' not found to reject $errorEnd";
+        }
+        $iiSlash = strrpos($fileName, "/");
+        $dino = substr($fileName,$iiSlash+1);
+        $iiUnder = strpos($dino, "_");
+        $dino = substr($dino, 0, $iiUnder);
+        $msg .= dinomitedys_make_html_class::UpdateImages($dino);
+        $msg .= "<a href='/upload?dinofile=$dino' > Display images </a> $eol";
+        return $msg;
+    }
+
+    private static function renameNewDino() {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        $dino = rrwPara::String( "dino" );
+        $siteDir = "/home/pillowan/www-dinomitedays";
+        $htmlPath = "designs";
+        $fileNameNew = "$siteDir/$htmlPath/$dino-new.htm";
+        $fileNameOld = "$siteDir/$htmlPath/$dino.htm";
+        if (! file_exists($fileNameNew)) 
+            throw new Exception ("$msg $errorBeg E#792 file $fileNameNew not exist $errorEnd ");
+          if (file_exists($fileNameOld))
+              unlink ($fileNameOld);
+        rename($fileNameNew, $fileNameOld);
+        $msg .= "<a href='/designs/$dino.htm' > Check out final verion </a> $eol";
+        return $msg;
+    }
+    
     private static function SearchForQuery( $query = "" ) {
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;

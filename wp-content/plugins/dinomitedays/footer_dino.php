@@ -17,7 +17,8 @@
         <b>Search by:</b>&nbsp; <a href="/steg.htm">stegosaurus</a> . <a href="/toro.htm">torosaurus</a> . <a href="/rex.htm">t. 
         
         rex</a> . <a href="/map/">location</a> . <a href="/artist.htm">artist</a> . <a href="/sponsor.htm">sponsor</a></font> <br align="center">
-        <font size="2" face="Arial, Helvetica, sans-serif"><a name="floor"></a>&copy; 
+        <font size='1.95' face="Arial, Helvetica, sans-serif" 
+            style="background-color:orange;" ><a name="floor"></a>&copy; 
         
         2003 Carnegie Museum of Natural History<sup>&reg;</sup>, DinoMite 
         Days<sup>SM</sup>, hosted by<a href='https://freewheelingeasy.com' class="external" > freewheeling Easy</a></font>
