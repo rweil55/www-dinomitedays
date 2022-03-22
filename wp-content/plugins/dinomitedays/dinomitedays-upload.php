@@ -46,7 +46,11 @@ class dinomitedys_upload {
                 $msg .= self::processInputPhotos( $dino );
             }
             $msg .= "dino is now $dino $eol";
-            $msg .= self::displayExisting( $dino, $jsFile );
+            $msg .= self::formForPictures( $dino, $jsFile );
+            $msg .= "<br />
+ <hr width='2px'><h2> Existing photographs on page 
+ <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
+            $msg .= self::displayExisting( $dino, true );
         } // end try
         catch ( Exception $ex ) {
             $msg .= $ex->getMessage() . "$errorBeg  E#430 main upload $errorEnd";
@@ -73,7 +77,6 @@ class dinomitedys_upload {
         if ( empty( $dino ) )
             $msg .= '<option value="" disabled selected >Pick a dinosaur. </option>
         ';
-        $msg .= dinomitedys_make_html_class::UpdateImages($dino);
         foreach ( $recs as $rec ) {
             $name = $rec[ "Name" ];
             $file = $rec[ "Filename" ];
@@ -155,13 +158,13 @@ class dinomitedys_upload {
         return $msg;
     } //end displayPhotosForm
 
-    private static function displayExisting( $dino, $jsFile ) {
+    private static function formForPictures( $dino, $jsFile = "" ) {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList;
         $msg = "";
         try {
             $debugProgress = false;
-            $filelist = dinomitedys_make_html_class::findRelated( $dino );
+            $filelist = dinomitedys_make_html_class::findRelated( $dino, true );
             $fileCount = count( $filelist );
             $msg .= "<div class='rrwDinoGrid' > ";
             for ( $ii = 0; $ii < 6; $ii++ ) {
@@ -176,52 +179,10 @@ class dinomitedys_upload {
             $dire = self::siteDir . self::imagePath;
             if ( $debugProgress )$msg .= "find related $eol";
             if ( $debugProgress )$msg .= "after find related $eol";
-            unset( $filelist[ "$dino.jpg" ] ); // remove the auto display 
-            unset( $filelist[ "$dino" . "_pic.jpg" ] ); // fro the list
-            unset( $filelist[ "$dino" . "_sm.jpg" ] );
-
-            // --------------------------------------  existing photos
-            if ( $debugProgress )$msg .= "about to existing photos$$eol";
-            if ( $debugProgress )$msg .= rrwUtil::print_r( $filelist, true,
-                "found files" );
-            if ( !empty( $dino ) ) {
-                $msg .= "<br />
- <hr width='2px'><h2> Existing photographs on page 
- <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2><br />
-<div class='rrwDinoGrid' id=existingPics >";
-                $pics = array(
-                    "$dino.jpg" => 1,
-                    "$dino" . "_pic.jpg" => 1,
-                    "$dino" . "_sm.jpg" => 1,
-                );
-                $pics = array_merge( $pics, $filelist );
-                $cntImage = 0;
-                // -----------------------------  display the collection
-                foreach ( $pics as $pic=>$dummy ) {
-                    $cntImage++;
-                    $filesize = self::imageDire . "/$pic";
-                    if ( file_exists( $filesize ) ) {
-                        $size = getimagesize( $filesize );
-                        $meta = $size[ 0 ] . " X " . $size[ 1 ];
-                    } else {
-                        $meta = "";
-                    }
-                    $msg .= "<div class='rrwDinoItem' >
-                        <img src='/" . self::imagePath . "/$pic' width='270px' />
-                        <br />$pic $meta";
-                    if ( $cntImage > 3 )
-                        $msg .= "<a href='/fixit/?task=deletedesginimage&amp;file=$pic' > delete<a>";
-                    $msg .= " </div>";
-                }   // for each impage to display
-                $msg .= "</div>\n"; /* match the rrwDinoGrid  */
-            } //  end   if ( !empty( $dino ) ) {
-            if ( $debugProgress )$msg .= "Existing  picture done $eol";
             $msg .= "
   <script src=\"$jsFile\">
   </script>
-       </form>
-<script>
-    ";
+  </form>\n<script>\n";
             foreach ( $dropdownList as $name ) {
                 $msg .= "
         console.log( 'dropping $name' );
@@ -232,10 +193,50 @@ class dinomitedys_upload {
         dropRegion.addEventListener( 'drop',  function(ev){ ev.preventDefault()} );
         dropRegion.addEventListener( 'drop', dropzone_drop, false );
         ";
-            }
-            $msg .= "</script>
-<br />
-";
+            } // end foreach
+            $msg .= "
+            getElementById('dino').focus;
+            </script> $eol";
+        } catch ( Exception $ex ) {
+            throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
+                "$errorBeg E#825 dinomitedys_:formForPictures $errorEnd" );
+        }
+        return $msg;
+    } // end formForPictures
+
+    public static function displayExisting( $dino, $labels ) {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        try {
+            $debugProgress = false;
+            // --------------------------------------  existing photos
+            if ( $debugProgress )$msg .= "about to display existing photos$$eol";
+            if ( $debugProgress )$msg .= rrwUtil::print_r( $filelist, true,
+                "found files" );
+            $cntImage = 0;
+            // -----------------------------  display the collection
+            $filelist = dinomitedys_make_html_class::findRelated( $dino, $labels );
+            $msg .= "<div id='dinoImages' class='rrwDinoGrid'>\n";
+            foreach ( $filelist as $pic => $dummy ) {
+                $cntImage++;
+                $msg .= "<div class='rrwDinoItem' >" .
+                        "<img src='/" . self::imagePath . "/$pic' width='270px' />";
+                if ( $labels ) {
+                    $filesize = self::imageDire . "/$pic";
+                    if ( file_exists( $filesize ) ) {
+                        $size = getimagesize( $filesize );
+                        $meta = $size[ 0 ] . " X " . $size[ 1 ];
+                    } else {
+                        $meta = "";
+                    }
+                    $msg .= "<br />$pic $meta";
+                    if ( $cntImage > 3 )
+                        $msg .= "<a href='/fixit/?task=rejectdesginimage&amp;file=$pic' > reject</a>";
+                }
+                $msg .= "</div>";
+            } // for each impage to display
+            $msg .= "</div> <!-- end dinoImages -->\n"; /* match the rrwDinoGrid  */
+
         } catch ( Exception $ex ) {
             throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
                 "$errorBeg E#825 dinomitedys_:displayExisting $errorEnd" );
@@ -244,7 +245,7 @@ class dinomitedys_upload {
     } // end displayExisting
 
 
-    // ------------------------------------------------ create the div
+    // ------------------------------------------------ create a dropzone div
     static private function dropzone_div( $name ) {
         global $dropdownList; // used to create the scriptfile with this input
         $msg = "";
@@ -280,7 +281,7 @@ class dinomitedys_upload {
         }
 
         $msg .= "There are $fileCount files already on the 
-                <a href='/designs/$dino' >dinosaur $dino's  page < /a> $eol";
+                <a href='/designs/$dino.htm' target='production' >dinosaur $dino's  page </a> $eol";
         $uploads_dir = '/home/pillowan/www-dinomitedays/designs/images';
         foreach ( $_FILES as $key => $fileInfo ) {
             if ( $debugSave ) {
@@ -328,6 +329,7 @@ class dinomitedys_upload {
             $msg .= "I#809 moved file to $newname $eol";
         } // end foreash ($files)
         $msg .= $eol;
+        $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
         return $msg;
     } // end process_upload
 

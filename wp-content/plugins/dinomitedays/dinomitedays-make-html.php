@@ -45,37 +45,96 @@ class dinomitedys_make_html_class {
         return $msg;
     }
 
-    public static function UpdateImages($dinofile) {
-            global $wpdbExtra, $rrw_dino;
+    public static function UpdateImages( $dino ) {
+        global $wpdbExtra, $rrw_dino;
         global $eol, $errorBeg, $errorEnd;
-        $dirDesignNew = "/home/pillowan/www-dinomitedays/design_new";
+        $dirDesign = "/home/pillowan/www-dinomitedays/designs";
         $msg = "";
-        
-        $buffer = fread($filename);
-        $iiDiv = strpos($buffer, "<div class=dinoImages");
-        if (fasle === $iidiv) {
-            return "$msg $errorBeg E#769 no place to insert image$errorEnd";
-            //work to find the right place
-        } else {
-            $iidivend = strpos($buffer, "end dinoImages");
-            if (false === $iidivend)
-                throw new Exception ("$msg $errorBeg 
-                        E#762 did not find end dnImages' $errorEnd" );
-            $iidivend = $iidivend + 14;
-        }
-        
-        $newdiv = "<div class=dinoImages >  images here 
-        </div> //end dinoImages 
-        ";
-        $buffer = substr($buffer,0, $iiDiv) . $newdiv . substr($buffer, $iidivend);
-        $filenameNew = str_replace ("designs", "designs_new", $filename);
-        if (! is_dir($dirDesignNew))
-            mkdir($dirDesignNew);
-        $fp = fopen($filenameNew, "w");
-        fwrite($fp, $buffer);
-        fclose($fp);
-        $msg .= "<a href='/design_new/$dino.htm' >$dino.htm</a> has been updated ";
+        $filename = "$dirDesign/$dino.htm";
+        $buffer = file_get_contents( $filename );
+        $buffer = self::findPlace( $buffer );
+        // build the insert
+        $newdiv = '</table><br>' . 
+        dinomitedys_upload::displayExisting( $dino, false ) .
+        "\n<table>\n";
+        //  insert and write
+  //      $newdiv = str_replace("270","150", $newdiv);
+        if ( false === strpos( $buffer, "xxzzy" ) )
+            throw new Exception( "$msg $errorBeg #791 buffer does 
+                    not contain xxzzy $errorEnd" );
+        if (strpos($buffer, "xxzzy") < 500)
+             throw new Exception( "$msg $errorBeg #791 xxzzy to close 
+                    to frnt of buffer $errorEnd" );
+           
+        $buffer = str_replace( "xxzzy", $newdiv, $buffer );
+        $filenameNew = str_replace( "$dino", "$dino-new", $filename );
+        $fp = fopen( $filenameNew, "w" );
+        fwrite( $fp, $buffer );
+        fclose( $fp );
+        $msg .= " an  updated verson of <a href='/designs/$dino-new.htm' 
+                target='new' > $dino-new.htm is here</a>. 
+                Check it out. Do NOT forget to refreash. If okay 
+                <a href='/fixit/?task=renamenewdino&dino=$dino' target='new'>
+                move to production</a>$eol";
         return $msg;
+    }
+
+    private static function findPlace( $buffer ) {
+        //work to find the right place to insert the images
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        $debug = true;
+        // first try a previous insertion
+        $iiDiv = strpos( $buffer, "<br><div id='dinoImages" );
+        if ( false !== $iiDiv ) {
+            if ($debug) print "findPlace:previous insert $eol";
+            $iiDivEnd = strpos( $buffer, "end dinoImages", $iiDiv );
+            if ( false === $iiDivEnd )
+                throw new Exception( "$msg $errorBeg 
+                        E#762 did not find end dnImages' $errorEnd" );
+            $iiDivEnd = strpos($buffer, ">", $iiDivEnd) + 1;
+            if($debug) print "get buffer to $iiDiv, then from $iiDivEnd $eol";
+            $buffer = substr( $buffer, 0, $iiDiv ) . "xxzzy" .
+            substr( $buffer, $iiDivEnd );
+            return $buffer;
+        }
+        // not previous, try the origianal insertion
+        $iiDiv = strpos( $buffer, "thumbnails for more" );
+        if ( false !== $iiDiv ) {
+           if ($debug) print "findPlace:has pictures insert $eol";
+             $iiStart = $iiDiv - strlen($buffer);
+            $iiDiv = strrpos( $buffer, "<p", $iiStart );
+            $iiDivEnd = strpos( $buffer, "</table", $iiDiv );
+            if ( false === $iiDivEnd )
+                throw new Exception( "$msg $errorBeg E#773 missing </table $errorEnd" );
+            $iiDivEnd = $iiDivEnd + 14;
+            $buffer = substr( $buffer, 0, $iiDiv ) . "xxzzy" .
+            substr( $buffer, $iiDivEnd );
+            return $buffer;
+        }
+        // not previous, nor orginal, try working up from footer
+        $iiFoot = strpos( $buffer, '<div id="dinofooter' );
+        if ( false !== $iiFoot ) {
+            if ($debug) print "findPlace:up from footer insert $eol";
+            $iiStart = $iiFoot - strlen( $buffer );
+            $iiDivEnd = strrpos( $buffer, "<tr", $iiStart );
+            if ( false === $iiDivEnd )
+                throw new Exception( "$msg $errorBeg E#782 missing 
+                            &lt;tr starting at $iiFoot ($iiStart) $errorEnd" );
+            $iiStart = $iiDivEnd - strlen( $buffer ) - 3;
+            $iiDiv = strrpos( $buffer, "<tr", $iiStart );
+            $dist = $iiStart - $iiDiv;
+            if ( 200 < $dist )
+                throw new Exception( "$msg $errorBeg E#788 distance between
+                start and finish ($dist) > 200 $errorEnd" );
+            $buffer = substr( $buffer, 0, $iiDiv ) . "xxzzy" .
+            substr( $buffer, $iiDivEnd );
+            return $buffer;
+        }
+        // I give up, the templat file was not followed
+        return "$msg $errorBeg E#769 did not find a place to
+                insert  the images $errorEnd";
+
     }
     static private function detailPageLocation() {
         global $wpdb;
@@ -131,8 +190,10 @@ class dinomitedys_make_html_class {
         return $msg;
     } // end  geocoded
 
-    public static function findRelated( $dino ) {
+    public static function findRelated( $dino, $withDefaults = true ) {
         // returns a list of filename that aresub pistures for a dino
+
+        $debug = false;
         $dire = ABSPATH . "/designs/images";
 
         $numChars = strlen( $dino );
@@ -141,13 +202,27 @@ class dinomitedys_make_html_class {
             $entry = $fileInfo->getFilename();
             if ( strncasecmp( $dino, $entry, $numChars ) != 0 )
                 continue;
-            if (strpos($entry,"LCK") !== false)
+            if ( strpos( $entry, "LCK" ) !== false )
                 continue;
-           if (strpos($entry,"_th.") !== false)
+            if ( strpos( $entry, "_th." ) !== false )
                 continue;
             $list[ "$entry" ] = 1;
         }
-        ksort($list);
+        $pics = array(
+            "$dino.jpg" => 1,
+            "$dino" . "_pic.jpg" => 1,
+            "$dino" . "_sm.jpg" => 1,
+        );
+        if ($debug) print rrwUtil::print_r($list, true, "list before remove three photos");
+        if ($debug)print rrwUtil::print_r($pics, true, "photos to remove remove three photos");
+        foreach ( $pics as $pic => $dummy ) {
+            if ( array_key_exists( $pic, $list ) ) 
+                unset( $list[ $pic ] );
+        }
+        if ($debug)print rrwUtil::print_r($list, true, "list after remove three photos");
+         ksort( $list );
+        if ( $withDefaults )
+            $list = array_merge( $pics, $list );
         return $list;
     } // end findRelated
 

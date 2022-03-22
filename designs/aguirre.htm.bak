@@ -22,11 +22,11 @@ function MM_findObj(n, d) { //v4.01
 }
 function MM_swapImage() { //v3.0
   var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
-   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];} 
 }
 //-->
 </script>
-<link rel='stylesheet' id='dinomidays-style-css'  href='https://dinomitedays.org//wp-content/plugins/dinomitedays/dinomitedays.css' media='all' />
+<link rel='stylesheet' id='dinomidays-style-css'  href='https://dinomitedays.org//wp-content/plugins/dinomitedasys/dinomitedays.css' media='all' />
 </head>
 <body bgcolor="#003366" background="graphics/bg_blue.gif">
 <table width="550" border="2" bordercolor="#FFFFFF" cellspacing="0" cellpadding="0" bgcolor=ffffff align=center>
@@ -80,12 +80,25 @@ function MM_swapImage() { //v3.0
                     for those demolished. Ultimately, this dinosaur serves as 
                     a monument to the beauty and evolution of Pittsburgh's urban 
                     landscape.</font></p>
-                </td></tr>
-              <tr><td><br><div id='dinoImages' class='rrwDinoGrid'>
-<div class='rrwDinoItem' ><img src='/designs/images/aguirre_1.jpg' width='270px' /></div><div class='rrwDinoItem' ><img src='/designs/images/aguirre_2.jpg' width='270px' /></div><div class='rrwDinoItem' ><img src='/designs/images/aguirre_3.jpg' width='270px' /></div></div> <!-- end dinoImages -->
-
-</td>
-                <td width="10">&nbsp;</td>
+                  <p><font color="#003399" size="2" face="Arial, Helvetica, sans-serif"><b><i>Click 
+                    on the thumbnails for more pictures of Intrados:</i></b></font><font size="2" face="Arial, Helvetica, sans-serif"> 
+                    <b><i><font size="2" face="Arial, Helvetica, sans-serif"></font></i></b> 
+                    </font> 
+                  </p><table border="0" cellspacing="0" cellpadding="2" align=center>
+                    <tr> 
+                      <td valign=top><div align="center"><font size="1" face="Arial, Helvetica, sans-serif"><a href="images/aguirre_2.jpg"><img src="images/aguirre_2_th.jpg" width="100" border="0"></a><br>
+                          In process</font></div></td>
+                      <td valign=top><div align="center"><font size="1" face="Arial, Helvetica, sans-serif"><a href="images/aguirre_1.jpg"><img src="images/aguirre_1_th.jpg" width="100" border="0"></a><br>
+                          In process</font></div></td>
+                      <td valign=top><div align="center"><font size="1" face="Arial, Helvetica, sans-serif"><a href="images/aguirre_3.jpg"><img src="images/aguirre_3_th.jpg" width="100" border="0"></a><br>
+                          On-site<br>
+                          at PNC Plaza</font></div></td>
+                    </tr>
+                  </table>
+                  
+                  
+                  </td>
+                <td width=10>&nbsp;</td>
               </tr>
               <tr> 
                 <td>&nbsp;</td>
@@ -121,18 +134,21 @@ function MM_swapImage() { //v3.0
         
         2003 Carnegie Museum of Natural History<sup>&reg;</sup>, DinoMite 
         
-        Days<sup>SM</sup>, hosted by<a href='https://freewheelingeasy.com' class="external" > freewheeling Easy</a></font>
+        Days<sup>SM</sup>, hosted by<a href='https://freewheelingdays.com' class="external" > freewheeling Easy</a></font>
             <br />
    
     </div>
 </div>
 
 
+
 </font></div></td>
 </tr>
             </table>
-
-  
-
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
 </body>
 </html>
