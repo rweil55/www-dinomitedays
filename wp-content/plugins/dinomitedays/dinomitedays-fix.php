@@ -2,8 +2,8 @@
 
 class dinomitedys_fix {
     const rrw_dinomites = "wpprrj_00rrwdinos";
-    const baseDire = "/home/pillowan/www-dinomitedays/";
-    const design_images_dire = "#baseDire/designs/images";
+    const baseDire = "/home/pillowan/www-dinomitedays";
+    const design_images_dire = self:: baseDire . "/designs/images";
 
 
     public static function fix( $attr ) {
@@ -26,9 +26,6 @@ class dinomitedys_fix {
             return "$msg not allowed to fix things";
         $msg .= "task of $task $eol ";
         switch ( $task ) {
-            case "rejectdesginimage":
-                $msg .= self::rejectDesginImage();
-                return $msg;
             case "designfooter":
                 $msg .= self::designfooter();
                 return $msg;
@@ -49,7 +46,7 @@ class dinomitedys_fix {
                 $fix = "http2https";
                 $msg .= self::doFixLoop( $fix, $dir, $options );
                 break;
-           case "geocoded":
+            case "geocoded":
                 $msg .= self::geocoded();
                 break;
             case "heads":
@@ -90,10 +87,16 @@ class dinomitedys_fix {
                         $update ) . $eol;
                 }
                 break;
+            case "findnew":
+                $msg .= self::findNew( $attr );
+                break;
             case "missing_sm":
                 $msg .= self::missing_sm( $attr );
                 break;
-             case "renamenewdino":
+            case "rejectdesginimage":
+                $msg .= self::rejectDesginImage();
+                return $msg;
+            case "renamenewdino":
                 $msg .= self::renameNewDino();
                 break;
             case "replacefooter":
@@ -114,8 +117,9 @@ class dinomitedys_fix {
 <a href='/fixit/?task=missing_sm' >Create am _sm </a>file if not one there<br />
 <a href='/fixit/?task=find_images' >given a dino </a>find all images<br />
 <a href='/fixit/?task=imacro' >make 100</a> imacro commands <br />
-<a href='/fixit/?task=head' >generate the missing </a>'head' images <<br />
-<a href='/fixit/?task=http2https' >Change http: to </a>https: and other mechanical actions<br />
+<a href='/fixit/?task=head' >generate the missing </a>'head' images <br />
+<a href='/fixit/?task=findnew' >locate new images </a><br />
+<a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions<br />
 <a href='/fixit/?task=replacefooter' >update the footers </a><br />$eol
 <strong> obsolete </strong><br />
 <a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng <br />
@@ -136,7 +140,7 @@ $eol $eol
         $pluginDire = "/wp-content/plugins/dinomitedays";
         if ( empty( $footer ) )
             $footer = file_get_contents( self::baseDire .
-                "$pluginDire/footer_dino.php" );
+                "/$pluginDire/footer_dino.php" );
         // addin call to style sheet
         $buffer = str_replace( "dinomitedasys", "dinomitedays", $buffer );
         $buffer = str_replace( "freewheelingdays", "freewheelingeasy", $buffer );
@@ -145,8 +149,8 @@ $eol $eol
             $buffer = substr( $buffer, 0, $iiHead ) .
             "\n<link rel='stylesheet' id='dinomitedays-style-css'  href='https://dinomitedays.org$pluginDire/dinomitedays.css' media='all' />\n" . substr( $buffer, $iiHead );
         }
-        $buffer = str_replace("//wp-content", "/wp-content", $buffer);
-        $buffer = str_replace("dinomitedasys","dinomitedays", $buffer);
+        $buffer = str_replace( "//wp-content", "/wp-content", $buffer );
+        $buffer = str_replace( "dinomitedasys", "dinomitedays", $buffer );
         // remove inline styles
         for ( $ii = 0; $ii < 3; $ii++ ) {
             $iiStyle = strpos( $buffer, "<style" );
@@ -188,7 +192,7 @@ $eol $eol
         print "</pre>";
         return $msg;
     }
-  
+
     private static function designfooter() {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -399,25 +403,25 @@ $eol $eol
         return $msg;
     }
 
-  private static function rejectDesginImage() {
+    private static function rejectDesginImage() {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
         $imagename = rrwPara::String( "file" );
         $siteDir = "/home/pillowan/www-dinomitedays/";
         $imagePath = "designs/images";
-        $fileName = "$siteDir/$imagePath/$imagename";
-        $filenameNew = "$siteDir/$imagePath-rejected/$imagename"; 
-        if (file_exists($fileName)) {
-            rename($fileName, $filenameNew);
-            $msg .=  " $fileName rejected $eol";
+        $fileName = self::baseDire . "/$imagePath/$imagename";
+        $filenameNew = self::baseDire . "/$imagePath-rejected/$imagename";
+        if ( file_exists( $fileName ) ) {
+            rename( $fileName, $filenameNew );
+            $msg .= " $fileName rejected $eol";
         } else {
             $msg .= "$errorBeg E#756 file '$fileName' not found to reject $errorEnd";
         }
-        $iiSlash = strrpos($fileName, "/");
-        $dino = substr($fileName,$iiSlash+1);
-        $iiUnder = strpos($dino, "_");
-        $dino = substr($dino, 0, $iiUnder);
-        $msg .= dinomitedys_make_html_class::UpdateImages($dino);
+        $iiSlash = strrpos( $fileName, "/" );
+        $dino = substr( $fileName, $iiSlash + 1 );
+        $iiUnder = strpos( $dino, "_" );
+        $dino = substr( $dino, 0, $iiUnder );
+        $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
         $msg .= "<a href='/upload?dinofile=$dino' > Display images </a> $eol";
         return $msg;
     }
@@ -430,15 +434,15 @@ $eol $eol
         $htmlPath = "designs";
         $fileNameNew = "$siteDir/$htmlPath/$dino-new.htm";
         $fileNameOld = "$siteDir/$htmlPath/$dino.htm";
-        if (! file_exists($fileNameNew)) 
-            throw new Exception ("$msg $errorBeg E#792 file $fileNameNew not exist $errorEnd ");
-          if (file_exists($fileNameOld))
-              unlink ($fileNameOld);
-        rename($fileNameNew, $fileNameOld);
+        if ( !file_exists( $fileNameNew ) )
+            throw new Exception( "$msg $errorBeg E#792 file $fileNameNew not exist $errorEnd " );
+        if ( file_exists( $fileNameOld ) )
+            unlink( $fileNameOld );
+        rename( $fileNameNew, $fileNameOld );
         $msg .= "<a href='/designs/$dino.htm' > Check out final verion </a> $eol";
         return $msg;
     }
-    
+
     private static function SearchForQuery( $query = "" ) {
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
@@ -487,6 +491,29 @@ WAIT SECONDS=4$eol";
             if ( 0 == ( $cnt % 20 ) )
                 $msg .= "$eol$eol--------------------------- $cnt $eol$eol";
         }
+        return $msg;
+    }
+    public static function findNew( $attr ) {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+
+        $dir = self::baseDire . "/designs";
+        $cntFound = $cntRead = 0;
+        foreach ( new DirectoryIterator( $dir ) as $item ) {
+            $cntRead++;
+            if ( false === strpos( $item->getBasename(), "-new." ) )
+                continue;
+            $dino = $item->getBasename( "-new.htm" );
+            $msg .= " Current version <a href='/designs/$dino.htm' target='old'>
+                    $dino.htm</a>, 
+                an  updated verson of <a href='/designs/$dino-new.htm' 
+                target='new' > $dino-new.htm is here</a>. 
+                Check it out. Do NOT forget to refreash. If okay 
+                <a href='/fixit/?task=renamenewdino&dino=$dino' target='new'>
+                move to production</a> or delete the newer version $eol";;
+        }
+        $msg .= "$eol found $cntRead dires/files of which 
+                    $cntFound were updated $eol";
         return $msg;
     }
 

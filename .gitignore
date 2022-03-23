@@ -1,4 +1,7 @@
+*dwsync.xml
+*.bak
 *.LCK
+*\dwsync.xml
 sitemaps
 blocks
 block-supports

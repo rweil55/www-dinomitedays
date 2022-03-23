@@ -219,7 +219,7 @@ class dinomitedys_upload {
             $msg .= "<div id='dinoImages' class='rrwDinoGrid'>\n";
             foreach ( $filelist as $pic => $dummy ) {
                 $cntImage++;
-                $msg .= "<div class='rrwDinoItem' >" .
+                $msg .= "<div class='rrwDinoItem' class='rrwDinoItemWrap' >" .
                         "<img src='/" . self::imagePath . "/$pic' width='270px' />";
                 if ( $labels ) {
                     $filesize = self::imageDire . "/$pic";
