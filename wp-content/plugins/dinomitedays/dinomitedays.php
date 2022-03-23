@@ -15,7 +15,7 @@ Depends: rrw-utilities-common
 Depends: rrw_parser
 License: private
 
-Version: 1.2.5
+Version: 1.2.3
 
 Text Domain: dinomitedays
 Domain Path: /lang
