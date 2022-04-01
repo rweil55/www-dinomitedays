@@ -62,8 +62,6 @@ a.external {
     text-align: center;
 }
 
-
-
 .rrwDinoGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 551px));
@@ -82,4 +80,11 @@ a.external {
     grid-column-gap: 1px;
 }
 
+.rrwDinoItemWrap {
+    overflow-warp: normal ; 
+}
+
+.badlink {
+    text-decoration: line-through;
+}
 
