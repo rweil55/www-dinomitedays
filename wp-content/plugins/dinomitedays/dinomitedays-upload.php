@@ -3,11 +3,15 @@
 ini_set( "display_errors", true );
 error_reporting( E_ALL | E_STRICT );
 
+require_once "rrwAppendPhographer.php";
+
 class dinomitedys_upload {
     const siteDir = "/home/pillowan/www-dinomitedays/";
-    const imagePath = "designs/images";
+    const imageNewPath = "wp-content.new/images";
+    const imagePath = "design/images";
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
+    const dinoPlugin =  self::http . "wp-content/plugins/dinomitedays/";
 
 
     public static function upload( $attr ) {
@@ -20,7 +24,7 @@ class dinomitedys_upload {
             $debugProgress = false;
             $wpdbExtra = new wpdbExtra;
             $rrw_dinos = "wpprrj_00rrwdinos";
-            $cssFile = self::http . "wp-content/plugins/dinomitedays/dropzone.css";
+            $cssFile = self::dinoPlugin . "dinomitedays.css";
             $msg .= "<link rel='stylesheet' id='dropzone-css'  href='$cssFile' />";
 
             $dino = rrwUtil::fetchparameterString( "dino" );
@@ -220,7 +224,7 @@ class dinomitedys_upload {
             foreach ( $filelist as $pic => $dummy ) {
                 $cntImage++;
                 $msg .= "<div class='rrwDinoItem' class='rrwDinoItemWrap' >" .
-                        "<img src='/" . self::imagePath . "/$pic' width='270px' />";
+                "<img src='/" . self::imagePath . "/$pic' width='270px' />";
                 if ( $labels ) {
                     $filesize = self::imageDire . "/$pic";
                     if ( file_exists( $filesize ) ) {
@@ -270,8 +274,7 @@ class dinomitedys_upload {
             $msg .= rrwUtil::print_r( $_POST, true, "What was gottem by the submit _post" );
             $msg .= rrwUtil::print_r( $_FILES, true, "the files_files" );
         }
-        $basedir = "/home/pillowan/www-dinomitedays"; // get_home_path();
-        $images = "$basedir/designs/images";
+        $images = self::imageDire;
 
         $dino = rrwUtil::fetchparameterString( "dino" );
         $fileCount = rrwUtil::fetchparameterString( "filecount" );
@@ -282,7 +285,7 @@ class dinomitedys_upload {
 
         $msg .= "There are $fileCount files already on the 
                 <a href='/designs/$dino.htm' target='production' >dinosaur $dino's  page </a> $eol";
-        $uploads_dir = '/home/pillowan/www-dinomitedays/designs/images';
+        $uploads_dir = self::siteDir . self::imageNewPath;
         foreach ( $_FILES as $key => $fileInfo ) {
             if ( $debugSave ) {
                 $msg .= "------------------------------- $eol ";
@@ -316,8 +319,8 @@ class dinomitedys_upload {
                     <a href='/last_seen/' > last seen </a> and the map $eol";
                 else
                     $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd $sql $eol";
-                continue; // next file
-            }
+                continue; // on to next file
+            } // end if (coordinates
             $fileCount++;
             $newname = "$uploads_dir/" . $dino . "_$fileCount" . "_$filename";
             $answer = move_uploaded_file( $tmp_name, $newname );
@@ -326,7 +329,20 @@ class dinomitedys_upload {
                 $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file $name $errorEnd ";
                 continue;
             }
+            $debugMake = true;
+            if ( $debugMake )$msg .= "----------------------------- $eol";
+            if ( $debugMake )$msg .= "newname is $newname $eol";
             $msg .= "I#809 moved file to $newname $eol";
+            $testDire = "$basedir/images_test";
+            $iiSlash = strrpos( $newname, "/" );
+            $filename = substr( $newname, $iiSlash + 1 );
+            $sourcefile = "$testDire/$filename";
+            if ( $debugMake )$msg .= "sourcefile is $sourcefile $eol";
+            copy( $newname, $sourcefile );
+            $msg .= AppendPhotographer::makeImages( $sourcefile, "Roy", 
+                                                768, 200, true );
+            
+
         } // end foreash ($files)
         $msg .= $eol;
         $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
