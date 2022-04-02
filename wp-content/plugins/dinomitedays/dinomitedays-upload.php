@@ -3,17 +3,22 @@
 ini_set( "display_errors", true );
 error_reporting( E_ALL | E_STRICT );
 
-require_once "rrwAppendPhographer.php";
+$picDire = "/home/pillowan/www-shaw-weil-pictures/wp-content/plugins";
+require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
+/*  class uploadProcessDire {
+ *       nameToBottom( $sourceFile, $photographer ) 
+ *       resizeImage( $pathin, $pathout, $w_max, $h_max ) {
+ *   }
+ */
 
 class dinomitedys_upload {
     const siteDir = "/home/pillowan/www-dinomitedays/";
-    const imageNewPath = "wp-content.new/images";
+    const imageSavePath = "wp-content/newPictures";
     const imagePath = "design/images";
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
-    const dinoPlugin =  self::http . "wp-content/plugins/dinomitedays/";
-
-
+    const dinoPlugin = self::http . "wp-content/plugins/dinomitedays/";
+   
     public static function upload( $attr ) {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList; // used to create the scriptfile with this input
@@ -22,8 +27,6 @@ class dinomitedys_upload {
         try {
             $debug = false;
             $debugProgress = false;
-            $wpdbExtra = new wpdbExtra;
-            $rrw_dinos = "wpprrj_00rrwdinos";
             $cssFile = self::dinoPlugin . "dinomitedays.css";
             $msg .= "<link rel='stylesheet' id='dropzone-css'  href='$cssFile' />";
 
@@ -110,7 +113,7 @@ class dinomitedys_upload {
 
     private static function displayPhotosForm( $dino ) {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra, $rrw_dinos;
+        global $wpdbExtra, $rrw_dinos, $rrw_photographers;
         $msg = "";
 
         $debugProgress = false;
@@ -141,7 +144,24 @@ class dinomitedys_upload {
                    onkeydown='countChars(\"locationDesc\",\"locationLeft\", $limit);'
                    onmouseout='countChars(\"locationDesc\",\"locationLeft\", $limit);' />
                 <br> &nbsp; &nbsp; &nbsp; &nbsp; 
-                <span id=\"locationLeft\">$limit</span> Characters left </td>
+                <span id=\"locationLeft\">$limit</span> Characters left 
+                $eol $eol <strong>Photographer</strong><font color=red >Required</font>$eol
+                
+            <select id=\"photographer\" name=\"photographer\" >
+                <option value=\"\" disabled selected >Pick a photographer. </option>
+            ";
+        $sqlPhotog = "select * from $rrw_photographers ";
+        $recs = $wpdbExtra->get_resultsA( $sqlPhotog );
+        foreach ( $recs as $rec ) {
+            $name = $rec[ "photographer" ];
+           $msg .= '<option value="' . $photographer . '"';
+            if ( photographer == $name )
+                $msg .= " selected=selected ";
+            $msg .= "> $name </option>\n";
+        }
+        $msg .= "</select> 
+                
+                </td>
                 
             <td class=\"freewheel_td\" >
                 <strong>Location Cordinates:</strong> can be determined from a  photgraph taken 
@@ -265,6 +285,12 @@ class dinomitedys_upload {
     } // end dropzone_div
 
     static public function processInputPhotos( $atr ) {
+        // get file
+        // if location, extract coordinates and update database else
+        //      save to wp-content/newpictures
+        //      determine count and include it in name
+        //      resize, add photographer
+        //      create "new" dinosaurer display
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra, $rrw_dinos;
         $msg = "";
@@ -276,8 +302,9 @@ class dinomitedys_upload {
         }
         $images = self::imageDire;
 
-        $dino = rrwUtil::fetchparameterString( "dino" );
-        $fileCount = rrwUtil::fetchparameterString( "filecount" );
+        $dino = rrwPara::String( "dino" );
+        $fileCount = rrwPara::String( "filecount" );
+        $photographer = rrwPara::String( "photographer" );
 
         if ( empty( $dino ) ) {
             return "$msg $errorBeg #807 missing the dinosaur seletion $errorEnd";
@@ -285,7 +312,7 @@ class dinomitedys_upload {
 
         $msg .= "There are $fileCount files already on the 
                 <a href='/designs/$dino.htm' target='production' >dinosaur $dino's  page </a> $eol";
-        $uploads_dir = self::siteDir . self::imageNewPath;
+        $uploads_dir = self::siteDir . self::imageSavePath;
         foreach ( $_FILES as $key => $fileInfo ) {
             if ( $debugSave ) {
                 $msg .= "------------------------------- $eol ";
@@ -322,27 +349,21 @@ class dinomitedys_upload {
                 continue; // on to next file
             } // end if (coordinates
             $fileCount++;
-            $newname = "$uploads_dir/" . $dino . "_$fileCount" . "_$filename";
-            $answer = move_uploaded_file( $tmp_name, $newname );
-            if ( $debugSave )$msg .= "moving $tmp_name to $newname $eol";
+            $shortName = $dino . "_$fileCount" . "_$filename";
+            $saveName = "$uploads_dir/$shortName";
+            if ( $debugSave )$msg .= "moving $tmp_name to $saveName $eol";
+            $answer = move_uploaded_file( $tmp_name, $saveName );
             if ( false === $answer ) {
-                $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file $name $errorEnd ";
+                $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                 continue;
             }
-            $debugMake = true;
-            if ( $debugMake )$msg .= "----------------------------- $eol";
-            if ( $debugMake )$msg .= "newname is $newname $eol";
-            $msg .= "I#809 moved file to $newname $eol";
-            $testDire = "$basedir/images_test";
-            $iiSlash = strrpos( $newname, "/" );
-            $filename = substr( $newname, $iiSlash + 1 );
-            $sourcefile = "$testDire/$filename";
-            if ( $debugMake )$msg .= "sourcefile is $sourcefile $eol";
-            copy( $newname, $sourcefile );
-            $msg .= AppendPhotographer::makeImages( $sourcefile, "Roy", 
-                                                768, 200, true );
-            
-
+            if ( $debugSave )$msg .= "----------------------------- $eol
+                                        I#809 moved file to  $saveName $eol";
+            $finalName = self::siteDir . self::imageDire . $shortName;
+            $msg .= resizeImage( $$saveName, $finalName, 700, 200 );
+            if ( !empty( $photographer ) )
+                $msg .= nameToBottom( $finalName, $photographer );
+            $msg .= "I#819 $saveName resized, attributed to $finalName $eol";
         } // end foreash ($files)
         $msg .= $eol;
         $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
