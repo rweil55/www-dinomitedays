@@ -13,12 +13,12 @@ require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
 
 class dinomitedys_upload {
     const siteDir = "/home/pillowan/www-dinomitedays/";
-    const imageSavePath = "wp-content/newPictures";
-    const imagePath = "design/images";
+    const imageSavePath = "wp-content/new-images";
+    const imagePath = "designs/images/";
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
     const dinoPlugin = self::http . "wp-content/plugins/dinomitedays/";
-   
+
     public static function upload( $attr ) {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList; // used to create the scriptfile with this input
@@ -50,7 +50,7 @@ class dinomitedys_upload {
             if ( empty( $submit ) ) {
                 $msg .= self::displayPhotosForm( $dino );
             } else {
-                $msg .= self::processInputPhotos( $dino );
+                $msg .= self::processInputPhotos();
             }
             $msg .= "dino is now $dino $eol";
             $msg .= self::formForPictures( $dino, $jsFile );
@@ -98,7 +98,7 @@ class dinomitedys_upload {
         if ( empty( $dino ) )
             $source = "/graphics/white.gif";
         else {
-            $source = self::imagePath . "/$dino" . "_sm.jpg";
+            $source = self::imagePath . "$dino" . "_sm.jpg";
         }
         $msg .= "
                 <img src='$source' height='150px' /> 
@@ -117,6 +117,8 @@ class dinomitedys_upload {
         $msg = "";
 
         $debugProgress = false;
+        $photographer = rrwUtil::fetchparameterString( "photographer" );
+
         $msg .= "<form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" > 
             <input type='hidden' name='dino' value='$dino' />
         ";
@@ -148,15 +150,15 @@ class dinomitedys_upload {
                 $eol $eol <strong>Photographer</strong><font color=red >Required</font>$eol
                 
             <select id=\"photographer\" name=\"photographer\" >
-                <option value=\"\" disabled selected >Pick a photographer. </option>
+                <option value=\"\"  >Pick a photographer. </option>
             ";
         $sqlPhotog = "select * from $rrw_photographers ";
         $recs = $wpdbExtra->get_resultsA( $sqlPhotog );
         foreach ( $recs as $rec ) {
             $name = $rec[ "photographer" ];
-           $msg .= '<option value="' . $photographer . '"';
-            if ( photographer == $name )
-                $msg .= " selected=selected ";
+            $msg .= '<option value="' . $name . '"';
+            if ( $photographer == $name )
+                $msg .= " selected ";
             $msg .= "> $name </option>\n";
         }
         $msg .= "</select> 
@@ -189,7 +191,16 @@ class dinomitedys_upload {
         try {
             $debugProgress = false;
             $filelist = dinomitedys_make_html_class::findRelated( $dino, true );
-            $fileCount = count( $filelist );
+            $fileSort = 10; // at least 10
+            foreach ( $filelist as $key => $value ) {
+                $matches = array();
+                $parse = preg_match( "/^[\D]*([0-9]*)[\D]*$/", $key, $matches );
+                if ( 1 == $parse ) {
+                    $msg .= "formForPictures:max( $fileSort, 
+                            " . $matches[ 1 ] . ")$eol";
+                    $fileSort = max( $fileSort, $matches[ 1 ] );
+                }
+            }
             $msg .= "<div class='rrwDinoGrid' > ";
             for ( $ii = 0; $ii < 6; $ii++ ) {
                 $msg .= self::dropzone_div( "picture$ii" );
@@ -197,10 +208,9 @@ class dinomitedys_upload {
             if ( $debugProgress )$msg .= "after input drop zones $eol";
             $msg .= " </div>
                     <br/>
-                    <input type='hidden' name='filecount' value='$fileCount' />
+                    <input type='hidden' name='filesort' value='$fileSort' />
                     <input type=\"submit\" value=\"Click to process this data\" 
                             name=\"submit\" onclick=\"submitClick(this);\" />";
-            $dire = self::siteDir . self::imagePath;
             if ( $debugProgress )$msg .= "find related $eol";
             if ( $debugProgress )$msg .= "after find related $eol";
             $msg .= "
@@ -243,8 +253,8 @@ class dinomitedys_upload {
             $msg .= "<div id='dinoImages' class='rrwDinoGrid'>\n";
             foreach ( $filelist as $pic => $dummy ) {
                 $cntImage++;
-                $msg .= "<div class='rrwDinoItem' class='rrwDinoItemWrap' >" .
-                "<img src='/" . self::imagePath . "/$pic' width='270px' />";
+                $img = "/" . self::imagePath . "$pic";
+                $msg .= "<div class='rrwDinoItem' class='rrwDinoItemWrap' >                 <a href='$img' ><img src='$img' width='270px' /></a>";
                 if ( $labels ) {
                     $filesize = self::imageDire . "/$pic";
                     if ( file_exists( $filesize ) ) {
@@ -255,9 +265,9 @@ class dinomitedys_upload {
                     }
                     $msg .= "<br />$pic $meta";
                     if ( $cntImage > 3 )
-                        $msg .= "<a href='/fixit/?task=rejectdesginimage&amp;file=$pic' > reject</a>";
+                        $msg .= "<br/><a href='/fixit/?task=rejectdesginimage&amp;file=$pic' > reject</a>";
                 }
-                $msg .= "</div>";
+                $msg .= "\n</div>";
             } // for each impage to display
             $msg .= "</div> <!-- end dinoImages -->\n"; /* match the rrwDinoGrid  */
 
@@ -284,7 +294,7 @@ class dinomitedys_upload {
         return $msg;
     } // end dropzone_div
 
-    static public function processInputPhotos( $atr ) {
+    static public function processInputPhotos() {
         // get file
         // if location, extract coordinates and update database else
         //      save to wp-content/newpictures
@@ -296,77 +306,94 @@ class dinomitedys_upload {
         $msg = "";
         $debugSave = false;
 
-        if ( $debugSave ) {
-            $msg .= rrwUtil::print_r( $_POST, true, "What was gottem by the submit _post" );
-            $msg .= rrwUtil::print_r( $_FILES, true, "the files_files" );
-        }
-        $images = self::imageDire;
-
-        $dino = rrwPara::String( "dino" );
-        $fileCount = rrwPara::String( "filecount" );
-        $photographer = rrwPara::String( "photographer" );
-
-        if ( empty( $dino ) ) {
-            return "$msg $errorBeg #807 missing the dinosaur seletion $errorEnd";
-        }
-
-        $msg .= "There are $fileCount files already on the 
-                <a href='/designs/$dino.htm' target='production' >dinosaur $dino's  page </a> $eol";
-        $uploads_dir = self::siteDir . self::imageSavePath;
-        foreach ( $_FILES as $key => $fileInfo ) {
+        try {
             if ( $debugSave ) {
-                $msg .= "------------------------------- $eol ";
-                $msg .= rrwUtil::print_r( $key, true, "the key" );
-                $msg .= rrwUtil::print_r( $fileInfo, true, "error" );
+                $msg .= rrwUtil::print_r( $_POST, true, "What was gottem by the submit _post" );
+                $msg .= rrwUtil::print_r( $_FILES, true, "the files_files" );
             }
-            $error = $fileInfo[ "error" ];
-            $filename = $fileInfo[ "name" ];
-            $size = $fileInfo[ "size" ];
-            $tmp_name = $fileInfo[ "tmp_name" ];
-            if ( ( 4 == $error ) && empty( $filename ) && ( 0 == $size ) )
-                continue; // no entry is this dropbox
+            $images = self::imageDire;
 
-            if ( $error != UPLOAD_ERR_OK ) {
-                $msg .= uploadErrorMsg( $err );
-                continue;
+            $dino = rrwPara::String( "dino" );
+            $fileSort = rrwPara::String( "filesort" );
+            $photographer = rrwPara::String( "photographer" );
+            if ( $fileSort < 10 )
+                $fileSort = 10;
+            if ( $debugSave )$msg .= "dino = $dino, filesort = $fileSort, 
+                                        photographer = $photographer $eol";
+
+            if ( empty( $dino ) ) {
+                return "$msg $errorBeg #807 missing the dinosaur seletion $errorEnd";
             }
-            if ( "coordinates" == $key ) {
-                // extract the coordianates and enter into database
-                $exif = exif_read_data( $tmp_name );
-                $lat = $exif[ "latitude" ];
-                $lng = $exif[ "longitude" ];
-                if ( 0 == $lat || false === $lat || 0 == $lng || false === $lng ) {
-                    $msg .= "$errorBeg E#755 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+
+            $msg .= "$fileSort is the highest sort number already on the 
+                <a href='/designs/$dino.htm' target='production' >dinosaur $dino's  page </a> $eol";
+            $uploads_dir = self::siteDir . self::imageSavePath;
+            foreach ( $_FILES as $key => $fileInfo ) {
+                if ( $debugSave ) {
+                    $msg .= "------------------------------- $eol ";
+                    $msg .= rrwUtil::print_r( $key, true, "the key" );
+                    $msg .= rrwUtil::print_r( $fileInfo, true, "error" );
                 }
-                // check ranges
-                $sql = "update $rrw_dinos set latitude ='$lat', longitude = '$lng'
+                $error = $fileInfo[ "error" ];
+                $filename = $fileInfo[ "name" ];
+                $size = $fileInfo[ "size" ];
+                $tmp_name = $fileInfo[ "tmp_name" ];
+                if ( ( 4 == $error ) && empty( $filename ) && ( 0 == $size ) )
+                    continue; // no entry is this dropbox
+
+                if ( $error != UPLOAD_ERR_OK ) {
+                    $msg .= uploadErrorMsg( $err );
+                    continue;
+                }
+                if ( "coordinates" == $key ) {
+                    // extract the coordianates and enter into database
+                    $exif = exif_read_data( $tmp_name );
+                    $lat = $exif[ "latitude" ];
+                    $lng = $exif[ "longitude" ];
+                    if ( 0 == $lat || false === $lat || 0 == $lng || false === $lng ) {
+                        $msg .= "$errorBeg E#755 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+                    }
+                    // check ranges
+                    $sql = "update $rrw_dinos set latitude ='$lat', longitude = '$lng'
                             where 'filename' = '$dino' ";
-                $cnt = $wpdbExtra->query( $sql );
-                if ( 1 == $cnt )$msg .= "i#754 Coordinates updated. Please check 
+                    $cnt = $wpdbExtra->query( $sql );
+                    if ( 1 == $cnt )$msg .= "i#754 Coordinates updated. Please check 
                     <a href='/last_seen/' > last seen </a> and the map $eol";
-                else
-                    $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd $sql $eol";
-                continue; // on to next file
-            } // end if (coordinates
-            $fileCount++;
-            $shortName = $dino . "_$fileCount" . "_$filename";
-            $saveName = "$uploads_dir/$shortName";
-            if ( $debugSave )$msg .= "moving $tmp_name to $saveName $eol";
-            $answer = move_uploaded_file( $tmp_name, $saveName );
-            if ( false === $answer ) {
-                $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
-                continue;
-            }
-            if ( $debugSave )$msg .= "----------------------------- $eol
+                    else
+                        $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd $sql $eol";
+                    continue; // on to next file
+                } // end if (coordinates
+                $fileSort++;
+                $shortName = $dino . "_$fileSort" . "_$filename";
+                $saveName = "$uploads_dir/$shortName";
+                if ( $debugSave )$msg .= "moving $tmp_name to $saveName $eol";
+                $answer = move_uploaded_file( $tmp_name, $saveName );
+                if ( false === $answer ) {
+                    $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
+                    continue;
+                }
+                $debugSave = true;
+                if ( $debugSave )$msg .= "----------------------------- $eol
                                         I#809 moved file to  $saveName $eol";
-            $finalName = self::siteDir . self::imageDire . $shortName;
-            $msg .= resizeImage( $$saveName, $finalName, 700, 200 );
-            if ( !empty( $photographer ) )
-                $msg .= nameToBottom( $finalName, $photographer );
-            $msg .= "I#819 $saveName resized, attributed to $finalName $eol";
-        } // end foreash ($files)
-        $msg .= $eol;
-        $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
+                $finalName = self::imageDire . $shortName;
+                if ( $debugSave )$msg .= "E#663 resizeImage( 
+                        $saveName, $finalName, 700, 200 ) $eol";
+                $msg .= uploadProcessDire::resizeImage( $saveName, $finalName, 700, 200 );
+                if ( !empty( $photographer ) ) {
+                    if ( $debugSave )$msg .= "E#670 nameToBottom( 
+                                    $finalName, $photographer ); $eol";
+
+                    $msg .= uploadProcessDire::nameToBottom( $finalName, $photographer );
+                }
+                $msg .= "I#819 $saveName resized, attributed to $finalName $eol";
+            } // end foreash ($files)
+            $msg .= $eol;
+            $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
+        } // end try
+        catch ( Exception $ex ) {
+            $msg .= $ex->getMessage() . "$errorBeg  E#669 upload $errorEnd";
+            throw new Exception( "$msg" );
+        }
         return $msg;
     } // end process_upload
 
