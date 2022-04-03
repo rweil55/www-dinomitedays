@@ -54,18 +54,18 @@ class dinomitedys_make_html_class {
         $buffer = file_get_contents( $filename );
         $buffer = self::findPlace( $buffer );
         // build the insert
-        $newdiv = '</table><br>' . 
+        $newdiv = '</table><br>' .
         dinomitedys_upload::displayExisting( $dino, false ) .
         "\n<table>\n";
         //  insert and write
-  //      $newdiv = str_replace("270","150", $newdiv);
+        //      $newdiv = str_replace("270","150", $newdiv);
         if ( false === strpos( $buffer, "xxzzy" ) )
             throw new Exception( "$msg $errorBeg #791 buffer does 
                     not contain xxzzy $errorEnd" );
-        if (strpos($buffer, "xxzzy") < 500)
-             throw new Exception( "$msg $errorBeg #791 xxzzy to close 
+        if ( strpos( $buffer, "xxzzy" ) < 500 )
+            throw new Exception( "$msg $errorBeg #791 xxzzy to close 
                     to frnt of buffer $errorEnd" );
-           
+
         $buffer = str_replace( "xxzzy", $newdiv, $buffer );
         $filenameNew = str_replace( "$dino", "$dino-new", $filename );
         $fp = fopen( $filenameNew, "w" );
@@ -87,13 +87,13 @@ class dinomitedys_make_html_class {
         // first try a previous insertion
         $iiDiv = strpos( $buffer, "<br><div id='dinoImages" );
         if ( false !== $iiDiv ) {
-            if ($debug) print "findPlace:previous insert $eol";
+            if ( $debug ) print "findPlace:previous insert $eol";
             $iiDivEnd = strpos( $buffer, "end dinoImages", $iiDiv );
             if ( false === $iiDivEnd )
                 throw new Exception( "$msg $errorBeg 
                         E#762 did not find end dnImages' $errorEnd" );
-            $iiDivEnd = strpos($buffer, ">", $iiDivEnd) + 1;
-            if($debug) print "get buffer to $iiDiv, then from $iiDivEnd $eol";
+            $iiDivEnd = strpos( $buffer, ">", $iiDivEnd ) + 1;
+            if ( $debug ) print "get buffer to $iiDiv, then from $iiDivEnd $eol";
             $buffer = substr( $buffer, 0, $iiDiv ) . "xxzzy" .
             substr( $buffer, $iiDivEnd );
             return $buffer;
@@ -101,8 +101,8 @@ class dinomitedys_make_html_class {
         // not previous, try the origianal insertion
         $iiDiv = strpos( $buffer, "thumbnails for more" );
         if ( false !== $iiDiv ) {
-           if ($debug) print "findPlace:has pictures insert $eol";
-             $iiStart = $iiDiv - strlen($buffer);
+            if ( $debug ) print "findPlace:has pictures insert $eol";
+            $iiStart = $iiDiv - strlen( $buffer );
             $iiDiv = strrpos( $buffer, "<p", $iiStart );
             $iiDivEnd = strpos( $buffer, "</table", $iiDiv );
             if ( false === $iiDivEnd )
@@ -115,7 +115,7 @@ class dinomitedys_make_html_class {
         // not previous, nor orginal, try working up from footer
         $iiFoot = strpos( $buffer, '<div id="dinofooter' );
         if ( false !== $iiFoot ) {
-            if ($debug) print "findPlace:up from footer insert $eol";
+            if ( $debug ) print "findPlace:up from footer insert $eol";
             $iiStart = $iiFoot - strlen( $buffer );
             $iiDivEnd = strrpos( $buffer, "<tr", $iiStart );
             if ( false === $iiDivEnd )
@@ -213,18 +213,18 @@ class dinomitedys_make_html_class {
             "$dino" . "_pic.jpg" => 1,
             "$dino" . "_sm.jpg" => 1,
         );
-        if ($debug) print rrwUtil::print_r($list, true, "list before remove three photos");
-        if ($debug)print rrwUtil::print_r($pics, true, "photos to remove remove three photos");
+        if ( $debug ) print rrwUtil::print_r( $list, true, "list before remove three photos" );
+        if ( $debug ) print rrwUtil::print_r( $pics, true, "photos to remove remove three photos" );
         foreach ( $pics as $pic => $dummy ) {
-            if ( array_key_exists( $pic, $list ) ) 
+            if ( array_key_exists( $pic, $list ) )
                 unset( $list[ $pic ] );
         }
-        if ($debug)print rrwUtil::print_r($list, true, "list after remove three photos");
-         ksort( $list );
+        if ( $debug ) print rrwUtil::print_r( $list, true, "list after remove three photos" );
+        ksort( $list );
         if ( $withDefaults )
             $list = array_merge( $pics, $list );
         return $list;
     } // end findRelated
 
-} // end class
+} // end class findRelated
 ?>

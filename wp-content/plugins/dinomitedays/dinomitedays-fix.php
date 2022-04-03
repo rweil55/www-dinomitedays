@@ -3,7 +3,7 @@
 class dinomitedys_fix {
     const rrw_dinomites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
-    const design_images_dire = self:: baseDire . "/designs/images";
+    const design_images_dire = self::baseDire . "/designs/images";
 
 
     public static function fix( $attr ) {
@@ -602,6 +602,8 @@ WAIT SECONDS=4$eol";
                     if ( "htm" != $ext )
                         continue 2; // next flle
 
+                    $buffer = str_replace( "https://.carnegiemnh", "https://carnegiemnh", $buffer );
+                    $buffer = str_replace( "https://carnegiemnh.org/cmnh", "https://carnegiemnh.org", $buffer );
                     $buffer = str_replace( 'http://carnegiemnh"', 'https://carnegiemnh"', $buffer );
                     $buffer = str_replace( "dinomitedaysauction", "/auction", $buffer );
                     $buffer = str_replace( "www.CarnegieMNH", "carnegiemnh", $buffer );
