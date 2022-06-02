@@ -10,19 +10,20 @@ class dinomitedays_misc_pages {
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
-    public static function last_seen( $attr ) { 
+    public static function last_seen( $attr ) {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         $msg = "";
-        $debugLast = false;  
+        $debugLast = false;
 
         try {
             ini_set( "display_errors", true );
             error_reporting( E_ALL | E_STRICT );
             $msg = "";
 
-            $sql = "select name, filename, mapdate, maploc, latitude, longitude from " .
-            self::rrw_dinos . " order by year(mapDate) ";
+            $sql = "select name, status, filename, mapdate, 
+                    maploc, latitude, longitude 
+                    from " .  self::rrw_dinos . " order by year(mapDate) ";
             $sql .= " desc ";
             $sql .= ", name asc ";
             if ( $debugLast )$msg .= "$sql $eol";
@@ -32,6 +33,7 @@ class dinomitedays_misc_pages {
             $yearPast = "not yet";
             foreach ( $recs as $rec ) {
                 $name = $rec[ "name" ];
+                $status = $rec[ "status" ];
                 $filename = $rec[ "filename" ];
                 $mapdate = $rec[ "mapdate" ];
                 $maploc = $rec[ "maploc" ];
@@ -43,8 +45,16 @@ class dinomitedays_misc_pages {
                 if ( $mapYear != $yearPast )
                     $msg .= "<spam style='font-weight:bold; ' > $mapYear </span>$eol";
                 $yearPast = $mapYear;
-                $msg .= "<a href='/designs/$filename.htm' > $name</a> $maploc
-                 <a href='/map/?dino=true&latitude=$latitude&longitude=$longitude' > map</a> $eol";
+                $displayName = $name;
+                if ( !empty( $status ) )
+                    $displayName .= " $status ";
+                if ( 0 == $latitude )
+                    $displayMap = ""; 
+                else
+                    $displayMap = "$maploc
+                    <a href='/map/?dino=true&latitude=$latitude&longitude=$longitude' > map</a>";
+                $msg .= "<a href='/designs/$filename.htm' > $displayName</a>
+                                    $displayMap $eol";
             }
 
         } catch ( Exception $ex ) {

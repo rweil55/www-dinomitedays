@@ -1,4 +1,4 @@
-<?php
+,<?php
 
 ini_set( "display_errors", true );
 error_reporting( E_ALL | E_STRICT );
@@ -46,7 +46,8 @@ class dinomitedys_upload {
             if ( $debugProgress )$msg .= "after first form, okay $eol";
             if ( empty( $dino ) )
                 return $msg;
-
+          $msg .= self::displayExisting( $dino, true );
+  
             if ( empty( $submit ) ) {
                 $msg .= self::displayPhotosForm( $dino );
             } else {
@@ -57,13 +58,37 @@ class dinomitedys_upload {
             $msg .= "<br />
  <hr width='2px'><h2> Existing photographs on page 
  <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
-            $msg .= self::displayExisting( $dino, true );
         } // end try
         catch ( Exception $ex ) {
             $msg .= $ex->getMessage() . "$errorBeg  E#430 main upload $errorEnd";
         }
         return $msg;
     } // end upload
+    
+    private static function updatHTMfile($dino) {
+       global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra, $rrw_dinos;
+        $msg = "";
+        
+        $SqlMaploc = "select Maploc, latitude, longitude
+                            from $rrw_dinos where name = '$dino' ";
+        $ecss = $wpdbExtra->get_resultsA($SqlMaploc);
+        $maploc= $recs[0]["maploc"];
+        $latitude= $recs[0]["latitude"];
+        $longitude= $recs[0]["longitude"];
+        $sqlupdat = array();
+        $sqlupdat ["maploc"] = $LocationDesc;
+        $sqlupdat ["latitude"] = $latitude;
+        $sqlupdat ["longitude"] = $longitude;
+        $sqlWhere = array("name" => $dino);
+        $result = $wpdbExtra->Update ($rrw_dinos, $sqlupdat, $sqlWhere); 
+        $filenameFull = "$dino" . "_.htm";
+        $msg .= updateFosilLocation( $filenameFull, $maploc,
+        $latitude, $longitude ) ;
+            
+        
+        return $msg;
+    }
 
     private static function DisplayDinoSelection( $dino ) {
         global $eol, $errorBeg, $errorEnd;
@@ -120,7 +145,7 @@ class dinomitedys_upload {
         $photographer = rrwUtil::fetchparameterString( "photographer" );
 
         $msg .= "<form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" > 
-            <input type='hidden' name='dino' value='$dino' />
+            <input type='hidden' name='dino' id='dino' value='$dino' />
         ";
         $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
         $recDinos = $wpdbExtra->get_resultsA( $sqldino );
@@ -188,6 +213,7 @@ class dinomitedys_upload {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList;
         $msg = "";
+
         try {
             $debugProgress = false;
             $filelist = dinomitedys_make_html_class::findRelated( $dino, true );
@@ -196,8 +222,8 @@ class dinomitedys_upload {
                 $matches = array();
                 $parse = preg_match( "/^[\D]*([0-9]*)[\D]*$/", $key, $matches );
                 if ( 1 == $parse ) {
-                    $msg .= "formForPictures:max( $fileSort, 
-                            " . $matches[ 1 ] . ")$eol";
+                    if ($debugProgress)$msg .= "formForPictures:
+                        max( $fileSort, " . $matches[ 1 ] . ")$eol";
                     $fileSort = max( $fileSort, $matches[ 1 ] );
                 }
             }
@@ -229,7 +255,7 @@ class dinomitedys_upload {
         ";
             } // end foreach
             $msg .= "
-            getElementById('dino').focus;
+            document.getElementById('dino').focus;
             </script> $eol";
         } catch ( Exception $ex ) {
             throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
@@ -254,7 +280,8 @@ class dinomitedys_upload {
             foreach ( $filelist as $pic => $dummy ) {
                 $cntImage++;
                 $img = "/" . self::imagePath . "$pic";
-                $msg .= "<div class='rrwDinoItem' class='rrwDinoItemWrap' >                 <a href='$img' ><img src='$img' width='270px' /></a>";
+                $msg .= "<div class='rrwDinoItem' > 
+                    <a href='$img' ><img src='$img' width='270px' /></a>";
                 if ( $labels ) {
                     $filesize = self::imageDire . "/$pic";
                     if ( file_exists( $filesize ) ) {
@@ -325,8 +352,9 @@ class dinomitedys_upload {
                 return "$msg $errorBeg #807 missing the dinosaur seletion $errorEnd";
             }
 
-            $msg .= "$fileSort is the highest sort number already on the 
-                <a href='/designs/$dino.htm' target='production' >dinosaur $dino's  page </a> $eol";
+            if ( $debugSave )$msg .= "$fileSort is the highest sort number 
+            already on the   <a href='/designs/$dino.htm' target='production'
+            > dinosaur $dino's  page </a> $eol";
             $uploads_dir = self::siteDir . self::imageSavePath;
             foreach ( $_FILES as $key => $fileInfo ) {
                 if ( $debugSave ) {
@@ -363,6 +391,11 @@ class dinomitedys_upload {
                         $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd $sql $eol";
                     continue; // on to next file
                 } // end if (coordinates
+                // extract the location description and enter into dataase
+                $locationDesc = rrwPara::String("locationDesc");
+                $sqlupdate = array("maploc => $locationDesc");
+                $wpdbExtra->update($rrw_dinos, $sqlDesc, array("name"=> $dino));
+                //
                 $fileSort++;
                 $shortName = $dino . "_$fileSort" . "_$filename";
                 $saveName = "$uploads_dir/$shortName";
@@ -372,8 +405,7 @@ class dinomitedys_upload {
                     $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
-                $debugSave = true;
-                if ( $debugSave )$msg .= "----------------------------- $eol
+                 if ( $debugSave )$msg .= "----------------------------- $eol
                                         I#809 moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
                 if ( $debugSave )$msg .= "E#663 resizeImage( 
@@ -385,10 +417,13 @@ class dinomitedys_upload {
 
                     $msg .= uploadProcessDire::nameToBottom( $finalName, $photographer );
                 }
-                $msg .= "I#819 $saveName resized, attributed to $finalName $eol";
+                if ( $debugSave ) $msg .= "I#819 $saveName resized, 
+                                    attributed to $finalName $eol";
             } // end foreash ($files)
             $msg .= $eol;
+            $fileFullName = self::siteDir . "/designs/$dino" . ".htm";
             $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
+            $msg .= dinomitedys_fix::changeFooter( $fileFullName );
         } // end try
         catch ( Exception $ex ) {
             $msg .= $ex->getMessage() . "$errorBeg  E#669 upload $errorEnd";
