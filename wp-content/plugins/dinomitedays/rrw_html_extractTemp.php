@@ -63,11 +63,11 @@ class rrwParse {
 
         if (self::$debugParse) self::$trace .= " in trimTo buffer length is " . strlen( SELF::$buffer );
         if ( empty( SELF::$buffer ) )
-           throw new Exception( "$msg $errorBeg E#913 buffer is empty $errorEnd");
+           throw new Exception( "$msg $errorBeg E#906 buffer is empty $errorEnd");
 
         $iiLook = strpos( SELF::$buffer, $lookfor );
         if ( $iiLook === false )
-            throw new Exception( "$msg $errorBeg E#913 did not finf $lookfor in buffer $errorEnd" );
+            throw new Exception( "$msg $errorBeg E#907 did not finf $lookfor in buffer $errorEnd" );
         SELF::$buffer = substr( SELF::$buffer, $iiLook );
         return $msg;
     }
@@ -97,7 +97,7 @@ class rrwParse {
         while ( 1 ) {
             $cnt++;
             if ( $cnt > 50 )
-                throw new Exception( "$msg $errorBeg E#712 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
+                throw new Exception( "$msg $errorBeg E#755 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
             if ( $iiLookEnd > strlen( $text ) )
                 break;
             $iiLookbeg = strpos( $text, "<", $iiLookEnd );

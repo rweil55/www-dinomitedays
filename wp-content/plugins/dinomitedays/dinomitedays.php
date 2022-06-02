@@ -15,7 +15,7 @@ Depends: rrw-utilities-common
 Depends: rrw_parser
 License: private
 
-Version: 1.2.9
+Version: 1.2.10
 
 Text Domain: dinomitedays
 Domain Path: /lang
@@ -38,8 +38,8 @@ require_once "DisplayPhotographers.php";
 
 global $eol, $errorBeg, $errorEnd;
 $eol = "<br />\n";
-    $errorBeg = "$eol<style 'text-color:red' >";
-        $errorEnd = "</style> $eol";
+    $errorBeg = "$eol<span style='color:red' >";
+        $errorEnd = "</span> $eol";
 
 global $wpdbExtra, $rrw_dinos, $rrw_photographers;
 $rrw_photographers = "wpprj_0photographers";

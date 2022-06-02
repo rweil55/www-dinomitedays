@@ -140,7 +140,7 @@ class dinomitedys_make_html_class {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
-        $debug = true;
+        $debug = false;
         ini_set( "display_errors", true );
         error_reporting( E_ALL | E_STRICT );
         try {
@@ -161,6 +161,7 @@ class dinomitedys_make_html_class {
                 else
                     $displayDate = $SeenDate->format( "Y" );
                 $content = "";
+
                 $cntOriginal = rrwParse::loadBufferWithFile( $filenameFull );
                 list( $msgTemp, $outcontent ) = rrwParse::extractTo( "Fossil Location" );
                 $msg .= $msgTemp;
@@ -189,6 +190,31 @@ class dinomitedys_make_html_class {
 
         return $msg;
     } // end  geocoded
+
+    public static function updateFosilLocation( $filenameFull, $maploc,
+        $latitude, $logitude ) {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        $debug = true;
+
+        $content = "";
+        $cntOriginal = rrwParse::loadBufferWithFile( $filenameFull );
+        list( $msgTemp, $outcontent ) = rrwParse::extractTo( "Fossil Location" );
+        $msg .= $msgTemp;
+        $content .= $outcontent .
+        "Fossil Location:</b></i></font> $mapLoc ($displayDate) 
+                    <a href='https://dinomitedays.org/map/?dino=true" .
+        "&latitude=$latitude&longitude=$longitude' > map </a>";
+        $msg .= rrwParse::trimTo( "<br" );
+        list( $msgTemp, $ountententRest ) = rrwParse::extractTo( "</html>" );
+        $content .= $ountententRest . "</html>";
+        $cntFinal = strlen( $content );
+        $fpOut = fopen( "$filenameFull", "w" );
+        fwrite( $fpOut, $content );
+        fclose( $fpOut );
+        $msg .= "Updated $filenameFull <a href='/designs/$file.htm' target='final'> $file.htm </a> $eol ";
+        return $msg;
+    }
 
     public static function findRelated( $dino, $withDefaults = true ) {
         // returns a list of filename that aresub pistures for a dino
