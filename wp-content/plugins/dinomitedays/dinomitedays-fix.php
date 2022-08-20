@@ -27,7 +27,7 @@ class dinomitedys_fix {
         $msg .= "task of $task $eol ";
         switch ( $task ) {
             case "designfooter":
-                $msg .= self::designfooter();
+                $msg .= self::designfooter(); 
                 return $msg;
             case "drivingtour":
                 $dir = "/home/pillowan/www-dinomitedays";
