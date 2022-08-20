@@ -75,6 +75,14 @@ function _freewheelingmap_processMileposts() {
     var clusterZindexTop = 999; // undefined MAX_ZINDEX + 10;
     var clusterZindex = clusterZindexTop;
     var notClustered = true;
+    var allow = document.getElementById("allowdrag");
+    console.log("allow.value is " + allow.value);
+    if (allow.value == "allow") {
+        allow.value = true;
+    } else {
+        allow.value = false;
+    }
+    console.log("allow.value is " + allow.value);
     console.log("process type = " + processType);
     switch (processType) {
         case "mile":
@@ -354,8 +362,7 @@ function _freewheelingmap_processMileposts() {
                 }
                 iconstyle = iconstyle.replace("jpg", imageExtension)
                 // code here to use exclude
-                for (iiex = 0; iiex < exclude.length; iiex++) {
-                }
+                for (iiex = 0; iiex < exclude.length; iiex++) {}
                 var iconurl = freewheeling_pagesPreBuiltUrl + "/icon-amenities/" + iconstyle;
                 if (iconurl.includes("undef")) {
                     console.log("E#864 " + bizName + " - " + iconurl);
@@ -416,17 +423,12 @@ function _freewheelingmap_processMileposts() {
                     }
                 });
         */
-        
-        console.log ("process type" + processType);
+
+        console.log("process type " + processType);
         switch (processType) { // handle cliable markers that launch a page
-  
+
             case "dino":
-                var allow = document.getElementById("allowdrag");
-                console.log("allow.value is " + allow.value);
-                if (allow.value != "allow") { 
-                    break;  
-                }      
-                marker.addListener('mouseover', function () {        
+                marker.addListener('mouseover', function () {
                     var info = new google.maps.InfoWindow({
                         content: "<span style='font-weight:bold; font-size:large;' >" + this.title
                             + "</span> [ <a href='https://dinomitedays.org/designs/"
@@ -438,26 +440,26 @@ function _freewheelingmap_processMileposts() {
                     });
                     info.open(mapScreen, this);
                 });
+                marker.addListener('click', function () {
+                    console.log("Into dino click")
+                    var url = this.clickUrl;
+                    url = url.replace(" ", "+");
+                    window.open(url, width = 400, height = 200);
+                });
+
                 marker.addListener('dragend', function (a) {
                     var latitude = a.latLng.lat().toFixed(7);
                     var longitude = a.latLng.lng().toFixed(7);
                     var savetrailid = "";
-                    var allow = document.getElementById("allowdrag");
-                    console.log("allow.value is " + allow.value);
-                    if (allow.value == "allow") { 
-                        console.log (a) 
-                        var parr = a.domEvent.target;
-              //          console.log (parr);
-                        var trailid = parr.trailid;
-                        var url = "https://edit.shaw-weil/com/update-database" +
-                            "?table=pillowan_wp451.wpprrj_00rrwdinos" +
-                            "&keyfiled=filename&keyvalue=" + this.trailid +
-                            "&field=latitue&newvalue=" + latitude ;
-                        
-                        alert(url);
-                    } else {
-                        alert ("relocation of dinasaurs not enabled. Click the button in lower left");
-                    }
+                    var parr = a.domEvent.target;
+                    //          console.log (parr);
+                    var trailid = parr.trailid;
+                    var url = "https://edit.shaw-weil/com/update-database"
+                        + "?table=pillowan_wp451.wpprrj_00rrwdinos"
+                        + "&keyfiled=filename&keyvalue=" + this.trailid
+                        + "&field=latitue&newvalue=" + latitude;
+
+                    alert(url);
                 });
                 break;
             case "aminity":
@@ -497,8 +499,7 @@ function _freewheelingmap_processMileposts() {
         markerCluster.styles_[3] = icon;
         markerCluster.styles_[4] = icon;
         logLine(markerCluster);
-        item = new freewweeling_cluster_group(processType, markerCluster, minClusterZoom,
-            maxClusterZoom);
+        item = new freewweeling_cluster_group(processType, markerCluster, minClusterZoom, maxClusterZoom);
         if (false) {
             var ii = 0;
             //      logLine(markergroups[ii]);
@@ -521,6 +522,7 @@ function _freewheelingmap_processMileposts() {
         + "\n No miles skipped " + cntSkipNoMiles
         + "\n displayed " + cntDisplay
         + "\n markers_milepost.length " + markers_milepost.length);
+    console.log(markers_milepost[1]);
     _freewheelingmap_readNextFileandOutput(); // get the next file, or display
 }
 //
