@@ -27,9 +27,7 @@ theme-compat
 widgets
 wp-includes
 themes
-/wp-content/plugins/dinomitedasysxxxxxxxxxxxxxxx
-/wp-content/plugins/dinomitedasysxxxxzzzzzzz
-freewheeling-easy-map
+wp-content/**
 updraftplus
 wp-admin
 wp-content/plugins/dinomitedays/_notes/dwsync.xml
