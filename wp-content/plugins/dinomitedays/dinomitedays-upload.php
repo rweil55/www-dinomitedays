@@ -25,6 +25,12 @@ class dinomitedys_upload {
         global $wpdbExtra, $rrw_dinos;
         $msg = "";
         try {
+            if (! is_user_logged_in() ) {
+                $msg .= "You must be logged in to update the information. <br><br>
+                        To get a login, Contact <a href='https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=dinodaysWebmaster@shaw-weil.com'> the webmaster</a> with who you are, email, and why you should
+                        have access.<br />";
+                return $msg;
+            }
             $debug = false;
             $debugProgress = false;
             $cssFile = self::dinoPlugin . "dinomitedays.css";
