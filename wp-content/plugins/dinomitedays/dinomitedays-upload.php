@@ -119,7 +119,7 @@ class dinomitedys_upload {
             $name = $rec[ "Name" ];
             $file = $rec[ "Filename" ];
             $msg .= '<option value="' . $file . '"';
-            if ( $dino == $name )
+            if ( $dino == $file )
                 $msg .= " selected=$dino ";
             $msg .= "> $name </option>\n";
         }
@@ -160,6 +160,7 @@ class dinomitedys_upload {
                             dinosauer $errorEnd $sqldino $eol" );
         $recDino = $recDinos[ 0 ];
         $mapLoc = $recDino[ "Maploc" ];
+        $mapdate = $recDino[ "Mapdate" ];
         $limit = 140;
         $size = 50;
         $msg .= "
@@ -193,7 +194,9 @@ class dinomitedys_upload {
             $msg .= "> $name </option>\n";
         }
         $msg .= "</select> 
-                
+        $eol $eol <strong>Last Seen</strong>
+        <input type='text' value='$mapdate' name='mapdate' id='mapdate' />
+        <br>
                 </td>
                 
             <td class=\"freewheel_td\" >
