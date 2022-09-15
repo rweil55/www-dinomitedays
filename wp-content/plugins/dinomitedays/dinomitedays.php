@@ -48,7 +48,7 @@ $rrw_dinos = "wpprrj_00rrwdinos";
            
    
 add_shortcode( 'dinomitedaysfix', array( "dinomitedys_fix", "fix" ) );
-add_shortcode( 'dinomitedays-make-html', array( "dinomitedys_make_html_class", "make_html_files" ) );
+add_shortcode( 'dinomitedays-make-html', array( "dinomitedys_make_html", "make_html_files" ) );
 add_shortcode( 'dinomitedays-process-upload', array( "dinomitedys_upload", "process_upload" ) );
 add_shortcode( 'dinomitedays-upload', array( "dinomitedys_upload", "upload" ) );
 add_shortcode( 'dinomitedays-last-seen', array( "dinomitedays_misc_pages", "last_seen" ) );

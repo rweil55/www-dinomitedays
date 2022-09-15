@@ -3,7 +3,7 @@
 require_once "rrw_html_extractTemp.php";
 
 
-class dinomitedys_make_html_class {
+class dinomitedys_make_html {
     const rrw_dinomites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
     const design_images_dire = self::baseDire . "/designs/images";
@@ -136,7 +136,7 @@ class dinomitedys_make_html_class {
                 insert  the images $errorEnd";
 
     }
-    static private function detailPageLocation() {
+    static public function detailPageLocation($filename = "%") {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -145,7 +145,8 @@ class dinomitedys_make_html_class {
         error_reporting( E_ALL | E_STRICT );
         try {
             $sql = "select filename, mapLoc, mapDate, latitude, longitude from 
-                    " . self::rrw_dinomites . " 
+                    " . self::rrw_dinomites . "
+                        where filename = '$filename'                     
                         order by filename ";
             $pages = $wpdb->get_results( $sql, ARRAY_A );
             foreach ( $pages as $page ) {

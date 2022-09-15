@@ -113,18 +113,19 @@ class dinomitedys_fix {
                 return $msg;
             default:
                 $msg .= "
-<a href='/fixit/?task=designfooter' >Update the footers</a> - durrently only workd on the the 200 detail pages<br />
-<a href='/fixit/?task=test' >Some random test</a> of one off code <br />
-<a href='/fixit/?task=missing_sm' >Create am _sm </a>file if not one there<br />
-<a href='/fixit/?task=find_images' >given a dino </a>find all images<br />
-<a href='/fixit/?task=imacro' >make 100</a> imacro commands <br />
-<a href='/fixit/?task=heads' >generate the missing </a>'head' images <br />
-<a href='/fixit/?task=findnew' >locate new images </a><br />
-<a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions<br />
-<a href='/fixit/?task=replacefooter' >update the footers </a><br />$eol
-<strong> obsolete </strong><br />
-<a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng <br />
-<a href='/fixit/?task=drivingtour' >update the driving tour</a> links<br />
+<a href='/fixit/?task=designfooter' >Update the footers</a> - durrently only workd on the the 200 detail pages</a>$eol
+<a href='https://edit.shaw-weil.com/make-dino-map-files/' > Update the map</a>$eol
+<a href='/fixit/?task=test' >Some random test</a> of one off code </a>$eol
+<a href='/fixit/?task=missing_sm' >Create am _sm </a>file if not one there$eol
+<a href='/fixit/?task=find_images' >given a dino </a>find all images$eol
+<a href='/fixit/?task=imacro' >make 100</a> imacro commands $eol
+<a href='/fixit/?task=heads' >generate the missing </a>'head' images $eol
+<a href='/fixit/?task=findnew' >locate new images </a></a>$eol
+<a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions</a>$eol
+<a href='/fixit/?task=replacefooter' >update the footers </a>$eol
+<strong> obsolete </strong>$eol
+<a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng </a>$eol
+<a href='/fixit/?task=drivingtour' >update the driving tour</a> links</a>$eol
 $eol $eol
 ";
                 $msg .= self::SearchForQuery( "" );
@@ -410,11 +411,11 @@ $eol $eol
         $image->writeImage( $fileFull );
         $size = getimagesize( "$fileFull" );
         $msg .= $size[ 0 ] . " x " . $size[ 1 ] . $eol;
-        $msg .= "<img src='$url' /><br />\n";
+        $msg .= "<img src='$url' /></a>$eol\n";
 
         if ( empty( $counting ) ) {
             $counting = 0;
-            $msg .= "<img src='/designs/graphics/dip1.gif' /><br />\n"; // for color match
+            $msg .= "<img src='/designs/graphics/dip1.gif' /></a>$eol\n"; // for color match
 
             $width = '600';
             $height = '200';
@@ -458,10 +459,10 @@ $eol $eol
         $iiUnder = strpos( $dino, "_" );
         $dino = substr( $dino, 0, $iiUnder );
         if ( true == $debugreject )
-            throw new Exception( "$msg $errorBeg dinomitedys_make_html_class::UpdateImages
+            throw new Exception( "$msg $errorBeg dinomitedys_make_html::UpdateImages
                     ( $dino );$errorEnd " );
 
-        $msg .= dinomitedys_make_html_class::UpdateImages( $dino );
+        $msg .= dinomitedys_make_html::UpdateImages( $dino );
         $msg .= "<a href='/upload?dinofile=$dino' > Display images </a> $eol";
         return $msg;
     }
