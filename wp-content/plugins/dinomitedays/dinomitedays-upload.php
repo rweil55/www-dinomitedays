@@ -366,6 +366,24 @@ class dinomitedys_upload {
             already on the   <a href='/designs/$dino.htm' target='production'
             > dinosaur $dino's  page </a> $eol";
             $uploads_dir = self::siteDir . self::imageSavePath;
+            $keySelect = array( "filename" => $dino );
+            //
+            // extract the location description and enter into dataase
+            $locationDesc = rrwPara::String( "locationDesc" );
+            $sqlup = array( "maploc" => $locationDesc );
+            if ( $debugSave ) {
+                $msg .= rrwUtil::print_r( $sqlup, true, "sql update" );
+                $msg .= rrwUtil::print_r( $keySelect, true, "sql select" );
+                $msg .= "Updating location to $locationDesc $eol";
+            }
+            $wpdbExtra->update( $rrw_dinos, $sqlup, $keySelect );
+            //
+            // extract the mapdate and enter into dataase
+            $mapdate = rrwPara::String( "mapdate" );
+            $sqlup = array( "mapdate" => $mapdate );
+            $wpdbExtra->update( $rrw_dinos, $sqlup, $keySelect );
+            if ( $debugSave )$msg .= "Updated last seen to $mapdate $eol";
+            //
             foreach ( $_FILES as $key => $fileInfo ) {
                 if ( $debugSave ) {
                     $msg .= "------------------------------- $eol ";
@@ -392,9 +410,8 @@ class dinomitedys_upload {
                         $msg .= "$errorBeg E#755 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
                     }
                     // check ranges
-                    $sql = "update $rrw_dinos set latitude ='$lat', longitude = '$lng'
-                            where 'filename' = '$dino' ";
-                    $cnt = $wpdbExtra->query( $sql );
+                    $sqlup = array( "latitude" => $lat, "longitude" => $lng );
+                    $cnt = $wpdbExtra->update( $rrw_dinos, $sqlup, $keySelect );
                     if ( 1 == $cnt )$msg .= "i#754 Coordinates updated. Please check 
                     <a href='/last_seen/' > last seen </a> and the map $eol";
                     else
@@ -402,18 +419,7 @@ class dinomitedys_upload {
                     continue; // on to next file
                 } // end if (coordinates
                 //
-                // extract the location description and enter into dataase
-                $locationDesc = rrwPara::String( "locationDesc" );
-                $sqlup = array( "maploc => $locationDesc" );
-                $wpdbExtra->update( $rrw_dinos, $sqlup, array( "name" => $dino ) );
-                if ($debugSave) $msg .= "Updated location to $locationDesc $eol"; 
-                //
-                // extract the mapdate and enter into dataase
-                $mapdate = rrwPara::String( "mapdate" );
-                $sqlup = array( "mapdate => $mapdate" );
-                $wpdbExtra->update( $rrw_dinos, $sqlup, array( "name" => $dino ) );
-                if ($debugSave) $msg .= "Updated last seen to $mapdate $eol"; 
-                 //
+
                 $fileSort++;
                 $shortName = $dino . "_$fileSort" . "_$filename";
                 $saveName = "$uploads_dir/$shortName";
