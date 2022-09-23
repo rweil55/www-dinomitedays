@@ -296,7 +296,7 @@ $eol $eol
             $lat = $data[ 2 ];
             $long = $data[ 3 ];
             $sql = " update " . self::rrw_dinomites .
-            " set latitude = $lat, longitude = $long                              where keyid = $key ";
+            " set latitude = $lat, longitude = $long where keyid = $key ";
             $answer = $wpdb->query( $sql );
             $msg .= rrwFormat::CellRow( $key, $lat, $long, $answer, $sql );
             $wpdb->query( $sql );

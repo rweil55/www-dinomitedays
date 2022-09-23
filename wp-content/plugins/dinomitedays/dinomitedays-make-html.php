@@ -146,7 +146,7 @@ class dinomitedys_make_html {
         try {
             $sql = "select filename, mapLoc, mapDate, latitude, longitude from 
                     " . self::rrw_dinomites . "
-                        where filename = '$filename'                     
+                        where filename like '$filename'                     
                         order by filename ";
             $pages = $wpdb->get_results( $sql, ARRAY_A );
             foreach ( $pages as $page ) {
@@ -168,8 +168,10 @@ class dinomitedys_make_html {
                 $msg .= $msgTemp;
                 $content .= $outcontent .
                 "Fossil Location:</b></i></font> $mapLoc ($displayDate) 
-                    <a href='https://dinomitedays.org/map/?dino=true" .
-                "&latitude=$latitude&longitude=$longitude' > map </a>";
+                [ <a href='https://dinomitedays.org/map/?dino=true" .
+                        "&latitude=$latitude&longitude=$longitude' > map </a> ]
+                [<a href='https://www.google.com/maps/dir//$latitude,$longitude/@" .
+                    "$latitude, ${longitude}17z/data=!4m2!4m1!3e0' > directions to </a>]";
                 $msg .= rrwParse::trimTo( "<br" );
                 list( $msgTemp, $ountententRest ) = rrwParse::extractTo( "</html>" );
                 $content .= $ountententRest . "</html>";
