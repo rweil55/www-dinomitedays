@@ -26,8 +26,11 @@ class dinomitedys_fix {
             return "$msg not allowed to fix things";
         $msg .= "task of $task $eol ";
         switch ( $task ) {
+            case "deletenew":
+                $msg .= self::deleteNew( $attr );
+                break;
             case "designfooter":
-                $msg .= self::designfooter(); 
+                $msg .= self::designfooter();
                 return $msg;
             case "drivingtour":
                 $dir = "/home/pillowan/www-dinomitedays";
@@ -120,7 +123,7 @@ class dinomitedys_fix {
 <a href='/fixit/?task=find_images' >given a dino </a>find all images$eol
 <a href='/fixit/?task=imacro' >make 100</a> imacro commands $eol
 <a href='/fixit/?task=heads' >generate the missing </a>'head' images $eol
-<a href='/fixit/?task=findnew' >locate new images </a></a>$eol
+<a href='/fixit/?task=findnew' >locate unprocessed -new files </a></a>$eol
 <a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions</a>$eol
 <a href='/fixit/?task=replacefooter' >update the footers </a>$eol
 <strong> obsolete </strong>$eol
@@ -134,7 +137,24 @@ $eol $eol
 
         return $msg;
     } // end function fixit
-
+    //
+    private static function deletenew( $attr ) {
+        // delete a -new file
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        $dino = rrwPara::String( "dino" );
+        $siteDir = "/home/pillowan/www-dinomitedays/";
+        $newPath = "designs/";
+        $filenameFull = "$siteDir/$newPath/$dino-new.htm";
+        $result = unlink( $filenameFull );
+        if ( $result )
+            $msg .= "$filenameFull succefull deleted $eol";
+        else
+            $msg .= "$errorBeg $filenameFull delete failed $errorEnd";
+        $msg .= "<a href='/fix?task=findnew' > locate unprocessed -new files </a>$eol"; 
+        return $msg;
+    } // end deletenew
+    //
     private static function replaceFooter( & $buffer ) {
         global $eol, $errorBeg, $errorEnd;
         global $footer;
@@ -174,27 +194,27 @@ $eol $eol
         }
         return $msg;
     }
+    /*
+        private static function tryDomDocument() {
 
-    private static function tryDomDocument() {
+            $file = "/home/pillowan//www-dinomitedays/designs/stanford.htm";
 
-        $file = "/home/pillowan//www-dinomitedays/designs/stanford.htm";
-
-        $dom = new DomDocument();
-        $buffer = file_get_contents( $file );
-        $check = $dom->loadHTML( $buffer );
-        if ( $check )
-            $msg .= "good load $eol";
-        else
-            $msg = "$errorBeg E#748 load of dom sodument failed $errorEnd";
-        $div = $dom->getElementById( 'dinofooter' );
-        print "<pre>";
-        $cnt++;
-        print "---------------------------------  $eol";
-        var_dump( $div );
-        print "</pre>";
-        return $msg;
-    }
-
+            $dom = new DomDocument();
+            $buffer = file_get_contents( $file );
+            $check = $dom->loadHTML( $buffer );
+            if ( $check )
+                $msg .= "good load $eol";
+            else
+                $msg = "$errorBeg E#748 load of dom sodument failed $errorEnd";
+            $div = $dom->getElementById( 'dinofooter' );
+            print "<pre>";
+            $cnt++;
+            print "---------------------------------  $eol";
+            var_dump( $div );
+            print "</pre>";
+            return $msg;
+        }
+    */
     private static function designfooter() {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -559,7 +579,9 @@ WAIT SECONDS=4$eol";
                 target='new' > $dino-new.htm is here</a>. 
                 Check it out. Do NOT forget to refreash. If okay 
                 <a href='/fixit/?task=renamenewdino&dino=$dino' target='new'>
-                move to production</a> or delete the newer version $eol";;
+                move to production</a> 
+                or <a href='/fix?task=deletenew&dino=$dino' >delete the newer version </a>
+                or <a href='/update/?dino=$dino' target='update'> retry the update </a> $eol";;
         }
         $msg .= "$eol found $cntRead dires/files of which 
                     $cntFound were updated $eol";

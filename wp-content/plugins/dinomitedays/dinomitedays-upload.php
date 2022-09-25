@@ -1,4 +1,3 @@
-,
 <?php
 
 ini_set( "display_errors", false );
@@ -27,9 +26,10 @@ class dinomitedys_upload {
         $msg = "";
         try {
             if ( !is_user_logged_in() ) {
-                $msg .= "You must be logged in to update the information. <br><br>
-                        To get a login, Contact <a href='https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=dinodaysWebmaster@shaw-weil.com'> the webmaster</a> with who you are, email, and why you should
-                        have access.<br />";
+                $msg .= freewheeling_edit_setGlobals::showLoginform(
+                    "to update the information. $eol
+                    Login below or to get a login, Contact <a href='https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=dinodaysWebmaster@shaw-weil.com'> the webmaster</a> with who you are, email, and why you should
+                        have access.<br />" );
                 return $msg;
             }
             $debug = false;
@@ -48,17 +48,18 @@ class dinomitedys_upload {
 
             if ( !is_array( $dropdownList ) )
                 $dropdownList = array();
-
-            $msg .= self::DisplayDinoSelection( $dino );
+            // build the input form
+            $msg .= self::buildDinoSelectionForm( $dino, "update" );
             if ( $debugProgress )$msg .= "after first form, okay $eol";
             if ( empty( $dino ) )
                 return $msg;
+            // dinoe selected so display more information
             $msg .= self::displayExisting( $dino, true );
-
+            // was submit clicked ?
             if ( empty( $submit ) ) {
-                $msg .= self::displayPhotosForm( $dino );
+                $msg .= self::displayPhotosForm( $dino ); // no ! 
             } else {
-                $msg .= self::processInputPhotos();
+                $msg .= self::processInputPhotos(); // yes !
             }
             $msg .= "dino is now $dino $eol";
             $msg .= self::formForPictures( $dino, $jsFile );
@@ -67,7 +68,7 @@ class dinomitedys_upload {
  <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
         } // end try
         catch ( Exception $ex ) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#430 main upload $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#430 main update $errorEnd";
         }
         return $msg;
     } // end upload
@@ -97,13 +98,16 @@ class dinomitedys_upload {
         return $msg;
     }
 
-    private static function DisplayDinoSelection( $dino ) {
+    private static function buildDinoSelectionForm( $dino, $action ) {
+        //  build a <form to make a dino section 
+        //  $dino    a previous selected dino
+        //  $action  where to go wher it is selected
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra, $rrw_dinos;
         $msg = "";
 
-        // display a dino selection form
-        $msg .= "<form method=\"post\" action=\"/upload\" > ";
+        $msg .= "<form method=\"post\" action=\"/$action\" > ";
+
         $sql = "select * from $rrw_dinos order by name ";
         $recs = $wpdbExtra->get_resultsA( $sql );
         //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol "; 
@@ -151,7 +155,7 @@ class dinomitedys_upload {
         $debugProgress = false;
         $photographer = rrwUtil::fetchparameterString( "photographer" );
 
-        $msg .= "<form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" > 
+        $msg .= "<form method=\"post\" action=\"/update\" enctype=\"multipart/form-data\" > 
             <input type='hidden' name='dino' id='dino' value='$dino' />
         ";
         $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
@@ -162,6 +166,8 @@ class dinomitedys_upload {
         $recDino = $recDinos[ 0 ];
         $mapLoc = $recDino[ "Maploc" ];
         $mapdate = $recDino[ "Mapdate" ];
+        $latitude = $recDino[ "Latitude" ];
+        $longitude = $recDino[ "Longitude" ];
         $limit = 140;
         $size = 50;
         $msg .= "
@@ -172,7 +178,6 @@ class dinomitedys_upload {
                 <strong>Location Description:</strong> This should help a user to locate the dinosaur. 
                 <br> &nbsp; &nbsp;Such as a street address or
                 <br> &nbsp; &nbsp;building name with guide to where inside.<br \>
-                <font color=pink >optional</font><br>
                 <input type='text' maxlength='$limit' size='$size' 
                     name='locationDesc'  id='locationDesc' value='$mapLoc'
                    onkeyup='countChars(\"locationDesc\",\"locationLeft\", $limit);'
@@ -180,7 +185,7 @@ class dinomitedys_upload {
                    onmouseout='countChars(\"locationDesc\",\"locationLeft\", $limit);' />
                 <br> &nbsp; &nbsp; &nbsp; &nbsp; 
                 <span id=\"locationLeft\">$limit</span> Characters left 
-                $eol $eol <strong>Photographer</strong><font color=red >Required</font>$eol
+                $eol $eol <strong>Photographer</strong> <font color=red >Required if photos below</font>$eol
                 
             <select id=\"photographer\" name=\"photographer\" >
                 <option value=\"\"  >Pick a photographer. </option>
@@ -204,12 +209,19 @@ class dinomitedys_upload {
                 <strong>Location Cordinates:</strong> can be determined from a  photgraph taken 
                     with a device that has location turned on. Should be taken very close to the dinosauer. 
                     Will not be uased in the collection of photographs on  the detail page.
-               <table><tr><td width=\"60 px\" >
+               <table>
+               <tr>
+                  <td width=\"60 px\" >
                ";
         if ( $debugProgress )$msg .= "About to first fropzone $eol";
         $msg .= self::dropzone_div( "coordinates" );
         if ( $debugProgress )$msg .= "after first dropzone $eol";
-        $msg .= "</td><td align='left' valign='center' >Drop file or click to upload</td>
+        $msg .= "</td>
+                <td align='left' valign='center' >
+                    Drop file or click to update$eol
+                    Latitude $latitude $eol
+                    Longitude $longitude $eol
+                </td>
                 </tr>
                 </table>
             </td> 
@@ -447,13 +459,13 @@ class dinomitedys_upload {
             $msg .= $eol;
             // first update the orignal htm file.
             $fileFullName = self::siteDir . "/designs/$dino" . ".htm";
-            $msg .= dinomitedys_make_html::detailPageLocation( $dino );
+            $msg .= dinomitedys_make_html::updateFosilLocations( $dino );
             $msg .= dinomitedys_fix::changeFooter( $fileFullName );
             // then crete the -new file
             $msg .= dinomitedys_make_html::UpdateImages( $dino );
         } // end try
         catch ( Exception $ex ) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#669 upload $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#669 update $errorEnd";
             throw new Exception( "$msg" );
         }
         return $msg;

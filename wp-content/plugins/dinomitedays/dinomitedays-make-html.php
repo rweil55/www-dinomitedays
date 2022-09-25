@@ -15,7 +15,7 @@ class dinomitedys_make_html {
         ini_set( "display_errore", true );
         try {
             $msg .= self::updateLocatonMap();
-            $msg .= self::detailPageLocation();
+            $msg .= self::updateFosilLocations("%");  // do all pages
         } catch ( Exception $ex ) {
             $msg .= "E#400 xxx catch " . $ex->getMessage();
         }
@@ -83,7 +83,7 @@ class dinomitedys_make_html {
         //work to find the right place to insert the images
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
-        $debug = true;
+        $debug = false;
         // first try a previous insertion
         $iiDiv = strpos( $buffer, "<br><div id='dinoImages" );
         if ( false !== $iiDiv ) {
@@ -136,7 +136,7 @@ class dinomitedys_make_html {
                 insert  the images $errorEnd";
 
     }
-    static public function detailPageLocation($filename = "%") {
+    static public function updateFosilLocations( $filename ) {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -151,7 +151,7 @@ class dinomitedys_make_html {
             $pages = $wpdb->get_results( $sql, ARRAY_A );
             foreach ( $pages as $page ) {
                 $file = $page[ "filename" ];
-                $mapLoc = $page[ "mapLoc" ];
+                $maploc = $page[ "mapLoc" ];
                 $mapDate = $page[ "mapDate" ];
                 $latitude = $page[ "latitude" ];
                 $longitude = $page[ "longitude" ];
@@ -163,28 +163,8 @@ class dinomitedys_make_html {
                     $displayDate = $SeenDate->format( "Y" );
                 $content = "";
 
-                $cntOriginal = rrwParse::loadBufferWithFile( $filenameFull );
-                list( $msgTemp, $outcontent ) = rrwParse::extractTo( "Fossil Location" );
-                $msg .= $msgTemp;
-                $content .= $outcontent .
-                "Fossil Location:</b></i></font> $mapLoc ($displayDate) 
-                [ <a href='https://dinomitedays.org/map/?dino=true" .
-                        "&latitude=$latitude&longitude=$longitude' > map </a> ]
-                [<a href='https://www.google.com/maps/dir//$latitude,$longitude/@" .
-                    "$latitude, ${longitude}17z/data=!4m2!4m1!3e0' > directions to </a>]";
-                $msg .= rrwParse::trimTo( "<br" );
-                list( $msgTemp, $ountententRest ) = rrwParse::extractTo( "</html>" );
-                $content .= $ountententRest . "</html>";
-                $cntFinal = strlen( $content );
-                $tolerence = 120;
-                if ( ( $cntOriginal - $cntFinal ) > $tolerence )
-                    throw new Exception( "$msg $errorBeg E#836 original is $cntOriginal long,
-                            final is $cntFinal long, more then $tolerence $errorEnd" );
-                $fpOut = fopen( "$filenameFull", "w" );
-                fwrite( $fpOut, $content );
-                fclose( $fpOut );
-                $msg .= "Updated $filenameFull <a href='/designs/$file.htm' target='final'> $file.htm
-                            </a> $eol ";
+                $msg .= self::updateOnelLocation( $filenameFull, $maploc,
+        $latitude, $longitude, $displayDate );
             } // end of each page/file
         } catch ( Exception $ex ) {
             $msg .= "E#400 xxx catch while processnig <a href='/designs/$file.htm' target='final'> 
@@ -194,20 +174,24 @@ class dinomitedys_make_html {
         return $msg;
     } // end  geocoded
 
-    public static function updateFosilLocation( $filenameFull, $maploc,
-        $latitude, $logitude ) {
+    public static function updateOnelLocation( $filenameFull, $maploc,
+        $latitude, $longitude, $displayDate ) {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
-        $debug = true;
+        $debug = false;
 
         $content = "";
         $cntOriginal = rrwParse::loadBufferWithFile( $filenameFull );
         list( $msgTemp, $outcontent ) = rrwParse::extractTo( "Fossil Location" );
         $msg .= $msgTemp;
         $content .= $outcontent .
-        "Fossil Location:</b></i></font> $mapLoc ($displayDate) 
-                    <a href='https://dinomitedays.org/map/?dino=true" .
-        "&latitude=$latitude&longitude=$longitude' > map </a>";
+        "Fossil Location:</b></i></font> $maploc ($displayDate) 
+                    <a href='https://dinomitedays.org/map/?dino=true" ;
+        if (0 == $latitude )
+            $content .= "&latitude=40.441&longitude=-79.996' > map </a> ]";
+        else
+            $content .= "&latitude=$latitude&longitude=$longitude' > map </a> ]
+            [ <a href='https://www.google.com/maps/dir//$latitude,$longitude/@$latitude,$longitude,17z/' > directions to </a> ]";
         $msg .= rrwParse::trimTo( "<br" );
         list( $msgTemp, $ountententRest ) = rrwParse::extractTo( "</html>" );
         $content .= $ountententRest . "</html>";
@@ -215,7 +199,7 @@ class dinomitedys_make_html {
         $fpOut = fopen( "$filenameFull", "w" );
         fwrite( $fpOut, $content );
         fclose( $fpOut );
-        $msg .= "Updated $filenameFull <a href='/designs/$file.htm' target='final'> $file.htm </a> $eol ";
+        if ($debug) $msg .= "Updated $filenameFull  $eol ";
         return $msg;
     }
 
