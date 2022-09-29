@@ -43,7 +43,7 @@ class dinomitedays_misc_pages {
                 $mapYear = new DateTime( $mapdate );
                 $mapYear = $mapYear->format( "Y" );
                 if ( $mapYear != $yearPast )
-                    $msg .= "<spam style='font-weight:bold; ' > $mapYear </span>$eol";
+                    $msg .= "<span style='font-weight:bold; ' > $mapYear </span>$eol";
                 $yearPast = $mapYear;
                 $displayName = $name;
                 if ( !empty( $status ) )
