@@ -39,7 +39,7 @@ class dinomitedys_make_html {
         $msg .= "copy ($from, $to); $eol";
         $result = copy( $from, $to );
         if ( false === $result )
-            throw new Exception( "$msg $errorBeg E#842 copy failed $errorEnd" );
+            throw new Exception( "$msg $errorBeg E#864 copy failed $errorEnd" );
         $msg .= "copy worked $eol";
 
         return $msg;
@@ -60,7 +60,7 @@ class dinomitedys_make_html {
         //  insert and write
         //      $newdiv = str_replace("270","150", $newdiv);
         if ( false === strpos( $buffer, "xxzzy" ) )
-            throw new Exception( "$msg $errorBeg #791 buffer does 
+            throw new Exception( "$msg $errorBeg #883 buffer does 
                     not contain xxzzy $errorEnd" );
         if ( strpos( $buffer, "xxzzy" ) < 500 )
             throw new Exception( "$msg $errorBeg #791 xxzzy to close 

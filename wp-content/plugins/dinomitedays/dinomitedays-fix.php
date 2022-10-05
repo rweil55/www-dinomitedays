@@ -626,7 +626,7 @@ WAIT SECONDS=4$eol";
 
         $handle = opendir( "$dir" );
         if ( !is_resource( $handle ) )
-            throw new Exception( "$msg E#301 that is not a directory" );
+            throw new Exception( "$msg E#753 that is not a directory" );
         $cnt = 0;
         $entry = true;
         while ( ( $entry = readdir( $handle ) ) !== false ) {

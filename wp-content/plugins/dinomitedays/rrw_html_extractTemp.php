@@ -76,7 +76,7 @@ class rrwParse {
         global $eol, $errorBeg, $errorEnd;
         $iiLook = strpos( SELF::$buffer, $lookfor );
         if ( $iiLook === false )
-            throw new Exception( "$msg $errorBeg E#917 did not find $lookfor 
+            throw new Exception( "$msg $errorBeg E#564 did not find $lookfor 
                     in remaiming buffer $errorEnd" );
         $extracted = substr( SELF::$buffer, 0, $iiLook );   // get the extraction
         $msg .= rrwParse::trimTo( $lookfor );       // and remove it from the buffer

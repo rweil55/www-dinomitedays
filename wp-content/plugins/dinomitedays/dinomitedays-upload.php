@@ -4,7 +4,7 @@ ini_set( "display_errors", false );
 error_reporting( E_ALL | E_STRICT );
 
 $picDire = "/home/pillowan/www-shaw-weil-pictures/wp-content/plugins";
-require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
+//require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
 /*  class uploadProcessDire {
  *       nameToBottom( $sourceFile, $photographer ) 
  *       resizeImage( $pathin, $pathout, $w_max, $h_max ) {
@@ -280,8 +280,8 @@ class dinomitedys_upload {
             document.getElementById('dino').focus;
             </script> $eol";
         } catch ( Exception $ex ) {
-            throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
-                "$errorBeg E#825 dinomitedys_:formForPictures $errorEnd" );
+            throw new Exception( "$msg E#887 " . $ex->getMessage() .
+                "$errorBeg dinomitedys_:formForPictures $errorEnd" );
         }
         return $msg;
     } // end formForPictures
@@ -321,8 +321,8 @@ class dinomitedys_upload {
             $msg .= "</div> <!-- end dinoImages -->\n"; /* match the rrwDinoGrid  */
 
         } catch ( Exception $ex ) {
-            throw new Exception( "E#825 $msg E#825 " . $ex->getMessage() .
-                "$errorBeg E#825 dinomitedys_:displayExisting $errorEnd" );
+            throw new Exception( " $msg E#894 " . $ex->getMessage() .
+                "$errorBeg ddinomitedys_:displayExisting $errorEnd" );
         }
         return $msg;
     } // end displayExisting
@@ -442,7 +442,7 @@ class dinomitedys_upload {
                     continue;
                 }
                 if ( $debugSave )$msg .= "----------------------------- $eol
-                                        I#809 moved file to  $saveName $eol";
+                                        I#863 moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
                 if ( $debugSave )$msg .= "E#663 resizeImage( 
                         $saveName, $finalName, 700, 200 ) $eol";
@@ -452,77 +452,78 @@ class dinomitedys_upload {
                                     $finalName, $photographer ); $eol";
 
                     $msg .= uploadProcessDire::nameToBottom( $finalName, $photographer );
-                }
-                if ( $debugSave )$msg .= "I#819 $saveName resized, 
+
+                    if ( $debugSave )$msg .= "I#885 $saveName resized, 
                                     attributed to $finalName $eol";
-            } // end foreash ($files)
-            $msg .= $eol;
-            // first update the orignal htm file.
-            $fileFullName = self::siteDir . "/designs/$dino" . ".htm";
-            $msg .= dinomitedys_make_html::updateFosilLocations( $dino );
-            $msg .= dinomitedys_fix::changeFooter( $fileFullName );
-            // then crete the -new file
-            $msg .= dinomitedys_make_html::UpdateImages( $dino );
-        } // end try
-        catch ( Exception $ex ) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#669 update $errorEnd";
-            throw new Exception( "$msg" );
-        }
-        return $msg;
-    } // end process_upload
-
-    private static function uploadErrorMsg( $err ) {
-        $phpFileUploadErrors = array(
-            0 => 'There is no error, the file uploaded with success',
-            1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-            2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-            3 => 'The uploaded file was only partially uploaded',
-            4 => 'No file was uploaded',
-            6 => 'Missing a temporary folder',
-            7 => 'Failed to write file to disk.',
-            8 => 'A PHP extension stopped the file upload.',
-        );
-        if ( $err > 8 || $err < 0 )
-            return "Unkown file upload error #$err ";
-        return $phpFileUploadErrors[ $err ];
-    }
-
-
-    /*
-        private static function detailFileUrl( $filename ) {
-            foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
-                $fileFull = . "$filename$ext";
-                if ( file_exists( $fileFull ) )
-                    return self::http . self::imagePath . "$filename$ext";
+                } // end foreash ($files)
+                $msg .= $eol;
+                // first update the orignal htm file.
+                $fileFullName = self::siteDir . "/designs/$dino" . ".htm";
+                $msg .= dinomitedys_make_html::updateFosilLocations( $dino );
+                $msg .= dinomitedys_fix::changeFooter( $fileFullName );
+                // then crete the -new file
+                $msg .= dinomitedys_make_html::UpdateImages( $dino );
             }
-            return $fileURL;
-        }
-        private static function pictureFileUrl( $filename ) {
-            $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
-            return $fileFull;
-        }
-        private static function listofFileFull( $filename ) {
-            $igonore1 = detailFilefull( $filename );
-            $igonore2 = pictureFileFull( $filename );
-            $list = array();
-
-            $hd = opendir( $self::imagedir );
-            while ( false !== ( $entry = readdir( $hd ) ) ) {
-                if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
-                    continue;
-                if ( $ignore1 == $entry || $ignore2 == $entry )
-                    continue;
-                array_push( $list, $self::http . self::imagePath . "$entry" );
+            } // end try
+            catch ( Exception $ex ) {
+                $msg .= $ex->getMessage() . "$errorBeg  E#669 update $errorEnd";
+                throw new Exception( "$msg" );
             }
-            return $list;
-        }
-        private static function fileURL( $fileFull ) {
-            $url = str_replace( self::imagedire, "design/images/", $fileFull );
-            $url = get_site_url() . "$url";
-            return $url;
+            return $msg;
+        } // end process_upload
 
+        private static function uploadErrorMsg( $err ) {
+            $phpFileUploadErrors = array(
+                0 => 'There is no error, the file uploaded with success',
+                1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+                2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+                3 => 'The uploaded file was only partially uploaded',
+                4 => 'No file was uploaded',
+                6 => 'Missing a temporary folder',
+                7 => 'Failed to write file to disk.',
+                8 => 'A PHP extension stopped the file upload.',
+            );
+            if ( $err > 8 || $err < 0 )
+                return "Unkown file upload error #$err ";
+            return $phpFileUploadErrors[ $err ];
         }
-        */
-} // end class
 
-?>
+
+        /*
+            private static function detailFileUrl( $filename ) {
+                foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
+                    $fileFull = . "$filename$ext";
+                    if ( file_exists( $fileFull ) )
+                        return self::http . self::imagePath . "$filename$ext";
+                }
+                return $fileURL;
+            }
+            private static function pictureFileUrl( $filename ) {
+                $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
+                return $fileFull;
+            }
+            private static function listofFileFull( $filename ) {
+                $igonore1 = detailFilefull( $filename );
+                $igonore2 = pictureFileFull( $filename );
+                $list = array();
+
+                $hd = opendir( $self::imagedir );
+                while ( false !== ( $entry = readdir( $hd ) ) ) {
+                    if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
+                        continue;
+                    if ( $ignore1 == $entry || $ignore2 == $entry )
+                        continue;
+                    array_push( $list, $self::http . self::imagePath . "$entry" );
+                }
+                return $list;
+            }
+            private static function fileURL( $fileFull ) {
+                $url = str_replace( self::imagedire, "design/images/", $fileFull );
+                $url = get_site_url() . "$url";
+                return $url;
+
+            }
+            */
+    } // end class
+
+    ?>
