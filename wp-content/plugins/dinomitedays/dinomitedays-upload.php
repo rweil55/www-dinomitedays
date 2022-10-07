@@ -161,7 +161,7 @@ class dinomitedys_upload {
         $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
         $recDinos = $wpdbExtra->get_resultsA( $sqldino );
         if ( 1 != $wpdbExtra->num_rows )
-            throw new Exception( "$msg $errorBeg E#664 did not find the
+            throw new Exception( "$msg $errorBeg E#79 did not find the
                             dinosauer $errorEnd $sqldino $eol" );
         $recDino = $recDinos[ 0 ];
         $mapLoc = $recDino[ "Maploc" ];
@@ -181,7 +181,7 @@ class dinomitedys_upload {
                 <input type='text' maxlength='$limit' size='$size' 
                     name='locationDesc'  id='locationDesc' value='$mapLoc'
                    onkeyup='countChars(\"locationDesc\",\"locationLeft\", $limit);'
-                   onkeydown='countChars(\"locationDesc\",\"locationLeft\", $limit);'
+                   onkeydown='countChars(\"locationDes<h3></h3>c\",\"locationLeft\", $limit);'
                    onmouseout='countChars(\"locationDesc\",\"locationLeft\", $limit);' />
                 <br> &nbsp; &nbsp; &nbsp; &nbsp; 
                 <span id=\"locationLeft\">$limit</span> Characters left 
@@ -280,7 +280,7 @@ class dinomitedys_upload {
             document.getElementById('dino').focus;
             </script> $eol";
         } catch ( Exception $ex ) {
-            throw new Exception( "$msg E#887 " . $ex->getMessage() .
+            throw new Exception( "$msg E#7947 " . $ex->getMessage() .
                 "$errorBeg dinomitedys_:formForPictures $errorEnd" );
         }
         return $msg;
@@ -321,7 +321,7 @@ class dinomitedys_upload {
             $msg .= "</div> <!-- end dinoImages -->\n"; /* match the rrwDinoGrid  */
 
         } catch ( Exception $ex ) {
-            throw new Exception( " $msg E#894 " . $ex->getMessage() .
+            throw new Exception( " $msg E#795 " . $ex->getMessage() .
                 "$errorBeg ddinomitedys_:displayExisting $errorEnd" );
         }
         return $msg;
@@ -438,17 +438,17 @@ class dinomitedys_upload {
                 if ( $debugSave )$msg .= "moving $tmp_name to $saveName $eol";
                 $answer = move_uploaded_file( $tmp_name, $saveName );
                 if ( false === $answer ) {
-                    $msg .= "$errorBeg E#880 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
+                    $msg .= "$errorBeg E#759 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
                 if ( $debugSave )$msg .= "----------------------------- $eol
                                         I#863 moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
-                if ( $debugSave )$msg .= "E#663 resizeImage( 
+                if ( $debugSave )$msg .= "E#758 resizeImage( 
                         $saveName, $finalName, 700, 200 ) $eol";
                 $msg .= uploadProcessDire::resizeImage( $saveName, $finalName, 700, 200 );
                 if ( !empty( $photographer ) ) {
-                    if ( $debugSave )$msg .= "E#670 nameToBottom( 
+                    if ( $debugSave )$msg .= "E#799 nameToBottom( 
                                     $finalName, $photographer ); $eol";
 
                     $msg .= uploadProcessDire::nameToBottom( $finalName, $photographer );
