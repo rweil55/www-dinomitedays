@@ -1,50 +1,67 @@
-*dwsync.xml
+# Wordpress - ignore core, configuration, examples, uploads and logs.
+# https://github.com/github/gitignore/blob/main/WordPress.gitignore
+
+# Core
+#
+# Note: if you want to stage/commit WP core files
+# you can delete this whole section/until Configuration.
+/wp-admin/
+/wp-content/index.php
+/wp-content/languages
+/wp-content/plugins/index.php
+/wp-content/themes/index.php
+/wp-includes/
+/index.php
+/license.txt
+/wp-*.php
+/xmlrpc.php
+
+# Configuration
+#wp-config.php
+
+# Example themes
+/wp-content/themes/twenty*/
+
+# Example plugin
+/wp-content/plugins/hello.php
+
+# Uploads
+#/wp-content/uploads/
+
+# Log files
+*.log
+
+# htaccess
+#/.htaccess
+
+# All plugins
+#
+# Note: If you wish to whitelist plugins,
+# uncomment the next line
+#/wp-content/plugins
+
+# All themes
+#
+# Note: If you wish to whitelist themes,
+# uncomment the next line
+#/wp-content/themes
+
+#dreamweaver
+_notes/
 *.bak
-*.LCK
-*\dwsync.xml
-sitemaps
-blocks
-block-supports
-certificates
-css
-customize
-fonts
-ID3
-images
-IXR
-js
-PHPMailer
-pomo
-random_compat
-Requests
-rest-api
-SimplePie
-assets
-block-patterns
-sodium_compat
-Text
-theme-compat
-widgets
-wp-includes
-themes
-updraftplus
-wp-admin
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/freewheeling-map/
-graphics/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-graphics/_notes/dwsync.xml
-graphics/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-graphics/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-graphics/_notes/dwsync.xml
-online_files/_notes/dwsync.xml
-*.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
-wp-content/plugins/dinomitedays/_notes/dwsync.xml
+*.lck
+**/dwsync.xml
+_compare_dir
+_compareTemp
+
+wp-content/plugins/awesome-support
+wp-content/plugins/updraftplus
+
+wp-content/plugins/freewheeling-map
+wp-content/plugins/upload-max-file-size
+wp-content/plugins/wp-crontrol
+wp-content/plugins/wp-staging
+
+wp-content/themes
+wp-content/updraft
+designs_newxxxxxxxxxxxxxx

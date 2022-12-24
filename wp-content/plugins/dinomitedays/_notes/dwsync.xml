@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="dinomitedays-fix.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133092962190510025" remote="133092961800000000" Dst="2" />
-<file name="dinomitedays.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133072901864527208" remote="133072901400000000" Dst="2" />
-<file name="dinomitedays-upload.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133096192754566146" remote="133096192200000000" Dst="2" />
-<file name="dropzone.js" server="ftp.pillowandpedal.org//www-dinomitedays/" local="132925177043123284" remote="132925176600000000" Dst="2" />
-<file name="dinomitedays-make-html.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133092157303862201" remote="133092157200000000" Dst="2" />
-<file name="footer_dino.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133085847600000000" remote="133085847600000000" Dst="2" />
-<file name="rrw_html_extractTemp.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133092968128668725" remote="133092967800000000" Dst="2" />
-<file name="dinomitedays-misc-pages.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="133086953786243583" remote="133086953400000000" Dst="2" />
-<file name="dinomitedays.css" server="ftp.pillowandpedal.org//www-dinomitedays/" local="132964074467388188" remote="132964074000000000" Dst="2" />
-<file name="DisplayPhotographers.php" server="ftp.pillowandpedal.org//www-dinomitedays/" local="132933878595314460" remote="132933878400000000" Dst="2" />
+<file name="DisplayPhotographers.php" server="ftp.pillowandpedal.org:7822/www-dinomitedays/" local="133163741692666270" remote="133163741690000000" Dst="1" />
+<file name="dinomitedays-fix.php" server="ftp.pillowandpedal.org:7822/www-dinomitedays/" local="133163739139509719" remote="133163739140000000" Dst="1" />
 </dwsync>

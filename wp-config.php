@@ -26,7 +26,7 @@ define( 'DB_NAME', 'pillowan_wp541' );
 define( 'DB_USER', 'pillowan_wp541' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'pS9.f)mx44' );
+define( 'DB_PASSWORD', 'a1357c97531' );
 
 /** MySQL hostname */
 define( 'DB_HOST', 'localhost' );
@@ -79,7 +79,7 @@ $table_prefix = 'wpprrj_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-define( 'WP_DEBUG', false );
+define( 'WP_DEBUG', true);
 
 /* Add any custom values between this line and the "stop editing" line. */
 

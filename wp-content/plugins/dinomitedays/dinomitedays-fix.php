@@ -94,6 +94,9 @@ class dinomitedys_fix {
             case "missing_sm":
                 $msg .= self::missing_sm( $attr );
                 break;
+            case "phototogs":
+                $msg .= DisplayPhotographers::Display($attr );
+                break;
             case "rejectdesginimage":
                 $msg .= self::rejectDesginImage();
                 return $msg;
@@ -118,6 +121,7 @@ class dinomitedys_fix {
                 $msg .= "
 <a href='/fixit/?task=designfooter' >Update the footers</a> - durrently only workd on the the 200 detail pages</a>$eol
 <a href='https://edit.shaw-weil.com/make-dino-map-files/' > Update the map</a>$eol
+<a href='/fixit/?task=phototogs' > Update the photographer list</a>$eol
 <a href='/fixit/?task=test' >Some random test</a> of one off code </a>$eol
 <a href='/fixit/?task=missing_sm' >Create am _sm </a>file if not one there$eol
 <a href='/fixit/?task=find_images' >given a dino </a>find all images$eol

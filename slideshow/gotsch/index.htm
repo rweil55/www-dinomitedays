@@ -1,148 +1,148 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
-<html>
-<head>
-  <title>DinoMite Days - Gotsch Slideshow</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <meta name="GENERATOR" content="Quanta Plus">
-
-  <script LANGUAGE="JavaScript">
-  var path = "images/";
-
-  //dinosaur currently being displayed
-  sect = new Array();
-  sect[0]=0;
-  
- 
-
-  //object for the dinosaurs.  Declares all sections and the parts of the name. 
-  function dinoSection(pic0, name0) {
-        this.pic = new Array();
-        this.pic[0]= path + pic0;
-        
-        
-        this.name = new Array();
-        this.name[0]=name0;
-        
-        
-        }
-
-  //the dinosaurs
-  dinosList = new Array();
-  dinosList[0] = new dinoSection("fly0.jpg", "Cutting out the openings for the illuminated inserts.");
-  dinosList[1] = new dinoSection("fly1.jpg", "Running the wiring for the interior lights.");
-  dinosList[2] = new dinoSection("fly2.jpg", "Applying putty to hold the glass inserts.");
-  dinosList[3] = new dinoSection("fly3.jpg", "Testing the lights (look inside the tail).");
-  dinosList[4] = new dinoSection("fly4.jpg", "Adding more inserts.");
-  dinosList[5] = new dinoSection("fly5.jpg", "Putting the inserts into the head.");
-  dinosList[6] = new dinoSection("fly6.jpg", "More testing of the lights.");
-  dinosList[7] = new dinoSection("fly7.jpg", "Finishing up the inserts.");
-  dinosList[8] = new dinoSection("fly8.jpg", "Nice dinosaur, nice dinosaur...");
-  dinosList[9] = new dinoSection("fly9.jpg", "Applying the textured topcoat.");
-  dinosList[10] = new dinoSection("fly10.jpg", "After painting.");
-  dinosList[11] = new dinoSection("fly11.jpg", "On location at Station Square.");
-    dinosList[12] = new dinoSection("end.gif", "...or close this window to return to main site");
-
-  //code for the up button.  panel is which up button was clicked
-  function doDown(panel) {
-        //changes the current dinosaur to the previous one in the list.  keeps it within bounds
-        sect[panel]=(sect[panel]+1)%dinosList.length;
-        which = sect[panel];
-
-        //set the picture
-        document.images[panel+1].src=dinosList[which].pic[panel];
-
-        //puts the name portion underneath.  does not work for NS4.x browsers
-        if(document.all) {
-                document.all["t" + panel].innerText=dinosList[which].name[panel];
-                }
-
-        if(document.layers) {
-                /*var tochange;
-                switch(panel) {
-                        case 0:
-                                tochange = document.div0;
-                                break;
-                        
-						
-                       
-                        }
-
-                tochange.document.open();
-                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
-                tochange.document.close();*/
-                }
-
-        else {
-                textvar=document.getElementById("t" + panel);
-                textvar.firstChild.nodeValue=dinosList[which].name[panel];
-                }
-        }
-
-  function doUp(panel) {
-        //changes the current dinosaur to the next one in the list.  keeps it within bounds
-        sect[panel]=(sect[panel]+dinosList.length-1)%dinosList.length;
-        which = sect[panel];
-
-        //set the picture
-        document.images[panel+1].src=dinosList[which].pic[panel];
-
-        //puts the name portion underneath.  does not work for NS4.x browsers
-        if(document.all) {
-                document.all["t" + panel].innerText=dinosList[which].name[panel];
-                }
-
-        if(document.layers) {
-                /*var tochange;
-                switch(panel) {
-                        case 0:
-                                tochange = document.div0;
-                                break;
-                        
-						
-                        
-                        }
-
-                tochange.document.open();
-                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
-                tochange.document.close();*/
-                }
-
-        else {
-                textvar=document.getElementById("t" + panel);
-                textvar.firstChild.nodeValue=dinosList[which].name[panel];
-                }
-        }
-
-  
-  </script>
-
-</head>
-<body background="../../designs/graphics/bg_blue.gif" topmargin=5 leftmargin=0 marginwidth=0 marginheight=0>
-<table border=1 width=500 bgcolor="#FFFFFF" align=center>
-  <tr><td colspan=3><h4 align="center"><font size="3" face="Arial, Helvetica, sans-serif" color=009900>Lunasaurus 
-        Lux <font size="2">by</font></font><font size="3" face="Arial, Helvetica, sans-serif" color=009900><font size="2"> 
-        Jason Gotsch</font></font></h4>
-      <h4 align="center"><font size="2" face="Arial, Helvetica, sans-serif"> <b>Sponsor</b>: 
-        Forest City Station Square Associates<br>
-        <b>Location</b>: Bessemer Court, Station Square</font></h4>
-      </td></tr><tr align="center">
- 
-  </tr>
-  <tr>
-   <td><img src="../../graphics/back.gif" width=59 height=21 border=0 onclick="doUp(0);"></td>
-    <td><img src="images/fly0.jpg" width=400 height=300 border=0></td>
-    <td><img src="../../graphics/next.gif" width=59 height=21 border=0 onclick="doDown(0);"></td>
-    
-      
-  </tr>
-  <tr align="center">
-  </tr>
-  <tr align=center>
-    <td colspan=3 align=center><div id="div0"> <font face="Arial, Helvetica, sans-serif" size=2 ID="t0">Cutting 
-        out the openings for the illuminated inserts.</font> </div></td>
-         
-      
-  </tr>
-</table>
-</body>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+  <title>DinoMite Days - Gotsch Slideshow</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR" content="Quanta Plus">
+
+  <script LANGUAGE="JavaScript">
+  var path = "images/";
+
+  //dinosaur currently being displayed
+  sect = new Array();
+  sect[0]=0;
+  
+ 
+
+  //object for the dinosaurs.  Declares all sections and the parts of the name. 
+  function dinoSection(pic0, name0) {
+        this.pic = new Array();
+        this.pic[0]= path + pic0;
+        
+        
+        this.name = new Array();
+        this.name[0]=name0;
+        
+        
+        }
+
+  //the dinosaurs
+  dinosList = new Array();
+  dinosList[0] = new dinoSection("fly0.jpg", "Cutting out the openings for the illuminated inserts.");
+  dinosList[1] = new dinoSection("fly1.jpg", "Running the wiring for the interior lights.");
+  dinosList[2] = new dinoSection("fly2.jpg", "Applying putty to hold the glass inserts.");
+  dinosList[3] = new dinoSection("fly3.jpg", "Testing the lights (look inside the tail).");
+  dinosList[4] = new dinoSection("fly4.jpg", "Adding more inserts.");
+  dinosList[5] = new dinoSection("fly5.jpg", "Putting the inserts into the head.");
+  dinosList[6] = new dinoSection("fly6.jpg", "More testing of the lights.");
+  dinosList[7] = new dinoSection("fly7.jpg", "Finishing up the inserts.");
+  dinosList[8] = new dinoSection("fly8.jpg", "Nice dinosaur, nice dinosaur...");
+  dinosList[9] = new dinoSection("fly9.jpg", "Applying the textured topcoat.");
+  dinosList[10] = new dinoSection("fly10.jpg", "After painting.");
+  dinosList[11] = new dinoSection("fly11.jpg", "On location at Station Square.");
+    dinosList[12] = new dinoSection("end.gif", "...or close this window to return to main site");
+
+  //code for the up button.  panel is which up button was clicked
+  function doDown(panel) {
+        //changes the current dinosaur to the previous one in the list.  keeps it within bounds
+        sect[panel]=(sect[panel]+1)%dinosList.length;
+        which = sect[panel];
+
+        //set the picture
+        document.images[panel+1].src=dinosList[which].pic[panel];
+
+        //puts the name portion underneath.  does not work for NS4.x browsers
+        if(document.all) {
+                document.all["t" + panel].innerText=dinosList[which].name[panel];
+                }
+
+        if(document.layers) {
+                /*var tochange;
+                switch(panel) {
+                        case 0:
+                                tochange = document.div0;
+                                break;
+                        
+						
+                       
+                        }
+
+                tochange.document.open();
+                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
+                tochange.document.close();*/
+                }
+
+        else {
+                textvar=document.getElementById("t" + panel);
+                textvar.firstChild.nodeValue=dinosList[which].name[panel];
+                }
+        }
+
+  function doUp(panel) {
+        //changes the current dinosaur to the next one in the list.  keeps it within bounds
+        sect[panel]=(sect[panel]+dinosList.length-1)%dinosList.length;
+        which = sect[panel];
+
+        //set the picture
+        document.images[panel+1].src=dinosList[which].pic[panel];
+
+        //puts the name portion underneath.  does not work for NS4.x browsers
+        if(document.all) {
+                document.all["t" + panel].innerText=dinosList[which].name[panel];
+                }
+
+        if(document.layers) {
+                /*var tochange;
+                switch(panel) {
+                        case 0:
+                                tochange = document.div0;
+                                break;
+                        
+						
+                        
+                        }
+
+                tochange.document.open();
+                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
+                tochange.document.close();*/
+                }
+
+        else {
+                textvar=document.getElementById("t" + panel);
+                textvar.firstChild.nodeValue=dinosList[which].name[panel];
+                }
+        }
+
+  
+  </script>
+
+</head>
+<body background="../../designs/graphics/bg_blue.gif" topmargin=5 leftmargin=0 marginwidth=0 marginheight=0>
+<table border=1 width=500 bgcolor="#FFFFFF" align=center>
+  <tr><td colspan=3><h4 align="center"><font size="3" face="Arial, Helvetica, sans-serif" color=009900>Lunasaurus 
+        Lux <font size="2">by</font></font><font size="3" face="Arial, Helvetica, sans-serif" color=009900><font size="2"> 
+        Jason Gotsch</font></font></h4>
+      <h4 align="center"><font size="2" face="Arial, Helvetica, sans-serif"> <b>Sponsor</b>: 
+        Forest City Station Square Associates<br>
+        <b>Location</b>: Bessemer Court, Station Square</font></h4>
+      </td></tr><tr align="center">
+ 
+  </tr>
+  <tr>
+   <td><img src="../../graphics/back.gif" width=59 height=21 border=0 onclick="doUp(0);"></td>
+    <td><img src="images/fly0.jpg" width=400 height=300 border=0></td>
+    <td><img src="../../graphics/next.gif" width=59 height=21 border=0 onclick="doDown(0);"></td>
+    
+      
+  </tr>
+  <tr align="center">
+  </tr>
+  <tr align=center>
+    <td colspan=3 align=center><div id="div0"> <font face="Arial, Helvetica, sans-serif" size=2 ID="t0">Cutting 
+        out the openings for the illuminated inserts.</font> </div></td>
+         
+      
+  </tr>
+</table>
+</body>
 </html>
