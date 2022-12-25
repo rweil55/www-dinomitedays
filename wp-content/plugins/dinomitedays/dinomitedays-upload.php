@@ -4,7 +4,7 @@ ini_set( "display_errors", false );
 error_reporting( E_ALL | E_STRICT );
 
 $picDire = "/home/pillowan/www-shaw-weil-pictures/wp-content/plugins";
-//require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
+require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
 /*  class uploadProcessDire {
  *       nameToBottom( $sourceFile, $photographer ) 
  *       resizeImage( $pathin, $pathout, $w_max, $h_max ) {
