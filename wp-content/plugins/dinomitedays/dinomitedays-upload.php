@@ -353,7 +353,7 @@ class dinomitedys_upload {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra, $rrw_dinos;
         $msg = "";
-        $debugSave = false;
+        $debugSave = true;
 
         try {
             if ( $debugSave ) {
@@ -416,18 +416,25 @@ class dinomitedys_upload {
                 if ( "coordinates" == $key ) {
                     // extract the coordianates and enter into database
                     $exif = exif_read_data( $tmp_name );
-                    $lat = $exif[ "latitude" ];
-                    $lng = $exif[ "longitude" ];
+                    if ( array_key_exists( "latitude", $exif ) ) {
+                        $lat = $exif[ "latitude" ];
+                        $lng = $exif[ "longitude" ];
+                    } else {
+                        $lat = 0;
+                        $lng = 0;
+                    }
                     if ( 0 == $lat || false === $lat || 0 == $lng || false === $lng ) {
                         $msg .= "$errorBeg E#755 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+                    } else {
+                        // check ranges
+                        $sqlup = array( "latitude" => $lat, "longitude" => $lng );
+                        $cnt = $wpdbExtra->update( $rrw_dinos, $sqlup, $keySelect );
+                        if ( 1 == $cnt )$msg .= "i#754 Coordinates updated. Please check 
+                            <a href='/last_seen/' > last seen </a> and the map $eol";
+                        else
+                            $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd ";
+                            $msg .= rrwUtil::print_r($sqlup, true, "the update array");
                     }
-                    // check ranges
-                    $sqlup = array( "latitude" => $lat, "longitude" => $lng );
-                    $cnt = $wpdbExtra->update( $rrw_dinos, $sqlup, $keySelect );
-                    if ( 1 == $cnt )$msg .= "i#754 Coordinates updated. Please check 
-                    <a href='/last_seen/' > last seen </a> and the map $eol";
-                    else
-                        $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd $sql $eol";
                     continue; // on to next file
                 } // end if (coordinates
                 //
@@ -448,7 +455,7 @@ class dinomitedys_upload {
                         $saveName, $finalName, 700, 200 ) $eol";
                 $msg .= uploadProcessDire::resizeImage( $saveName, $finalName, 700, 200 );
                 if ( !empty( $photographer ) ) {
-                    if ( $debugSave )$msg .= "E#799 nameToBottom( 
+                    if ( $debugSave )$msg .= "I#799 nameToBottom( 
                                     $finalName, $photographer ); $eol";
 
                     $msg .= uploadProcessDire::nameToBottom( $finalName, $photographer );
@@ -464,66 +471,66 @@ class dinomitedys_upload {
                 // then crete the -new file
                 $msg .= dinomitedys_make_html::UpdateImages( $dino );
             }
-            } // end try
-            catch ( Exception $ex ) {
-                $msg .= $ex->getMessage() . "$errorBeg  E#669 update $errorEnd";
-                throw new Exception( "$msg" );
-            }
-            return $msg;
-        } // end process_upload
-
-        private static function uploadErrorMsg( $err ) {
-            $phpFileUploadErrors = array(
-                0 => 'There is no error, the file uploaded with success',
-                1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-                2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-                3 => 'The uploaded file was only partially uploaded',
-                4 => 'No file was uploaded',
-                6 => 'Missing a temporary folder',
-                7 => 'Failed to write file to disk.',
-                8 => 'A PHP extension stopped the file upload.',
-            );
-            if ( $err > 8 || $err < 0 )
-                return "Unkown file upload error #$err ";
-            return $phpFileUploadErrors[ $err ];
+        } // end try
+        catch ( Exception $ex ) {
+            $msg .= $ex->getMessage() . "$errorBeg  E#669 update $errorEnd";
+            throw new Exception( "$msg" );
         }
+        return $msg;
+    } // end process_upload
+
+    private static function uploadErrorMsg( $err ) {
+        $phpFileUploadErrors = array(
+            0 => 'There is no error, the file uploaded with success',
+            1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+            2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+            3 => 'The uploaded file was only partially uploaded',
+            4 => 'No file was uploaded',
+            6 => 'Missing a temporary folder',
+            7 => 'Failed to write file to disk.',
+            8 => 'A PHP extension stopped the file upload.',
+        );
+        if ( $err > 8 || $err < 0 )
+            return "Unkown file upload error #$err ";
+        return $phpFileUploadErrors[ $err ];
+    }
 
 
-        /*
-            private static function detailFileUrl( $filename ) {
-                foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
-                    $fileFull = . "$filename$ext";
-                    if ( file_exists( $fileFull ) )
-                        return self::http . self::imagePath . "$filename$ext";
-                }
-                return $fileURL;
+    /*
+        private static function detailFileUrl( $filename ) {
+            foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
+                $fileFull = . "$filename$ext";
+                if ( file_exists( $fileFull ) )
+                    return self::http . self::imagePath . "$filename$ext";
             }
-            private static function pictureFileUrl( $filename ) {
-                $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
-                return $fileFull;
-            }
-            private static function listofFileFull( $filename ) {
-                $igonore1 = detailFilefull( $filename );
-                $igonore2 = pictureFileFull( $filename );
-                $list = array();
+            return $fileURL;
+        }
+        private static function pictureFileUrl( $filename ) {
+            $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
+            return $fileFull;
+        }
+        private static function listofFileFull( $filename ) {
+            $igonore1 = detailFilefull( $filename );
+            $igonore2 = pictureFileFull( $filename );
+            $list = array();
 
-                $hd = opendir( $self::imagedir );
-                while ( false !== ( $entry = readdir( $hd ) ) ) {
-                    if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
-                        continue;
-                    if ( $ignore1 == $entry || $ignore2 == $entry )
-                        continue;
-                    array_push( $list, $self::http . self::imagePath . "$entry" );
-                }
-                return $list;
+            $hd = opendir( $self::imagedir );
+            while ( false !== ( $entry = readdir( $hd ) ) ) {
+                if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
+                    continue;
+                if ( $ignore1 == $entry || $ignore2 == $entry )
+                    continue;
+                array_push( $list, $self::http . self::imagePath . "$entry" );
             }
-            private static function fileURL( $fileFull ) {
-                $url = str_replace( self::imagedire, "design/images/", $fileFull );
-                $url = get_site_url() . "$url";
-                return $url;
+            return $list;
+        }
+        private static function fileURL( $fileFull ) {
+            $url = str_replace( self::imagedire, "design/images/", $fileFull );
+            $url = get_site_url() . "$url";
+            return $url;
 
-            }
-            */
-    } // end class
+        }
+        */
+} // end class
 
-    ?>
+?>

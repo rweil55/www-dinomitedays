@@ -280,7 +280,8 @@ $eol $eol
             } else {
                 $iiClose = strrpos( $buffer, "Close", -1 );
                 if ( false === $iiClose ) {
-                    throw new Exception( "$msg $errorBeg E#657 $file no close $errorEnd" );
+                    throw new Exception( "$msg $errorBeg E#657 $file no close 
+                        while tryiing to update footer $errorEnd" );
                 }
                 $iiClose = $iiClose - 3;
 
