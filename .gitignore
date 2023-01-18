@@ -17,7 +17,7 @@
 /xmlrpc.php
 
 # Configuration
-#wp-config.php
+wp-config.php
 
 # Example themes
 /wp-content/themes/twenty*/
@@ -51,17 +51,16 @@ _notes/
 *.bak
 *.lck
 **/dwsync.xml
-_compare_dir
-_compareTemp
+_compare_dire
+/*/_notes/
+
 
 wp-content/plugins/awesome-support
 wp-content/plugins/updraftplus
-
 wp-content/plugins/freewheeling-map
 wp-content/plugins/upload-max-file-size
 wp-content/plugins/wp-crontrol
 wp-content/plugins/wp-staging
-
 wp-content/themes
 wp-content/updraft
 designs_newxxxxxxxxxxxxxx
