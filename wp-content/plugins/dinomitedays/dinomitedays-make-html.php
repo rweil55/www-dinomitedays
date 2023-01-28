@@ -17,7 +17,7 @@ class dinomitedys_make_html {
             $msg .= self::updateLocatonMap();
             $msg .= self::updateFosilLocations("%");  // do all pages
         } catch ( Exception $ex ) {
-            $msg .= "E#400 xxx catch " . $ex->getMessage();
+            $msg .= "E#771 xxx catch " . $ex->getMessage();
         }
         return $msg;
     }
@@ -167,7 +167,7 @@ class dinomitedys_make_html {
         $latitude, $longitude, $displayDate );
             } // end of each page/file
         } catch ( Exception $ex ) {
-            $msg .= "E#400 xxx catch while processnig <a href='/designs/$file.htm' target='final'> 
+            $msg .= "E#793 xxx catch while processnig <a href='/designs/$file.htm' target='final'> 
                     $file.htm </a> $eol" . $ex->getMessage();;
         }
 
