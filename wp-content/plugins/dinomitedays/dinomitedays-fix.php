@@ -367,7 +367,7 @@ $eol $eol
             self::rrw_dinomites . " where filename = '$item' ";
             $recnames = $wpdb->get_results( $sql, ARRAY_A );
             if ( 1 != $wpdb->num_rows ) {
-                $msg .= "$errorBeg E#658 Did not find a dinosour for $errorEnd
+                $msg .= "$errorBeg E#757 Did not find a dinosour for $errorEnd
                 $sql $eol";
                 continue;
             }
@@ -506,7 +506,7 @@ $eol $eol
         if ( file_exists( $fileNameOld ) ) {
             $result3 = rename( $fileNameOld, $filenameSave );
             if ( false === $result3 )
-                throw new Exception( "$msg $errorBeg E#669 failure of
+                throw new Exception( "$msg $errorBeg E#751 failure of
                             rename( $fileNameOld, $filenameSave ); $errorEnd" );
         }
         $result2 = rename( $fileNameNew, $fileNameOld );
