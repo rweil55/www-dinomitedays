@@ -242,7 +242,7 @@ $eol $eol
             if ( strpos( $File, "LCK" ) !== false )
                 continue;
             array_push( $list, $entry );
-            $msg .= ChangeFooter( $file );
+            $msg .= self::ChangeFooter( $File );
 
         } // end while ( false !== ( $entry = readdir( $hd ) ) ) {
 
@@ -800,7 +800,7 @@ WAIT SECONDS=4$eol";
         fwrite( $fp, $buffer );
         $iiSlash = strrpos( $fileLocOut, "/" );
         $newName = substr( $fileLocOut, $iiSlash );
-        $msg .= "<a href='https://www.dinomitedays.org/designs/${newName}' 
+        $msg .= "<a href='https://www.dinomitedays.org/designs/$newName' 
 			target='new' > $newName </a>";
 
         return $msg;
@@ -828,4 +828,3 @@ WAIT SECONDS=4$eol";
         return $msg;
     } // end unlink()
 } // end class
-?>

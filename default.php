@@ -1,349 +1,385 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<HTML><HEAD><TITLE>DinoMite Days - Carnegie Museum of Natural History</TITLE>
-<META http-equiv="PICS-Label" content='(PICS-1.1 "http://www.classify.org/safesurf/" l gen true for "https://dinomitedays.org/" r (SS~~000 1))'>
-<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
-<SCRIPT language=JavaScript type="text/javascript">
-<!--
+<HTML>
+
+<HEAD>
+  <TITLE>DinoMite Days - Carnegie Museum of Natural History</TITLE>
+  <META http-equiv="PICS-Label" content='(PICS-1.1 "http://www.classify.org/safesurf/" l gen true for "https://dinomitedays.org/" r (SS~~000 1))'>
+  <META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+  <SCRIPT language=JavaScript type="text/javascript">
+    function MM_preloadImages() { //v3.0
+      var d = document;
+      if (d.images) {
+        if (!d.MM_p) d.MM_p = new Array();
+        var i, j = d.MM_p.length,
+          a = MM_preloadImages.arguments;
+        for (i = 0; i < a.length; i++)
+          if (a[i].indexOf("#") != 0) {
+            d.MM_p[j] = new Image;
+            d.MM_p[j++].src = a[i];
+          }
+      }
+    }
+
+    function MM_swapImgRestore() { //v3.0
+      var i, x, a = document.MM_sr;
+      for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;
+    }
+
+    function MM_swapImage() { //v3.0
+      var i, j = 0,
+        x, a = MM_swapImage.arguments;
+      document.MM_sr = new Array;
+      for (i = 0; i < (a.length - 2); i += 3)
+        if ((x = MM_findObj(a[i])) != null) {
+          document.MM_sr[j++] = x;
+          if (!x.oSrc) x.oSrc = x.src;
+          x.src = a[i + 2];
+        }
+    }
+
+    function MM_findObj(n, d) { //v4.01
+      var p, i, x;
+      if (!d) d = document;
+      if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+        d = parent.frames[n.substring(p + 1)].document;
+        n = n.substring(0, p);
+      }
+      if (!(x = d[n]) && d.all) x = d.all[n];
+      for (i = 0; !x && i < d.forms.length; i++) x = d.forms[i][n];
+      for (i = 0; !x && d.layers && i < d.layers.length; i++) x = MM_findObj(n, d.layers[i].document);
+      if (!x && d.getElementById) x = d.getElementById(n);
+      return x;
+    }
+
+    function jumpPage(newLoc) {
+
+      newPage = newLoc.options[newLoc.selectedIndex].value
 
 
-<!--
 
-<!--
-function MM_preloadImages() { //v3.0
-  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
-    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
-    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
-}
+      if (newPage != "") {
 
-function MM_swapImgRestore() { //v3.0
-  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
-}
+        window.location.href = newPage
 
-function MM_swapImage() { //v3.0
-  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
-   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
-}
+      }
 
-function MM_findObj(n, d) { //v4.01
-  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
-    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
-  if(!x && d.getElementById) x=d.getElementById(n); return x;
-}
+    }
+    //-->
+  </SCRIPT>
 
-function jumpPage(newLoc) {
+  <META content="DinoMite Days, Dynomite Days, Dinosaurs, public art, Pittsburgh, Carnegie Museum of Natural History, street art, Dinosaurs on Parade, Tyrannosaurus rex, Torosaurus, Stegosaurus, cultural display, paintings, sculptures" name=keywords>
+  <META content="Carnegie Museum of Natural History and the City of Pittsburgh, Pennsylvania are proud to announce DinoMite Days -- a citywide art event that celebrates Pittsburgh's international reputation for scientific excellence while showcasing emerging and established artists." name=description>
+  <META content="MSHTML 5.50.4522.1800" name=GENERATOR>
+</HEAD>
 
-			newPage = newLoc.options[newLoc.selectedIndex].value
+<BODY background="graphics/bg.gif" text="000000" leftmargin=0 topmargin=0 marginwidth=0 marginheight=0 onload="MM_preloadImages('graphics/event_over.gif','graphics/pics_over.gif','graphics/exhibit_over.gif','graphics/auction_over.gif','graphics/merch_over.gif','graphics/home_over.gif','graphics/media_over.gif','graphics/sponsor_over.gif','graphics/fun_over.gif')" bg="#FF9900">
+  <TABLE align=center cellSpacing=0 cellPadding=0 width="751" border=0>
+    <TBODY>
+      <TR>
+        <TD width="751" vAlign=top>
+          <DIV align=center>
+            <TABLE cellSpacing=0 cellPadding=0 border=0 name="secondary">
+              <TBODY>
+                <tr>
+                  <TD width="15" align=right valign=top><img src="graphics/head_left.gif" width="15" height="111" hspace=0></TD>
+                  <TD width="736" bgcolor="#FFFFFF">
+                    <TABLE width=736 border=0 cellPadding=0 cellSpacing=0 name="primary">
+                      <TBODY>
+                        <TR>
+                          <TD width=550 vAlign=top background="graphics/bg_long.gif">
+                            <DIV align=center>
+                              <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                                <TBODY>
+                                  <TR>
+                                    <TD align=left vAlign=bottom bgcolor="#FFFFFF">
+                                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                          <td bgcolor="#FFFFFF" valign=top><img src="graphics/head_welc.gif" alt="Welcome to DinoBurgh!" width="550" height="57" hspace="0"></td>
+                                        </tr>
+                                      </table>
+                                      <table bgcolor="#FFFFFF" width="100%" border="0" cellspacing="0" cellpadding="0">
 
-	
+                                        <tr>
+                                          <td width="550" valign=top background="graphics/bg_long.gif" bgcolor="#FFFFFF"><img src="graphics/head_block.gif" width="550" height="54" hspace=0 alt="header"></td>
+                                        </tr>
+                                        <tr>
 
-			if (newPage != "") {
 
-				window.location.href = newPage
-
-			}
-
-		}
-//-->
-</SCRIPT>
-
-<META 
-content="DinoMite Days, Dynomite Days, Dinosaurs, public art, Pittsburgh, Carnegie Museum of Natural History, street art, Dinosaurs on Parade, Tyrannosaurus rex, Torosaurus, Stegosaurus, cultural display, paintings, sculptures" 
-name=keywords>
-<META 
-content="Carnegie Museum of Natural History and the City of Pittsburgh, Pennsylvania are proud to announce DinoMite Days -- a citywide art event that celebrates Pittsburgh's international reputation for scientific excellence while showcasing emerging and established artists." 
-name=description>
-<META content="MSHTML 5.50.4522.1800" name=GENERATOR></HEAD>
-<BODY background="graphics/bg.gif" text="000000" leftmargin=0 topmargin=0 marginwidth=0 marginheight=0
-onload="MM_preloadImages('graphics/event_over.gif','graphics/pics_over.gif','graphics/exhibit_over.gif','graphics/auction_over.gif','graphics/merch_over.gif','graphics/home_over.gif','graphics/media_over.gif','graphics/sponsor_over.gif','graphics/fun_over.gif')" bg="#FF9900">
-<TABLE align=center cellSpacing=0 cellPadding=0 width="751" border=0>
-  <TBODY>
-  <TR>
-      <TD width="751" vAlign=top> 
-        <DIV align=center>
-          <TABLE cellSpacing=0 cellPadding=0 border=0 name="secondary">
-            <TBODY>
-              <tr> 
-                <TD width="15" align=right valign=top><img src="graphics/head_left.gif" width="15" height="111" hspace=0></TD>
-                <TD width="736" bgcolor="#FFFFFF"><TABLE width=736 border=0 cellPadding=0 cellSpacing=0 
-            name="primary">
-                    <TBODY>
-                      <TR> 
-                        <TD width=550 vAlign=top background="graphics/bg_long.gif"> 
-                          <DIV align=center> 
-                            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
-                              <TBODY>
-                                <TR> 
-                                  <TD align=left vAlign=bottom bgcolor="#FFFFFF"> 
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                      <tr> 
-                                        <td bgcolor="#FFFFFF" valign=top><img src="graphics/head_welc.gif" alt="Welcome to DinoBurgh!" width="550" height="57" hspace="0"></td>
-                                      </tr>
-                                    </table>
-                                    <table bgcolor="#FFFFFF" width="100%" border="0" cellspacing="0" cellpadding="0">
-                                      
-                                      <tr>
-									    <td width="550" valign=top background="graphics/bg_long.gif" bgcolor="#FFFFFF"><img src="graphics/head_block.gif" width="550" height="54" hspace=0 alt="header"></td>
-                                      </tr> <tr> 
-                                              
-                                              
-                                        <td valign=top background="graphics/bg_long.gif"><img src="transparent.gif" align=left width=20 hspace=0><img src="graphics/head_block_left.gif" width="234" height="128" align=left hspace=0 vspace=0 alt="Geniusaurus"><font size="2" face="Arial, Helvetica, sans-serif">are 
-                                          proud to present DinoMite Days<sup>SM</sup>, 
-                                          an event that turned back the clock 
-                                          to the Age of Dinosaurs!</font><p></p> 
-                                          <p><font size="2" face="Arial, Helvetica, sans-serif">This 
-                                            event celebrated Carnegie Museum of 
-                                            Natural History's reputation for scientific 
-                                            excellence, while showcasing the talents 
-                                            of established and emerging artists.</font></p>
+                                          <td valign=top background="graphics/bg_long.gif"><img src="transparent.gif" align=left width=20 hspace=0><img src="graphics/head_block_left.gif" width="234" height="128" align=left hspace=0 vspace=0 alt="Geniusaurus">
+                                            <font size="2" face="Arial, Helvetica, sans-serif">are
+                                              proud to present DinoMite Days<sup>SM</sup>,
+                                              an event that turned back the clock
+                                              to the Age of Dinosaurs!</font>
+                                            <p></p>
+                                            <p>
+                                              <font size="2" face="Arial, Helvetica, sans-serif">This
+                                                event celebrated Carnegie Museum of
+                                                Natural History's reputation for scientific
+                                                excellence, while showcasing the talents
+                                                of established and emerging artists.</font>
+                                            </p>
                                           </td>
-                                            </tr><tr><td><table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                            <tr> 
-                                              <td valign=top><img src="fun/graphics/orng_top_corner.gif" width="20" height="10" hspace=0></td>
-                                              <td valign=top><img src="fun/graphics/orng_top.gif" hspace=0 width=250></td>
-                                              <td valign=top><img src="graphics/mid_top.gif" width=10></td>
-                                              <td valign=top width=249><img src="fun/graphics/green_top.gif" width=249></td>
-                                              <td valign=top><img src="fun/graphics/green_top_corner.gif" width="10" height="10"></td>
-                                            </tr>
-                                            <tr> 
-                                              <td width="19" background="graphics/orng_left.gif"><img src="transparent.gif" width="20" hspace=0></td>
-                                             <td width=250 valign=top background="graphics/white.gif"><p align="center"> 
-                                                 <img src="graphics/results.gif" width="181" height="29" alt="Hug one!"><br>
-                                                  <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif"><b><font color="#003399" size="2">The 
-                                                  stampede is over!&nbsp; Check 
-                                                  the status </font><font color="#003399" size="2">of 
-                                                  your favorite dinos: <br>
-                                                  </font></b></font><b><a href="sold_price.htm"><font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif">By 
-                                                  Price</font></a></b> | <a href="sold_dino.htm"><font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By 
-                                                  Dino</b></font></a> | <b><a href="sold_lot.htm"><font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By 
-                                                  Lot</b></font></a></b><br>
-                                                  <b><a href="sold_sponsor.htm"><font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif">By 
-                                                  Sponsor</font></a></b> | <a href="sold_artist.htm"><font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By 
-                                                  Artist</b></font></a><br>
-                                                  <a href="/last_seen/"><font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By 
-                                                  Last seen date</b></font></a> | <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By Map</b></font><br>
-                                                
-                                             </p>
-                                                 <p align="center"><font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>If 
-                                                     you are a dinosaur owner, please</b></font><br>
-                                                  <a href="online.htm"><font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>click 
-                                                  for repair information</b></font></a> 
-                                                  <br>
-                                                     <a href="upload"><font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>click 
-                                                  to  update information</b></font></a> <br>
-                                                 </p></td>
-                                              <td width=10 background="fun/graphics/mid_top.gif" valign=top><img src="transparent.gif" width="10"></td>
-                                              <td valign=top width=249 background="graphics/white.gif"><p align="center"><font color="#003399" size="2" face="Arial, Helvetica, sans-serif"><b>Search by picture !<br>
-                                                  <a href="pictures.htm"><img src="graphics/pictureCollection2.png" alt="magnet" width="200" border="0"></a> 
-                                                  </b></font> </p></td>
-                                              <td width=20 valign=top background="graphics/green_right.gif"><img src="transparent.gif" width="10"></td>
-                                            </tr>
-                                            <tr> 
-                                              <td background="graphics/blue_left.gif" valign=top><img src="fun/graphics/split_left.gif" width=20 height=10 hspace=0></td>
-                                              <td valign=top><img src="fun/graphics/split_mid_left.gif" width=250 height=10 hspace=0></td>
-                                              <td valign=top background="fun/graphics/mid_down.gif"><img src="fun/graphics/four_corners.gif" width=10 height=10></td>
-                                              <td valign=top><img src="fun/graphics/split_mid_right.gif" width=249 height=10></td>
-                                              <td background="graphics/red_right.gif" valign=top><img src="fun/graphics/split_right.gif" width=10 height=10></td>
-                                            </tr>
-                                            <tr> 
-                                              <td width=19 background="graphics/blue_left.gif"><img src="transparent.gif" width="20" hspace=0></td>
-                                               <td colspan="3" valign=top background="graphics/white.gif"><div align="center"> 
-                                                  <p align="left"><font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif"><font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif"><font color="#000000" size="2"><b><a href="sold_dino.htm"><font color="#FF9900" size="3" face="Arial, Helvetica, sans-serif"><b><img src="graphics/0006_sm.gif" alt="Cogitatio Aeterna" width="120" height="110" border="0" align="left"></b></font></a></b></font></font><font color="#000000" size="2">&quot;TIME 
-                                                    MARCHES ON, so it's only natural 
-                                                    that Pittsburgh's age of the 
-                                                    dinosaurs would come to an 
-                                                    end. They were not real dinosaurs 
-                                                    &#8212; not like the county 
-                                                    row offices &#8212; but the 
-                                                    fanciful re-creations of dinosaur-inspired 
-                                                    artists. For four months, 
-                                                    the herd of 100 DinoMite Days 
-                                                    dinosaurs brightened many 
-                                                    parts of the region as </font><font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif"><b><a href="sold_lot.htm"><img src="graphics/rex_sm.gif" alt="Amazing Hands" width="66" height="80" border=0 align="right"></a></b></font><font color="#000000" size="2">a 
-                                                    fund-raising venture for Carnegie 
-                                                    Museum of Natural History, 
-                                                    which, of course, is renowned 
-                                                    for its dinosaur bone collection. 
-                                                    The dinosaurs have been auctioned 
-                                                    off to raise money for renovation 
-                                                    of the museum's Dinosaur Hall, 
-                                                    as well as charities....Pittsburgh 
-                                                    will miss these wonderful 
-                                                    creatures. Indeed, nothing 
-                                                    like it has been seen around 
-                                                    here since prehistoric times.&quot; 
-                                                    </font></font></p>
-                                                  <p align="right"><font color="#000000" size="2" face="Arial, Helvetica, sans-serif">&#8212; 
-                                                    <i>Pittsburgh Post-Gazette</i>, 
-                                                    Sunday, November 02, 2003</font></p>
-                                                </div></td>
-                                              <td width="20" background="graphics/red_right.gif"><img src="transparent.gif" width="10"></td>
-                                            </tr>
-                                            <tr> 
-                                              <td><img src="fun/graphics/blue_low_corner.gif" height=10 width=20 hspace=0></td>
-                                              <td><img src="graphics/hands_mid.jpg" width="250" height="10" hspace="0" vspace=0></td>
-                                              <td><img src="fun/graphics/mid_low.gif" width="10" height="10"></td>
-                                              <td><img src="fun/graphics/red_low.gif" width=249 height=10></td>
-                                              <td><img src="fun/graphics/red_right_corner.gif" width="10" height="10"></td>
-                                            </tr>
-                                          </table></td></tr></table></TD>
-                                </TR>
-                              </TBODY>
-                            </TABLE>
-                            <p><img src="fun/dinonames/graphics/trex19.gif" width="400" height="40"></p>
-                          </DIV></TD>
-                        <TD width=175 vAlign=top background="graphics/menu_bar_long.jpg"> 
-                          <DIV align=center> 
-                            <TABLE cellSpacing=0 cellPadding=0 width=175 border=0>
-                              <TBODY>
-                                <TR vAlign=top> 
-                                  <!-- row 1 -->
-                                  <TD width="175" bgcolor="#FFFFFF"><a href="index.htm"><IMG 
-                        
-                        src="graphics/logo.gif" alt="logo" 
-                        width=175 height=111 hspace="0" border=0></a></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 2 -->
-                                  <TD><A 
-                        href="gala.htm"><IMG 
-                        onmouseover="MM_swapImage('exhibit','','graphics/exhibit_over.gif',1)" 
-                        onmouseout=MM_swapImgRestore() height=29 
-                        alt="Gala & Live Auction" 
-                        src="graphics/exhibit.jpg" 
-                        width=175 border=0 name=exhibit></A></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 2 -->
-                                  <TD><a 
-                        href="online.htm"><img 
-                        onMouseOver="MM_swapImage('auction_info','','graphics/auction_over.gif',1)" onMouseOut=MM_swapImgRestore() height=29 
-                        alt="Auction Information" 
-                        src="graphics/auction.jpg" 
-                        width=175 border=0 name=auction_info></a></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 3 -->
-                                  <TD><A 
-                        href="pictures.htm"><IMG 
-                        onmouseover="MM_swapImage('dino_pictures','','graphics/pics_over.gif',1)" 
-                        onmouseout=MM_swapImgRestore() height=29 
-                        alt="Dinosaur Pictures" 
-                        src="graphics/pics.jpg" 
-                        width=175 border=0 name=dino_pictures></A></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 3 -->
-                                  <TD><A 
-                        href="store.htm"><IMG 
-                        onmouseover="MM_swapImage('merch','','graphics/merch_over.gif',1)" 
-                        onmouseout=MM_swapImgRestore() height=29 
-                        alt="DinoStore" 
-                        src="graphics/merch.jpg" 
-                        width=175 border=0 name=merch></A></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 5 -->
-                                  <TD><A 
-                        href="events.htm"><IMG 
-                        onmouseover="MM_swapImage('event_sched','','graphics/event_over.gif',1)" 
-                        onmouseout=MM_swapImgRestore() height=29 
-                        alt="Event Schedule" 
-                        src="graphics/event.jpg" 
-                        width=175 border=0 name=event_sched></A></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 5 -->
-                                  <TD><A 
-                        href="fun.htm"><IMG 
-                        onmouseover="MM_swapImage('fun','','graphics/fun_over.gif',1)" 
-                        onmouseout=MM_swapImgRestore() height=29 
-                        alt="Games and Puzzles" 
-                        src="graphics/fun.jpg" 
-                        width=175 border=0 name=fun></A></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 5 -->
-                                  <TD><a 
-                        href="media.htm"><img 
-                        onMouseOver="MM_swapImage('sponsaurships','','graphics/media_over.gif',1)" 
-                        onMouseOut=MM_swapImgRestore() height=29 
-                        alt="Press Releases and News" 
-                        src="graphics/media.jpg" 
-                        width=175 border=0 name=sponsaurships></a></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 6 -->
-                                  <TD><a 
-                        href="sponsorship.htm"><img 
-                        onMouseOver="MM_swapImage('press','','graphics/sponsor_over.gif',1)" height=29 
-                        onMouseOut=MM_swapImgRestore() alt="How to Sponsor" 
-                        src="graphics/sponsor.jpg" 
-                        width=175 border=0 name=press></a></TD>
-                                </TR>
-                                <TR vAlign=top> 
-                                  <!-- row 7 -->
-                                  <TD><a 
-                        href="index.htm"><img 
-                        onMouseOver="MM_swapImage('home','','graphics/home_over.gif',1)" height=29 
-                        onMouseOut=MM_swapImgRestore() alt="Home" 
-                        src="graphics/home.jpg" 
-                        width=175 border=0 name=home></a></TD>
-                                </TR>
-                              </TBODY>
-                            </TABLE>
-                            <img src="graphics/laurel.gif" name="Laurel" alt="Major sponsor: The Laurel Foundation" width="175" height="86" border="0"><br>
-            <a href="https://carnegiemnh.org/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('cmnh','','graphics/cmnh_over.gif',1)" target="top"><img src="graphics/cmnh.gif" name="cmnh" alt="CMNH website" width="147" height="114" border="0"></a><p>
-                                            </p></DIV></TD>
-                        <TD width=11 vAlign=top background="graphics/bg.gif" align=left><img src="graphics/logo_right.gif" width=11 height=111></TD>
-                      </TR>
-                    </TBODY>
-                  </TABLE></TD>
-              </TR>
-              <TR> 
-                <TD align=right><img src="graphics/transparent.gif" width="1" height="3"></td>
-                <TD><table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#003366">
-                    <tr> 
-                      <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
-                      <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
-                     <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
-                     <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
-                      <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr> 
-                <td colspan="2" width=751><DIV align=center><font size="2" face="Arial, Helvetica, sans-serif"><b>Dinosaurs:&nbsp; 
-                    </b> <a href="maps/">maps</a> . <a href="auctions.htm">gala & auctions</a> . <a href="pictures.htm">dino pictures</a> . <a href="fun.htm">fun 
-                    stuff!</a> . <a href="store.htm">dinostore</a> . <a href="awards.htm">people's 
-                    choice</a><br>
-                    <b>Information:&nbsp; </b><a href="media.htm">media room</a> 
-                    . <a href="sponsorship.htm">sponsorship</a> . <a href="fun.htm"></a><b> 
-                    </b> <a href="events.htm">events</a> . <a href="index.htm">home</a> 
-                    . <a href="mailto:cmnhweb@carnegiemnh.org">contact us</a> 
-                    . <a href="web.htm">website</a><br>
-                    <b>Search by:</b>&nbsp; <a href="steg.htm">stegosaurus</a> 
-                    . <a href="toro.htm">torosaurus</a> . <a href="rex.htm">t. 
-                    rex</a> . <a href="maps/">location</a> . <a href="artist.htm">artist</a> 
-                    . <a href="sponsor.htm">sponsor</a></font> 
-                    <p align="center"><font size="2" face="Arial, Helvetica, sans-serif"><a name="floor"></a>&copy; 
-                      2003 Carnegie Museum of Natural History<sup>&reg;</sup> and DinoMite 
-                      Days<sup>SM</sup></font></p>
-                    <p align="center">&nbsp;</p>
-                  </DIV></TD>
-              </TR>
-          </TABLE>
-        </DIV></TD></TR></TBODY></TABLE>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                              <tr>
+                                                <td valign=top><img src="fun/graphics/orng_top_corner.gif" width="20" height="10" hspace=0></td>
+                                                <td valign=top><img src="fun/graphics/orng_top.gif" hspace=0 width=250></td>
+                                                <td valign=top><img src="graphics/mid_top.gif" width=10></td>
+                                                <td valign=top width=249><img src="fun/graphics/green_top.gif" width=249></td>
+                                                <td valign=top><img src="fun/graphics/green_top_corner.gif" width="10" height="10"></td>
+                                              </tr>
+                                              <tr>
+                                                <td width="19" background="graphics/orng_left.gif"><img src="transparent.gif" width="20" hspace=0></td>
+                                                <td width=250 valign=top background="graphics/white.gif">
+                                                  <p align="center">
+                                                    <img src="graphics/results.gif" width="181" height="29" alt="Hug one!"><br>
+                                                    <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif"><b>
+                                                        <font color="#003399" size="2">The
+                                                          stampede is over!&nbsp; Check
+                                                          the status </font>
+                                                        <font color="#003399" size="2">of
+                                                          your favorite dinos: <br>
+                                                        </font>
+                                                      </b></font><b><a href="sold_price.htm">
+                                                        <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif">By
+                                                          Price</font>
+                                                      </a></b> | <a href="sold_dino.htm">
+                                                      <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By
+                                                          Dino</b></font>
+                                                    </a> | <b><a href="sold_lot.htm">
+                                                        <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By
+                                                            Lot</b></font>
+                                                      </a></b><br>
+                                                    <b><a href="sold_sponsor.htm">
+                                                        <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif">By
+                                                          Sponsor</font>
+                                                      </a></b> | <a href="sold_artist.htm">
+                                                      <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By
+                                                          Artist</b></font>
+                                                    </a><br>
+                                                    <a href="/last_seen/">
+                                                      <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By
+                                                          Last seen date</b></font>
+                                                    </a> | <font color="#FF9900" size="2" face="Arial, Helvetica, sans-serif"><b>By Map</b></font><br>
 
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-9896236-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-</body></HTML>
+                                                  </p>
+                                                  <p align="center">
+                                                    <font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>If
+                                                        you are a dinosaur owner, please</b></font><br>
+                                                    <a href="online.htm">
+                                                      <font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>click
+                                                          for repair information</b></font>
+                                                    </a>
+                                                    <br>
+                                                    <a href="upload">
+                                                      <font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>click
+                                                          to update information</b></font>
+                                                    </a> <br>
+                                                  </p>
+                                                </td>
+                                                <td width=10 background="fun/graphics/mid_top.gif" valign=top><img src="transparent.gif" width="10"></td>
+                                                <td valign=top width=249 background="graphics/white.gif">
+                                                  <p align="center">
+                                                    <font color="#003399" size="2" face="Arial, Helvetica, sans-serif"><b>Search by picture !<br>
+                                                        <a href="pictures.htm"><img src="graphics/pictureCollection2.png" alt="magnet" width="200" border="0"></a>
+                                                      </b></font>
+                                                  </p>
+                                                </td>
+                                                <td width=20 valign=top background="graphics/green_right.gif"><img src="transparent.gif" width="10"></td>
+                                              </tr>
+                                              <tr>
+                                                <td background="graphics/blue_left.gif" valign=top><img src="fun/graphics/split_left.gif" width=20 height=10 hspace=0></td>
+                                                <td valign=top><img src="fun/graphics/split_mid_left.gif" width=250 height=10 hspace=0></td>
+                                                <td valign=top background="fun/graphics/mid_down.gif"><img src="fun/graphics/four_corners.gif" width=10 height=10></td>
+                                                <td valign=top><img src="fun/graphics/split_mid_right.gif" width=249 height=10></td>
+                                                <td background="graphics/red_right.gif" valign=top><img src="fun/graphics/split_right.gif" width=10 height=10></td>
+                                              </tr>
+                                              <tr>
+                                                <td width=19 background="graphics/blue_left.gif"><img src="transparent.gif" width="20" hspace=0></td>
+                                                <td colspan="3" valign=top background="graphics/white.gif">
+                                                  <div align="center">
+                                                    <p align="left">
+                                                      <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif">
+                                                        <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif">
+                                                          <font color="#000000" size="2"><b><a href="sold_dino.htm">
+                                                                <font color="#FF9900" size="3" face="Arial, Helvetica, sans-serif"><b><img src="graphics/0006_sm.gif" alt="Cogitatio Aeterna" width="120" height="110" border="0" align="left"></b></font>
+                                                              </a></b></font>
+                                                        </font>
+                                                        <font color="#000000" size="2">&quot;TIME
+                                                          MARCHES ON, so it's only natural
+                                                          that Pittsburgh's age of the
+                                                          dinosaurs would come to an
+                                                          end. They were not real dinosaurs
+                                                          &#8212; not like the county
+                                                          row offices &#8212; but the
+                                                          fanciful re-creations of dinosaur-inspired
+                                                          artists. For four months,
+                                                          the herd of 100 DinoMite Days
+                                                          dinosaurs brightened many
+                                                          parts of the region as </font>
+                                                        <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif"><b><a href="sold_lot.htm"><img src="graphics/rex_sm.gif" alt="Amazing Hands" width="66" height="80" border=0 align="right"></a></b></font>
+                                                        <font color="#000000" size="2">a
+                                                          fund-raising venture for Carnegie
+                                                          Museum of Natural History,
+                                                          which, of course, is renowned
+                                                          for its dinosaur bone collection.
+                                                          The dinosaurs have been auctioned
+                                                          off to raise money for renovation
+                                                          of the museum's Dinosaur Hall,
+                                                          as well as charities....Pittsburgh
+                                                          will miss these wonderful
+                                                          creatures. Indeed, nothing
+                                                          like it has been seen around
+                                                          here since prehistoric times.&quot;
+                                                        </font>
+                                                      </font>
+                                                    </p>
+                                                    <p align="right">
+                                                      <font color="#000000" size="2" face="Arial, Helvetica, sans-serif">&#8212;
+                                                        <i>Pittsburgh Post-Gazette</i>,
+                                                        Sunday, November 02, 2003
+                                                      </font>
+                                                    </p>
+                                                  </div>
+                                                </td>
+                                                <td width="20" background="graphics/red_right.gif"><img src="transparent.gif" width="10"></td>
+                                              </tr>
+                                              <tr>
+                                                <td><img src="fun/graphics/blue_low_corner.gif" height=10 width=20 hspace=0></td>
+                                                <td><img src="graphics/hands_mid.jpg" width="250" height="10" hspace="0" vspace=0></td>
+                                                <td><img src="fun/graphics/mid_low.gif" width="10" height="10"></td>
+                                                <td><img src="fun/graphics/red_low.gif" width=249 height=10></td>
+                                                <td><img src="fun/graphics/red_right_corner.gif" width="10" height="10"></td>
+                                              </tr>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </TD>
+                                  </TR>
+                                </TBODY>
+                              </TABLE>
+                              <p><img src="fun/dinonames/graphics/trex19.gif" width="400" height="40"></p>
+                            </DIV>
+                          </TD>
+                          <TD width=175 vAlign=top background="graphics/menu_bar_long.jpg">
+                            <DIV align=center>
+                              <TABLE cellSpacing=0 cellPadding=0 width=175 border=0>
+                                <TBODY>
+                                  <TR vAlign=top>
+                                    <!-- row 1 -->
+                                    <TD width="175" bgcolor="#FFFFFF"><a href="index.htm"><IMG src="graphics/logo.gif" alt="logo" width=175 height=111 hspace="0" border=0></a></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 2 -->
+                                    <TD><A href="gala.htm"><IMG onmouseover="MM_swapImage('exhibit','','graphics/exhibit_over.gif',1)" onmouseout=MM_swapImgRestore() height=29 alt="Gala & Live Auction" src="graphics/exhibit.jpg" width=175 border=0 name=exhibit></A></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 2 -->
+                                    <TD><a href="online.htm"><img onMouseOver="MM_swapImage('auction_info','','graphics/auction_over.gif',1)" onMouseOut=MM_swapImgRestore() height=29 alt="Auction Information" src="graphics/auction.jpg" width=175 border=0 name=auction_info></a></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 3 -->
+                                    <TD><A href="pictures.htm"><IMG onmouseover="MM_swapImage('dino_pictures','','graphics/pics_over.gif',1)" onmouseout=MM_swapImgRestore() height=29 alt="Dinosaur Pictures" src="graphics/pics.jpg" width=175 border=0 name=dino_pictures></A></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 3 -->
+                                    <TD><A href="store.htm"><IMG onmouseover="MM_swapImage('merch','','graphics/merch_over.gif',1)" onmouseout=MM_swapImgRestore() height=29 alt="DinoStore" src="graphics/merch.jpg" width=175 border=0 name=merch></A></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 5 -->
+                                    <TD><A href="events.htm"><IMG onmouseover="MM_swapImage('event_sched','','graphics/event_over.gif',1)" onmouseout=MM_swapImgRestore() height=29 alt="Event Schedule" src="graphics/event.jpg" width=175 border=0 name=event_sched></A></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 5 -->
+                                    <TD><A href="fun.htm"><IMG onmouseover="MM_swapImage('fun','','graphics/fun_over.gif',1)" onmouseout=MM_swapImgRestore() height=29 alt="Games and Puzzles" src="graphics/fun.jpg" width=175 border=0 name=fun></A></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 5 -->
+                                    <TD><a href="media.htm"><img onMouseOver="MM_swapImage('sponsaurships','','graphics/media_over.gif',1)" onMouseOut=MM_swapImgRestore() height=29 alt="Press Releases and News" src="graphics/media.jpg" width=175 border=0 name=sponsaurships></a></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 6 -->
+                                    <TD><a href="sponsorship.htm"><img onMouseOver="MM_swapImage('press','','graphics/sponsor_over.gif',1)" height=29 onMouseOut=MM_swapImgRestore() alt="How to Sponsor" src="graphics/sponsor.jpg" width=175 border=0 name=press></a></TD>
+                                  </TR>
+                                  <TR vAlign=top>
+                                    <!-- row 7 -->
+                                    <TD><a href="index.htm"><img onMouseOver="MM_swapImage('home','','graphics/home_over.gif',1)" height=29 onMouseOut=MM_swapImgRestore() alt="Home" src="graphics/home.jpg" width=175 border=0 name=home></a></TD>
+                                  </TR>
+                                </TBODY>
+                              </TABLE>
+                              <img src="graphics/laurel.gif" name="Laurel" alt="Major sponsor: The Laurel Foundation" width="175" height="86" border="0"><br>
+                              <a href="https://carnegiemnh.org/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('cmnh','','graphics/cmnh_over.gif',1)" target="top"><img src="graphics/cmnh.gif" name="cmnh" alt="CMNH website" width="147" height="114" border="0"></a>
+                              <p>
+                              </p>
+                            </DIV>
+                          </TD>
+                          <TD width=11 vAlign=top background="graphics/bg.gif" align=left><img src="graphics/logo_right.gif" width=11 height=111></TD>
+                        </TR>
+                      </TBODY>
+                    </TABLE>
+                  </TD>
+                </TR>
+                <TR>
+                  <TD align=right><img src="graphics/transparent.gif" width="1" height="3"></td>
+                  <TD>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#003366">
+                      <tr>
+                        <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
+                        <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
+                        <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
+                        <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
+                        <td height="3" align=left><img src="graphics/transparent.gif" width="1" height="3"></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" width=751>
+                    <DIV align=center>
+                      <font size="2" face="Arial, Helvetica, sans-serif"><b>Dinosaurs:&nbsp;
+                        </b> <a href="maps/">maps</a> . <a href="auctions.htm">gala & auctions</a> . <a href="pictures.htm">dino pictures</a> . <a href="fun.htm">fun
+                          stuff!</a> . <a href="store.htm">dinostore</a> . <a href="awards.htm">people's
+                          choice</a><br>
+                        <b>Information:&nbsp; </b><a href="media.htm">media room</a>
+                        . <a href="sponsorship.htm">sponsorship</a> . <a href="fun.htm"></a><b>
+                        </b> <a href="events.htm">events</a> . <a href="index.htm">home</a>
+                        . <a href="mailto:cmnhweb@carnegiemnh.org">contact us</a>
+                        . <a href="web.htm">website</a><br>
+                        <b>Search by:</b>&nbsp; <a href="steg.htm">stegosaurus</a>
+                        . <a href="toro.htm">torosaurus</a> . <a href="rex.htm">t.
+                          rex</a> . <a href="maps/">location</a> . <a href="artist.htm">artist</a>
+                        . <a href="sponsor.htm">sponsor</a>
+                      </font>
+                      <p align="center">
+                        <font size="2" face="Arial, Helvetica, sans-serif"><a name="floor"></a>&copy;
+                          2003 Carnegie Museum of Natural History<sup>&reg;</sup> and DinoMite
+                          Days<sup>SM</sup></font>
+                      </p>
+                      <p align="center">&nbsp;</p>
+                    </DIV>
+                  </TD>
+                </TR>
+            </TABLE>
+          </DIV>
+        </TD>
+      </TR>
+    </TBODY>
+  </TABLE>
+
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+    try {
+      var pageTracker = _gat._getTracker("UA-9896236-1");
+      pageTracker._trackPageview();
+    } catch (err) {}
+  </script>
+</body>
+
+</HTML>
