@@ -3,6 +3,7 @@
         "../freewheeling-edit/includes",
         "../freewheeling-edit",
         "../freewheeling-map",
-        "c:/inetpub/wwwroot/ww-include"
+        "c:/inetpub/wwwroot/ww-include",
+        "D:/a2-pillowan/www-royweil-testsite/wp-content/plugins/roys-picture-processng"
     ]
 }

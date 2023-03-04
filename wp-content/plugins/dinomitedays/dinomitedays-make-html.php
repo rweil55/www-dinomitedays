@@ -240,4 +240,3 @@ class dinomitedys_make_html {
     } // end findRelated
 
 } // end class findRelated
-?>
