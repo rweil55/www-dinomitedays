@@ -72,7 +72,7 @@ class dinomitedys_upload
  <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#430 main update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#766 main update $errorEnd";
         }
         return $msg;
     } // end upload
@@ -437,7 +437,7 @@ class dinomitedys_upload
                         $lng = 0;
                     }
                     if (0 == $lat || false === $lat || 0 == $lng || false === $lng) {
-                        $msg .= "$errorBeg E#755 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+                        $msg .= "$errorBeg E#750 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
                     } else {
                         // check ranges
                         $sqlup = array("latitude" => $lat, "longitude" => $lng);
