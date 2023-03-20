@@ -58,10 +58,8 @@ class dinomitedays_misc_pages {
             }
 
         } catch ( Exception $ex ) {
-            throw new Exception( "$msg $errorBeg E#825 dinomitedys_upload:upload: $errorEnd" );
+            throw new Exception( "$msg $errorBeg E#763 dinomitedys_upload:upload: $errorEnd" );
         }
         return $msg;
     } // end last_seen
 } // end class
-
-?>

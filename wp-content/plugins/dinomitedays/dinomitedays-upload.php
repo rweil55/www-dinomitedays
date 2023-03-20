@@ -384,7 +384,7 @@ class dinomitedys_upload
                                         photographer = $photographer $eol";
 
             if (empty($dino)) {
-                return "$msg $errorBeg #807 missing the dinosaur seletion $errorEnd";
+                return "$msg $errorBeg W#797 missing the dinosaur seletion $errorEnd";
             }
 
             if ($debugSave) $msg .= "$fileSort is the highest sort number 
@@ -462,7 +462,7 @@ class dinomitedys_upload
                     continue;
                 }
                 if ($debugSave) $msg .= "----------------------------- $eol
-                                        I#863 moved file to  $saveName $eol";
+                                        I# moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
                 if ($debugSave) $msg .= "E#758 resizeImage( 
                         $saveName, $finalName, 700, 200 ) $eol";
@@ -473,7 +473,7 @@ class dinomitedys_upload
 
                     $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
-                    if ($debugSave) $msg .= "I#885 $saveName resized, 
+                    if ($debugSave) $msg .= "I#789 $saveName resized, 
                                     attributed to $finalName $eol";
                 } // end foreash ($files)
                 $msg .= $eol;
@@ -486,7 +486,7 @@ class dinomitedys_upload
             }
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#669 update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#780 update $errorEnd";
             throw new Exception("$msg");
         }
         return $msg;
