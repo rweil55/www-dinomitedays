@@ -11,9 +11,9 @@ class dinomitedys_fix
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
-        $errorEnd;
+        global $homePath;
+        $homePath = substr(ABSPATH, 0, -1);
         $msg = "";
-        $debug = true;
         ini_set("display_errors", true);
         error_reporting(E_ALL | E_STRICT);
 
@@ -35,19 +35,16 @@ class dinomitedys_fix
                 $msg .= self::designfooter();
                 return $msg;
             case "drivingtour":
-                $dir = "/home/pillowan/www-dinomitedays";
                 $fix = "drivingtour";
-                $msg .= self::doFixLoop($fix, $dir, $options);
+                $msg .= self::doFixLoop($fix, $homePath, $options);
                 break;
             case "find_filename":
-                $dir = "/home/pillowan/www-dinomitedays/designs";
                 $fix = "find_filename";
-                $msg .= self::doFixLoop($fix, $dir, $options);
+                $msg .= self::doFixLoop($fix, "$homePath/designs", $options);
                 break;
             case "http2https":
-                $dir = "/home/pillowan/www-dinomitedays";
                 $fix = "http2https";
-                $msg .= self::doFixLoop($fix, $dir, $options);
+                $msg .= self::doFixLoop($fix, $homePath, $options);
                 break;
             case "geocoded":
                 $msg .= self::geocoded();
@@ -59,13 +56,13 @@ class dinomitedys_fix
                 $msg .= self::makeImacro();
                 break;
             case "find_images":
-                $dir = "/home/pillowan/www-dinomitedays";
                 $fix = "find_images";
-                $msg .= self::doFixLoop($fix, $dir, $options);
+                $msg .= self::doFixLoop($fix, $homePath, $options);
                 break;
             case "findinfofiles":
                 return "$msg table has been loaded, therefore nothing to do here $eol";
-                $file = "/home/pillowan/www-dinomitedays/artist.htm";
+                /*
+                $file = "$homePath/artist.htm";
                 $dom = file_get_html($file);
                 $anchors = $dom->find("a");
                 $cnt = 300;
@@ -74,7 +71,7 @@ class dinomitedys_fix
                     $name = $anchor->href;
                     if ("designs" != substr($name, 0, 7))
                         continue;
-                    $fileData = "/home/pillowan/www-dinomitedays/$name";
+                    $fileData = "$homePath/$name";
                     $name = str_replace("designs/", "", $name);
                     $name = str_replace(".htm", "", $name);
                     $buffer = file_get_contents($fileData);
@@ -92,6 +89,7 @@ class dinomitedys_fix
                     ) . $eol;
                 }
                 break;
+                */
             case "findnew":
                 $msg .= self::findNew($attr);
                 break;
@@ -108,7 +106,7 @@ class dinomitedys_fix
                 $msg .= self::renameNewDino();
                 break;
             case "replacefooter":
-                $dir = "/home/pillowan/www-dinomitedays/designs";
+                $dir = "$homePath/designs";
                 $fix = "replacefooter";
                 $msg .= self::doFixLoop($fix, $dir, $options);
                 break;
@@ -123,7 +121,7 @@ class dinomitedys_fix
                 return $msg;
             default:
                 $msg .= "
-<a href='/fixit/?task=designfooter' >Update the footers</a> - durrently only workd on the the 200 detail pages</a>$eol
+<a href='/fixit/?task=designfooter' >Update the footers</a> - currently only workd on the the 200 detail pages</a>$eol
 <a href='https://edit.shaw-weil.com/make-dino-map-files/' > Update the map</a>$eol
 <a href='/fixit/?task=phototogs' > Update the photographer list</a>$eol
 <a href='/fixit/?task=test' >Some random test</a> of one off code </a>$eol
@@ -150,11 +148,12 @@ $eol $eol
     {
         // delete a -new file
         global $eol, $errorBeg, $errorEnd;
+        global $homePath;
         $msg = "";
+
         $dino = rrwPara::String("dino");
-        $siteDir = "/home/pillowan/www-dinomitedays/";
         $newPath = "designs/";
-        $filenameFull = "$siteDir/$newPath/$dino-new.htm";
+        $filenameFull = "$homePath/$newPath/$dino-new.htm";
         $result = unlink($filenameFull);
         if ($result)
             $msg .= "$filenameFull succefull deleted $eol";
@@ -169,6 +168,9 @@ $eol $eol
         global $eol, $errorBeg, $errorEnd;
         global $footer;
         $msg = "";
+        $debugFooter = false;
+
+        if ($debugFooter) $msg .= "----------------- #1 " . htmlspecialchars($buffer) . "$eol ---------------- $1 $eol";
         $pluginDire = "/wp-content/plugins/dinomitedays";
         if (empty($footer))
             $footer = file_get_contents(self::baseDire .
@@ -179,8 +181,11 @@ $eol $eol
         if (false == strpos($buffer, "dinomitedays.css")) {
             $iiHead = strpos($buffer, "</head");
             $buffer = substr($buffer, 0, $iiHead) .
-                "\n<link rel='stylesheet' id='dinomitedays-style-css'  href='https://dinomitedays.org$pluginDire/dinomitedays.css' media='all' />\n" . substr($buffer, $iiHead);
+                "\n<link rel='stylesheet' id='dinomitedays-style-css'  
+                      href='https://dinomitedays.org$pluginDire/dinomitedays.css' media='all' />\n" .
+                substr($buffer, $iiHead);
         }
+        if ($debugFooter) $msg .= "----------------- #2 " . htmlspecialchars($buffer) . "$eol ---------------- $2 $eol";
         $buffer = str_replace("//wp-content", "/wp-content", $buffer);
         $buffer = str_replace("dinomitedasys", "dinomitedays", $buffer);
         // remove inline styles
@@ -193,14 +198,22 @@ $eol $eol
                     substr($buffer, $iiEndStyle + 8);
             }
         }
+        if ($debugFooter) $msg .= "----------------- #3 " . htmlspecialchars($buffer) . "$eol ---------------- $3 $eol";
+
         // replace the footer
-        if (false !== ($iiDiv = strpos($buffer, '<div id="dinofooter"'))) {
+        $iiDiv = strpos($buffer, '<div id="dinofooter"');
+        if ($debugFooter) $msg .= "in replace footer:div start = $iiDiv $eol";
+        if (false !== $iiDiv) {
             // replace it
             $iienddiv = strpos($buffer, "</div>", $iiDiv);
-
+            if ($debugFooter) $msg .= "in replace footer:div end at  = $iienddiv $eol";
             $iienddiv = strpos($buffer, "</div>", $iienddiv + 2);
             $buffer = substr($buffer, 0, $iiDiv) . $footer .
                 substr($buffer, $iienddiv + 6);
+            $msg .= "footer replaced $eol";
+        } else {
+            $msg .= "$errorBeg E#794 no footer found $errorEnd";
+            $msg .= htmlspecialchars($buffer);
         }
         return $msg;
     }
@@ -228,29 +241,46 @@ $eol $eol
     private static function designfooter()
     {
         global $eol, $errorBeg, $errorEnd;
+        global $homePath;
         $msg = "";
 
-        $home = "/home/pillowan/www-dinomitedays";
-        $dire = "$home/designs";
-        $direNew = $dire . "new";
-        $hdNew = opendir($direNew);
-        closedir($hdNew);
-        $msg .= "Output new files to the directory $direNew $eol";
-        $hd = opendir("$dire");
+        $diresource = "$homePath/designs";
+        $direFinal = "$homePath/designsnew";
+        $file = rrwPara::String("file");
+
+        if (!is_dir("$direFinal")) {
+            if (mkdir($direFinal)) {
+                $msg .= "created directory $direFinal $eol";
+            } else {
+                $msg .= "$errorBeg E#781 failed to create directory $direFinal $errorEnd";
+                return $msg;
+            } // end mkdire
+        } // end check for directory and make is neccessary
         $cnt = 0;
         $list = array();
-        while (false !== ($entry = readdir($hd))) {
-            $cnt++;
-            if ($cnt > 500)
-                break;
-            $File = "$dire/$entry";
-            if (is_dir($File))
-                continue;
-            if (strpos($File, "LCK") !== false)
-                continue;
-            array_push($list, $entry);
-            $msg .= self::ChangeFooter($File);
-        } // end while ( false !== ( $entry = readdir( $hd ) ) ) {
+        if (empty($file)) {
+            $hd = opendir("$diresource");
+            while (false !== ($entry = readdir($hd))) {
+                $cnt++;
+                if ($cnt > 500)
+                    break;
+                if (is_dir("$diresource/$entry"))
+                    continue;
+                if (strpos($entry, "LCK") !== false)
+                    continue;
+                if (strpos($entry, "new") !== false) {
+                    $msg .= "unlink ($diresource/$entry)$eol";
+                    unlink("$diresource/$entry");
+                    continue;
+                }
+                array_push($list, $entry);
+                $msg .= self::ChangeFooter($entry, "designsnew");
+            } // end while ( false !== ( $entry = readdir( $hd ) ) ) 
+            fclose($hd);
+        } else {
+            $msg .= self::ChangeFooter($file, "designsnew");
+            // leave list empty
+        }
 
         $cnt = 0;
         ksort($list);
@@ -258,26 +288,34 @@ $eol $eol
             $cnt++;
             if (($cnt % 22) == 0)
                 $msg .= "$eol $eol $eol";
-            $msg .= "URL GOTO=https://dinomitedays.org/designs/$item$eol
+            $msg .= "URL GOTO=https://dinomitedays.org/designsNew/$item$eol
             WAIT SECONDS=3$eol
             ";
         }
         return $msg;
     }
 
-    public static function changeFooter($file)
+    public static function changeFooter($filesource, $designsNew)
     {
         global $eol, $errorBeg, $errorEnd;
+        global $homePath;
         $msg = "";
         $debug = true;
 
-        $buffer = file_get_contents($file);
-        // has cmnh footer bun replaced already
-        if (false !== ($iiDiv = strpos($buffer, '<div id="dinofooter"'))) {
+        $buffer = file_get_contents("$homePath/designs/$filesource");
+        if (false === $buffer) {
+            $msg .= "$errorBeg E#790 failed to read $homePath/designs/$filesource $errorEnd";
+            return $msg;
+        }
+        // has cmnh footer been replaced already
+        $iiDiv = strpos($buffer, '<div id="dinofooter"');
+        if (false !== $iiDiv) {
             // replace new style footer
-            if ($debug) $msg .= "replaceing new style header $eol";
+            if ($debug) $msg .= "replaceing new style footer $eol";
             $buffernew = $buffer;
-            $msg .= self::replaceFooter($bufernew);
+            //$msg .= "----------------- #5 " . htmlspecialchars($buffer) . "$eol ---------------- $5 $eol";
+
+            $msg .= self::replaceFooter($buffernew);
         } else {
             // find old style footer
             if ($debug) $msg .= "replaceing old style header $eol";
@@ -287,8 +325,9 @@ $eol $eol
             } else {
                 $iiClose = strrpos($buffer, "Close", -1);
                 if (false === $iiClose) {
-                    throw new Exception("$msg $errorBeg E#779 $file no close 
-                        while tryiing to update footer $errorEnd");
+                    $msg .= "$msg $errorBeg E#779 string 'close' not found in $homePath/$filesource $errorEnd
+                        while tryiing to update footer $errorEnd";
+                    return $msg;
                 }
                 $iiClose = $iiClose - 3;
             } // start of therreplace has been found
@@ -296,15 +335,15 @@ $eol $eol
             $msg .= "len is " . strlen($buffer) . "close at $iiClose,  
                         tr at $iitr $eol";
             $footer = file_get_contents(
-                "$home/wp-content/plugins/dinomitedass/footer_dino.php"
+                "$homePath/wp-content/plugins/dinomitedays/footer_dino.php"
             );
             $buffernew = substr($buffer, 0, $iiClose) . "\n" .
                 $footer . "</td>\n" . substr($buffer, $iitr);
         }
-        $newfile = str_replace(".htm", "-new.htm", $file);;
+        $newfile = "$homePath/$designsNew/$filesource";
         $fpout = fopen($newfile, "w");
         $msg .= fwrite($fpout, $buffernew);
-        $msg .= "created $newfile $eol";
+        $msg .= "created $newfile <a href='/$designsNew/$filesource' target='new'> $filesource ></a>$eol";
         return $msg;
     }
 
@@ -427,7 +466,7 @@ $eol $eol
                 $author
             );
         }
-        $msg .= "$eol Images output to $outputdire $eol ";
+        $msg .= "$eol Images output to $outputDire $eol ";
         return $msg;
     }
 

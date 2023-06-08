@@ -1,5 +1,5 @@
 <div id="dinofooter" class="dinoFooter">
-    <div id="dinofoorterlinks" align=center>
+    <div id="dinofoorterlinks" align=left>
         <font size="2" face="Arial, Helvetica, sans-serif" style="background-color:orange;">
             <b>Dinosaurs:&nbsp; </b>
             <a href="/map/">map</a> .
