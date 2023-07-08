@@ -5,7 +5,6 @@
             <a href="/map/">map</a> .
             <a href="/auctions.htm">gala &amp; auction</a> .
             <a href="/pictures.htm">dino pictures</a> .
-
             <a href="/store.htm">dinostore</a> .
             <a href="/awards.htm">people's choice</a>
             <br>
