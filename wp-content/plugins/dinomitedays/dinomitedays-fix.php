@@ -132,6 +132,8 @@ class dinomitedys_fix
 <a href='/fixit/?task=findnew' >locate unprocessed -new files </a></a>$eol
 <a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions</a>$eol
 <a href='/fixit/?task=replacefooter' >update the footers </a>$eol
+<a href='/last_seen?lastorkey=key' > list by keyid/number </a>$eol
+<strong> Database wp541 </strong>$eol
 <strong> obsolete </strong>$eol
 <a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng </a>$eol
 <a href='/fixit/?task=drivingtour' >update the driving tour</a> links</a>$eol
