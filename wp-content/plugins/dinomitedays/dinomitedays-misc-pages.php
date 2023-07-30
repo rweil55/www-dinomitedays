@@ -51,7 +51,7 @@ class dinomitedays_misc_pages
                 if ($mapYear != $yearPast && strcmp("last", $lastOrkey) == 0)
                     $msg .= "<span style='font-weight:bold; ' > $mapYear </span>$eol";
                 $yearPast = $mapYear;
-                $displayName = "$keyid $name";
+                $displayName = "$keyid $mapYear $name";
                 if (!empty($status))
                     $displayName .= " $status ";
                 if (0 == $latitude)
