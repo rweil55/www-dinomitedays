@@ -175,6 +175,7 @@ class dinomitedys_upload
             throw new Exception("$msg $errorBeg E#79 did not find the
                             dinosauer $errorEnd $sqldino $eol");
         $recDino = $recDinos[0];
+        // $msg .= rrwUtil::print_r($recDino, true, "recDino");
         $mapLoc = $recDino["Maploc"];
         $mapdate = $recDino["Mapdate"];
         $latitude = $recDino["Latitude"];
@@ -229,9 +230,9 @@ class dinomitedys_upload
         if ($debugProgress) $msg .= "after first dropzone $eol";
         $msg .= "</td>
                 <td align='left' valign='center' >
-                    Drop file or click to update$eol
-                    Latitude $latitude $eol
-                    Longitude $longitude $eol
+                    Drop file with embeded location data or enter values $eol
+                    Latitude  <input name='latitude' id='latitude' type='text' value='$latitude' > $eol
+                    Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol
                 </td>
                 </tr>
                 </table>
@@ -366,7 +367,7 @@ class dinomitedys_upload
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra, $rrw_dinos;
         $msg = "";
-        $debugSave = true;
+        $debugSave = false;
 
         try {
             if ($debugSave) {
@@ -396,19 +397,31 @@ class dinomitedys_upload
             // extract the location description and enter into dataase
             $locationDesc = rrwPara::String("locationDesc");
             $sqlup = array("maploc" => $locationDesc);
-            if ($debugSave) {
-                $msg .= rrwUtil::print_r($sqlup, true, "sql update");
-                $msg .= rrwUtil::print_r($keySelect, true, "sql select");
-                $msg .= "Updating location to $locationDesc $eol";
-            }
-            $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
+
+            // latitude, longitude may be overwritten by the the image/file named coordinates
+            $latitude = rrwPara::String("latitude");
+            $sqlup["latitude"] = $latitude;
+            $longitude = rrwPara::String("longitude");
+            $sqlup["longitude"] = $longitude;
             //
             // extract the mapdate and enter into dataase
             $mapdate = rrwPara::String("mapdate");
-            $sqlup = array("mapdate" => $mapdate);
+            $sqlup["mapdate"] = $mapdate;
+            if ($debugSave) {
+                $msg .= rrwUtil::print_r($sqlup, true, "sql update");
+                $msg .= rrwUtil::print_r($keySelect, true, "sql select");
+            } else {
+                $msg .= rrwUtil::print_r($sqlup, true, "sql update");
+            }
             $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
-            if ($debugSave) $msg .= "Updated last seen to $mapdate $eol";
+            $numrowsUpdated = $wpdbExtra->num_rows; // did we change anything
+            if ($numrowsUpdated > 0) {  // we changed the database, update original file
+                $msg .= "attempting to update the original htm file $eol";
+                $msg .= dinomitedys_make_html::updateFosilLocations($dino);
+                $msg .= file_get_contents("https://edit.shaw-weil.com/make-dino-map-files/?nohead=1");
+            }
             //
+            $numberOfSavedImages = 0;
             foreach ($_FILES as $key => $fileInfo) {
                 if ($debugSave) {
                     $msg .= "------------------------------- $eol ";
@@ -461,6 +474,7 @@ class dinomitedys_upload
                     $msg .= "$errorBeg E#759 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
+                $numberOfSavedImages++;
                 if ($debugSave) $msg .= "----------------------------- $eol
                                         I# moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
@@ -473,15 +487,13 @@ class dinomitedys_upload
 
                     $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
-                    if ($debugSave) $msg .= "I#789 $saveName resized, 
-                                    attributed to $finalName $eol";
-                } // end foreash ($files)
-                $msg .= $eol;
-                // first update the orignal htm file.
-                $fileFullName = self::siteDir . "/designs/$dino" . ".htm";
-                $msg .= dinomitedys_make_html::updateFosilLocations($dino);
-                $msg .= dinomitedys_fix::changeFooter($fileFullName);
-                // then crete the -new file
+                    if ($debugSave)
+                        $msg .= "I#789 $saveName resized, attributed to $finalName $eol";
+                } // end if (!empty($photographer))
+            } // end foreash ($files)
+            $msg .= $eol;
+            if ($$numberOfSavedImages > 0) {
+                $msg .= "I#789 $$numberOfSavedImages files uploaded $eol";
                 $msg .= dinomitedys_make_html::UpdateImages($dino);
             }
         } // end try
@@ -508,41 +520,4 @@ class dinomitedys_upload
             return "Unkown file upload error #$err ";
         return $phpFileUploadErrors[$err];
     }
-
-
-    /*
-        private static function detailFileUrl( $filename ) {
-            foreach ( array( ".jpg", "_pic.jpg" ) as $ext ) {
-                $fileFull = . "$filename$ext";
-                if ( file_exists( $fileFull ) )
-                    return self::http . self::imagePath . "$filename$ext";
-            }
-            return $fileURL;
-        }
-        private static function pictureFileUrl( $filename ) {
-            $fileFull = self::http . self::imagePath . $filename . "_sm.jpg";
-            return $fileFull;
-        }
-        private static function listofFileFull( $filename ) {
-            $igonore1 = detailFilefull( $filename );
-            $igonore2 = pictureFileFull( $filename );
-            $list = array();
-
-            $hd = opendir( $self::imagedir );
-            while ( false !== ( $entry = readdir( $hd ) ) ) {
-                if ( 0 != strncmp( $entry, $filename, strlen( $filename ) ) )
-                    continue;
-                if ( $ignore1 == $entry || $ignore2 == $entry )
-                    continue;
-                array_push( $list, $self::http . self::imagePath . "$entry" );
-            }
-            return $list;
-        }
-        private static function fileURL( $fileFull ) {
-            $url = str_replace( self::imagedire, "design/images/", $fileFull );
-            $url = get_site_url() . "$url";
-            return $url;
-
-        }
-        */
 } // end class
