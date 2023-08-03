@@ -492,7 +492,7 @@ class dinomitedys_upload
                 } // end if (!empty($photographer))
             } // end foreash ($files)
             $msg .= $eol;
-            if ($$numberOfSavedImages > 0) {
+            if ($numberOfSavedImages > 0) {
                 $msg .= "I#789 $$numberOfSavedImages files uploaded $eol";
                 $msg .= dinomitedys_make_html::UpdateImages($dino);
             }
