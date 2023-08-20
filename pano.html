@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <title>Street View split-map-panes</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map,
+    #pano {
+      float: left;
+      height: 100%;
+      width: 50%;
+    }
+  </style>
+  <script>
+    function initializePano() {
+      alert("initializePano");
+      const fenway = { lat: 42.345573, lng: -71.098326 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: fenway,
+        zoom: 14,
+      });
+      const panorama = new google.maps.StreetViewPanorama(
+        document.getElementById("pano"),
+        {
+          position: fenway,
+          pov: {
+            heading: 34,
+            pitch: 10,
+          },
+        },
+      );
+
+      map.setStreetView(panorama);
+
+    }
+  </script>
+</head>
+
+<body>
+  hello this is the file.
+  <div id="map"></div>
+  <div id="pano"></div>
+
+  After the map
+  <form>
+    <input type="button" onclick="initializePano()" value="Click Me!" />
+  </form>
+  <scrip>
+    alert (1);
+    initializePano();
+    alert(3);
+  </scrip>
+</body>
+
+</html>
