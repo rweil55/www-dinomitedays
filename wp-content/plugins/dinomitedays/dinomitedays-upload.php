@@ -488,7 +488,7 @@ class dinomitedys_upload
                     $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
                     if ($debugSave)
-                        $msg .= "I#789 $saveName resized, attributed to $finalName $eol";
+                        $msg .= "I#760 $saveName resized, attributed to $finalName $eol";
                 } // end if (!empty($photographer))
             } // end foreash ($files)
             $msg .= $eol;
