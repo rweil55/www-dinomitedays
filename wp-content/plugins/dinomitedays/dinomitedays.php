@@ -10,7 +10,7 @@ Author:      Roy Weil
 Author URI:  https://RoyWeil.com
 Donate URI: https://plugins.royweil.com/donate
 Requires at least: 4.6.1
-Tested up to: 5.4.2
+Tested up to: 6.1.3
 Depends: rrw-utilities-common
 Depends: rrw_parser
 License: private
@@ -64,4 +64,3 @@ $MyUpdateChecker = new PluginUpdateChecker_2_0(
     1
 );
 */
-?>
