@@ -83,7 +83,9 @@ define( 'WP_DEBUG', true);
 
 /* Add any custom values between this line and the "stop editing" line. */
 
+define( 'ITHEMES_SYNC_SKIP_SET_IS_ADMIN_TO_TRUE', true );
 
+ 
 
 /* That's all, stop editing! Happy publishing. */
 
@@ -91,7 +93,7 @@ define( 'WP_DEBUG', true);
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
-
+define( 'ITHEMES_SYNC_SKIP_SET_IS_ADMIN_TO_TRUE', true ); 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
 
