@@ -93,6 +93,9 @@ class dinomitedys_fix
             case "findnew":
                 $msg .= self::findNew($attr);
                 break;
+            case "findpictures":
+                $msg .= self::findPictures($attr);
+                break;
             case "missing_sm":
                 $msg .= self::missing_sm($attr);
                 break;
@@ -146,6 +149,74 @@ $eol $eol
         return $msg;
     } // end function fixit
     //
+    private static function findPictures($attr)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdb;
+        $msg = "";
+        $dire = self::baseDire;
+        for ($iiPicNum = 1; $iiPicNum < 6; $iiPicNum++) {
+            $file = "$dire/pictures_$iiPicNum.htm";
+            $fp = fopen($file, "r");
+            if (false === $fp) {
+                $msg .= " $file not found $eol";
+                continue;
+            }
+            $msg .= str_repeat("x", 100) . "found  $file $eol";
+
+            $cnt = 0;
+            while ($line = fgets($fp)) {
+                $cnt++;
+                $line = trim($line);
+                if (empty($line))
+                    continue;
+                if (strlen($line) < 50)
+                    continue;
+                if (substr($line, 0, 14) == '<td width="130') {
+                    $msg .= htmlspecialchars($line) . $eol;
+                    $fileName = self::FindText($line, "designs/", '"');
+                    $logoName = self::FindText($line, "graphics/", '"');
+                    $dino = self::FindText($line, 'sans-serif">', "<");
+                    if (empty($dino)) {
+                        $dino = self::FindText($line, 'alt="', '"');
+                    }
+                    $designname = str_replace(".htm", "", $fileName);
+                    $sql = "select * from " . self::rrw_dinomites . " where name = '$dino'  and filename = '$designname' ";
+                    $recs = $wpdb->get_results($sql, ARRAY_A);
+                    if ($wpdb->num_rows != 1)
+                        $msg .= "$errorBeg E#757 Did not find (" . $wpdb->num_rows . ") a dinosour for $errorEnd
+                            $sql $eol";
+                    $set = array("logoFileName" => "$logoName");
+                    $which = array("name" => "$dino");
+                    if (empty($recs[0]["logoFileName"])) {
+                        $recCnt = $wpdb->update(self::rrw_dinomites, $set, $which);
+                        if (1 != $recCnt)
+                            $msg .= "$errorBeg E#758 Did not find a dinosour for $errorEnd
+                            $sql $eol";
+                    } else {
+                        $recCnt = "previously updated ";
+                    } // end if empty
+                    $msg .= " <strong>$fileName -- $logoName -- $dino </strong> updater $recCnt $eol";
+                }
+            } // end while
+            fclose($fp);
+            $msg .= str_repeat("x", 100) . "end  $file with $cnt lines $eol";
+        } // end for pictures;
+        return $msg;
+    }
+    private static function FindText(&$line, $search, $term)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        $iiDes = strpos($line, $search);
+        $searchlen = strlen($search);
+        if (false === $iiDes)
+            return "";
+        $iiEnd = strpos($line, $term, $iiDes + $searchlen);
+        $Dinoname = substr($line, $iiDes + $searchlen, $iiEnd - $iiDes - $searchlen);
+        $Dinoname = str_replace('"', "", $Dinoname);
+        $line = substr($line, $iiEnd);
+        return $Dinoname;
+    }
     private static function deletenew($attr)
     {
         // delete a -new file
