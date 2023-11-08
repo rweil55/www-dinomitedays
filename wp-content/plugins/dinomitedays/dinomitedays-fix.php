@@ -487,7 +487,7 @@ $eol $eol
                 self::rrw_dinomites . " where filename = '$item' ";
             $recnames = $wpdb->get_results($sql, ARRAY_A);
             if (1 != $wpdb->num_rows) {
-                $msg .= "$errorBeg E#757 Did not find a dinosour for $errorEnd
+                $msg .= "$errorBeg E#761 Did not find a dinosour for $errorEnd
                 $sql $eol";
                 continue;
             }

@@ -1,3 +1,10 @@
+
+
+
+
+
 == 1.2.10 ==
-    featuture   adde the pano routine to the maps
+    feature   added the thumbnail routine to display images
+    refactor  exracted some of the "dino names" from the pictures.html files
+    feature   added the pano routine to the maps
     
