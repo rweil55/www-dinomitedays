@@ -478,7 +478,7 @@ class dinomitedys_upload
                 if ($debugSave) $msg .= "----------------------------- $eol
                                         I# moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
-                if ($debugSave) $msg .= "E#758 resizeImage( 
+                if ($debugSave) $msg .= "E#764 resizeImage( 
                         $saveName, $finalName, 700, 200 ) $eol";
                 $msg .= uploadProcessDire::resizeImage($saveName, $finalName, 700, 200);
                 if (!empty($photographer)) {

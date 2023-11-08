@@ -12,7 +12,7 @@ class DisplayPhotographers {
         $table = new rrwDisplayTable();
         $msg .= $table->tablename( $rrw_photographers );
         $msg .= $table->sortdefault( "photographer" );
-        $msg .= $table->seqname( "photographer" );
+        $msg .= $table->keyname( "photographer" );
         $msg .= $table->columns( "photographer Name", "photographer", 69 );
         $msg .= $table->columns( "E-Mail", "Address", 69 );
         $msg .= $table->columns( "Comment", "Comment", 69 );
@@ -26,4 +26,3 @@ class DisplayPhotographers {
         return $msg;
     } // end function
 } // end class
-?>

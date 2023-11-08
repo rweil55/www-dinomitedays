@@ -20,8 +20,8 @@ Version: 1.2.9
 Text Domain: dinomitedays
 Domain Path: /lang
 */
-ini_set( "display_errors", true );
-error_reporting( E_ALL | E_STRICT );
+ini_set("display_errors", true);
+error_reporting(E_ALL | E_STRICT);
 
 require_once "rrw_util_inc.php";
 require_once "freewheelingeasy-wpdpExtra.php";
@@ -35,24 +35,26 @@ require_once "dinomitedays-upload.php";
 require_once "dinomitedays-make-html.php";
 require_once "dinomitedays-misc-pages.php";
 require_once "DisplayPhotographers.php";
+require_once "DisplayThumbnails.php";
 
 global $eol, $errorBeg, $errorEnd;
 $eol = "<br />\n";
-    $errorBeg = "$eol<span style='color:red' >";
-        $errorEnd = "</span> $eol";
+$errorBeg = "$eol<span style='color:red' >";
+$errorEnd = "</span> $eol";
 
 global $wpdbExtra, $rrw_dinos, $rrw_photographers;
 $rrw_photographers = "wpprj_0photographers";
-$wpdbExtra = new wpdbExtra; 
+$wpdbExtra = new wpdbExtra;
 $rrw_dinos = "wpprrj_00rrwdinos";
-           
-   
-add_shortcode( 'dinomitedaysfix', array( "dinomitedys_fix", "fix" ) );
-add_shortcode( 'dinomitedays-make-html', array( "dinomitedys_make_html", "make_html_files" ) );
-add_shortcode( 'dinomitedays-process-upload', array( "dinomitedys_upload", "process_upload" ) );
-add_shortcode( 'dinomitedays-upload', array( "dinomitedys_upload", "upload" ) );
-add_shortcode( 'dinomitedays-last-seen', array( "dinomitedays_misc_pages", "last_seen" ) );
-add_shortcode( 'photographers', array( "DisplayPhotographers", "Display" ) );
+
+
+add_shortcode('dinomitedaysfix', array("dinomitedys_fix", "fix"));
+add_shortcode('dinomitedays-make-html', array("dinomitedys_make_html", "make_html_files"));
+add_shortcode('dinomitedays-process-upload', array("dinomitedys_upload", "process_upload"));
+add_shortcode('dinomitedays-upload', array("dinomitedys_upload", "upload"));
+add_shortcode('dinomitedays-last-seen', array("dinomitedays_misc_pages", "last_seen"));
+add_shortcode('photographers', array("DisplayPhotographers", "Display"));
+add_shortcode('dinomitedays-thumbnails', array("DisplayThumbnails", "Display"));
 
 /* -------------------------------------  cause it to happen
 
