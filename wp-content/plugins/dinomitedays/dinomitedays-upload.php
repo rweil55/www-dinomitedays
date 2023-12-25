@@ -450,15 +450,15 @@ class dinomitedys_upload
                         $lng = 0;
                     }
                     if (0 == $lat || false === $lat || 0 == $lng || false === $lng) {
-                        $msg .= "$errorBeg E#750 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+                        $msg .= "$errorBeg E#800 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
                     } else {
                         // check ranges
                         $sqlup = array("latitude" => $lat, "longitude" => $lng);
                         $cnt = $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
-                        if (1 == $cnt) $msg .= "i#754 Coordinates updated. Please check 
+                        if (1 == $cnt) $msg .= "i#804 Coordinates updated. Please check 
                             <a href='/last_seen/' > last seen </a> and the map $eol";
                         else
-                            $msg .= "$errorBeg E#752 Something went wrong in the database update. $errorEnd ";
+                            $msg .= "$errorBeg E#802 Something went wrong in the database update. $errorEnd ";
                         $msg .= rrwUtil::print_r($sqlup, true, "the update array");
                     }
                     continue; // on to next file
@@ -471,7 +471,7 @@ class dinomitedys_upload
                 if ($debugSave) $msg .= "moving $tmp_name to $saveName $eol";
                 $answer = move_uploaded_file($tmp_name, $saveName);
                 if (false === $answer) {
-                    $msg .= "$errorBeg E#759 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
+                    $msg .= "$errorBeg E#809 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
                 $numberOfSavedImages++;

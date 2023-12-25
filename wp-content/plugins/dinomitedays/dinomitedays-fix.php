@@ -184,14 +184,14 @@ $eol $eol
                     $sql = "select * from " . self::rrw_dinomites . " where name = '$dino'  and filename = '$designname' ";
                     $recs = $wpdb->get_results($sql, ARRAY_A);
                     if ($wpdb->num_rows != 1)
-                        $msg .= "$errorBeg E#757 Did not find (" . $wpdb->num_rows . ") a dinosour for $errorEnd
+                        $msg .= "$errorBeg E#807 Did not find (" . $wpdb->num_rows . ") a dinosour for $errorEnd
                             $sql $eol";
                     $set = array("logoFileName" => "$logoName");
                     $which = array("name" => "$dino");
                     if (empty($recs[0]["logoFileName"])) {
                         $recCnt = $wpdb->update(self::rrw_dinomites, $set, $which);
                         if (1 != $recCnt)
-                            $msg .= "$errorBeg E#758 Did not find a dinosour for $errorEnd
+                            $msg .= "$errorBeg E#808 Did not find a dinosour for $errorEnd
                             $sql $eol";
                     } else {
                         $recCnt = "previously updated ";
@@ -610,7 +610,7 @@ $eol $eol
             rename($fileName, $filenameNew);
             $msg .= " $fileName rejected $eol";
         } else {
-            $msg .= "$errorBeg E#756 file '$fileName' not found to reject $errorEnd";
+            $msg .= "$errorBeg E#806 file '$fileName' not found to reject $errorEnd";
         }
         $iiSlash = strrpos($fileName, "/");
         $dino = substr($fileName, $iiSlash + 1);
@@ -640,7 +640,7 @@ $eol $eol
         if (file_exists($fileNameOld)) {
             $result3 = rename($fileNameOld, $filenameSave);
             if (false === $result3)
-                throw new Exception("$msg $errorBeg E#751 failure of
+                throw new Exception("$msg $errorBeg E#801 failure of
                             rename( $fileNameOld, $filenameSave ); $errorEnd");
         }
         $result2 = rename($fileNameNew, $fileNameOld);
@@ -769,7 +769,7 @@ WAIT SECONDS=4$eol";
 
         $handle = opendir("$dir");
         if (!is_resource($handle))
-            throw new Exception("$msg E#753 that is not a directory");
+            throw new Exception("$msg E#803 that is not a directory");
         $cnt = 0;
         $entry = true;
         while (($entry = readdir($handle)) !== false) {

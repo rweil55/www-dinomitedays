@@ -97,7 +97,7 @@ class rrwParse {
         while ( 1 ) {
             $cnt++;
             if ( $cnt > 50 )
-                throw new Exception( "$msg $errorBeg E#755 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
+                throw new Exception( "$msg $errorBeg E#805 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
             if ( $iiLookEnd > strlen( $text ) )
                 break;
             $iiLookbeg = strpos( $text, "<", $iiLookEnd );
