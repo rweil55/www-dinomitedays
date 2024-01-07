@@ -19,7 +19,7 @@ class dinomitedys_make_html
             $msg .= self::updateLocatonMap();
             $msg .= self::updateFosilLocations("%");  // do all pages
         } catch (Exception $ex) {
-            $msg .= "E#771 xxx catch " . $ex->getMessage();
+            $msg .= "E#1341 xxx catch " . $ex->getMessage();
         }
         return $msg;
     }
@@ -42,7 +42,7 @@ class dinomitedys_make_html
         $msg .= "copy ($from, $to); $eol";
         $result = copy($from, $to);
         if (false === $result)
-            throw new Exception("$msg $errorBeg E#784 copy failed $errorEnd");
+            throw new Exception("$msg $errorBeg E#1354 copy failed $errorEnd");
         $msg .= "copy worked $eol";
 
         return $msg;
@@ -64,10 +64,10 @@ class dinomitedys_make_html
         //  insert and write
         //      $newdiv = str_replace("270","150", $newdiv);
         if (false === strpos($buffer, "xxzzy"))
-            throw new Exception("$msg $errorBeg E#783 buffer does 
+            throw new Exception("$msg $errorBeg E#1353 buffer does 
                     not contain xxzzy $errorEnd");
         if (strpos($buffer, "xxzzy") < 500)
-            throw new Exception("$msg $errorBeg #791 xxzzy to close 
+            throw new Exception("$msg $errorBeg #1361 xxzzy to close 
                     to frnt of buffer $errorEnd");
 
         $buffer = str_replace("xxzzy", $newdiv, $buffer);
@@ -96,7 +96,7 @@ class dinomitedys_make_html
             $iiDivEnd = strpos($buffer, "end dinoImages", $iiDiv);
             if (false === $iiDivEnd)
                 throw new Exception("$msg $errorBeg 
-                        E#762 did not find end dnImages' $errorEnd");
+                        E#1332 did not find end dnImages' $errorEnd");
             $iiDivEnd = strpos($buffer, ">", $iiDivEnd) + 1;
             if ($debug) print "get buffer to $iiDiv, then from $iiDivEnd $eol";
             $buffer = substr($buffer, 0, $iiDiv) . "xxzzy" .
@@ -111,7 +111,7 @@ class dinomitedys_make_html
             $iiDiv = strrpos($buffer, "<p", $iiStart);
             $iiDivEnd = strpos($buffer, "</table", $iiDiv);
             if (false === $iiDivEnd)
-                throw new Exception("$msg $errorBeg E#773 missing </table $errorEnd");
+                throw new Exception("$msg $errorBeg E#1343 missing </table $errorEnd");
             $iiDivEnd = $iiDivEnd + 14;
             $buffer = substr($buffer, 0, $iiDiv) . "xxzzy" .
                 substr($buffer, $iiDivEnd);
@@ -124,20 +124,20 @@ class dinomitedys_make_html
             $iiStart = $iiFoot - strlen($buffer);
             $iiDivEnd = strrpos($buffer, "<tr", $iiStart);
             if (false === $iiDivEnd)
-                throw new Exception("$msg $errorBeg E#782 missing 
+                throw new Exception("$msg $errorBeg E#1352 missing 
                             &lt;tr starting at $iiFoot ($iiStart) $errorEnd");
             $iiStart = $iiDivEnd - strlen($buffer) - 3;
             $iiDiv = strrpos($buffer, "<tr", $iiStart);
             $dist = $iiStart - $iiDiv;
             if (200 < $dist)
-                throw new Exception("$msg $errorBeg E#788 distance between
+                throw new Exception("$msg $errorBeg E#1358 distance between
                 start and finish ($dist) > 200 $errorEnd");
             $buffer = substr($buffer, 0, $iiDiv) . "xxzzy" .
                 substr($buffer, $iiDivEnd);
             return $buffer;
         }
         // I give up, the templat file was not followed
-        return "$msg $errorBeg E#769 did not find a place to
+        return "$msg $errorBeg E#1339 did not find a place to
                 insert  the images $errorEnd";
     }
     static public function updateFosilLocations($filename)
@@ -177,7 +177,7 @@ class dinomitedys_make_html
                 );
             } // end of each page/file
         } catch (Exception $ex) {
-            $msg .= "E#793 xxx catch while processnig <a href='/designs/$file.htm' target='final'> 
+            $msg .= "E#1363 xxx catch while processnig <a href='/designs/$file.htm' target='final'> 
                     $file.htm </a> $eol" . $ex->getMessage();;
         }
 

@@ -70,7 +70,7 @@ class dinomitedays_misc_pages
                                     $displayMap $eol";
             }
         } catch (Exception $ex) {
-            throw new Exception("$msg $errorBeg E#763 dinomitedys_upload:upload: $errorEnd");
+            throw new Exception("$msg $errorBeg E#1333 dinomitedys_upload:upload: $errorEnd");
         }
         return $msg;
     } // end last_seen

@@ -72,7 +72,7 @@ class dinomitedys_upload
  <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#766 main update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1336 main update $errorEnd";
         }
         return $msg;
     } // end upload
@@ -172,7 +172,7 @@ class dinomitedys_upload
         $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
         $recDinos = $wpdbExtra->get_resultsA($sqldino);
         if (1 != $wpdbExtra->num_rows)
-            throw new Exception("$msg $errorBeg E#79 did not find the
+            throw new Exception("$msg $errorBeg E#136 did not find the
                             dinosauer $errorEnd $sqldino $eol");
         $recDino = $recDinos[0];
         // $msg .= rrwUtil::print_r($recDino, true, "recDino");
@@ -293,7 +293,7 @@ class dinomitedys_upload
             document.getElementById('dino').focus;
             </script> $eol";
         } catch (Exception $ex) {
-            throw new Exception("$msg E#7947 " . $ex->getMessage() .
+            throw new Exception("$msg E#13647 " . $ex->getMessage() .
                 "$errorBeg dinomitedys_:formForPictures $errorEnd");
         }
         return $msg;
@@ -333,7 +333,7 @@ class dinomitedys_upload
             } // for each impage to display
             $msg .= "</div> <!-- end dinoImages -->\n"; /* match the rrwDinoGrid  */
         } catch (Exception $ex) {
-            throw new Exception(" $msg E#795 " . $ex->getMessage() .
+            throw new Exception(" $msg E#1365 " . $ex->getMessage() .
                 "$errorBeg dinomitedys_:displayExisting $errorEnd");
         }
         return $msg;
@@ -385,7 +385,7 @@ class dinomitedys_upload
                                         photographer = $photographer $eol";
 
             if (empty($dino)) {
-                return "$msg $errorBeg W#797 missing the dinosaur seletion $errorEnd";
+                return "$msg $errorBeg W#1367 missing the dinosaur seletion $errorEnd";
             }
 
             if ($debugSave) $msg .= "$fileSort is the highest sort number 
@@ -450,15 +450,15 @@ class dinomitedys_upload
                         $lng = 0;
                     }
                     if (0 == $lat || false === $lat || 0 == $lng || false === $lng) {
-                        $msg .= "$errorBeg E#800 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+                        $msg .= "$errorBeg E#1370 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
                     } else {
                         // check ranges
                         $sqlup = array("latitude" => $lat, "longitude" => $lng);
                         $cnt = $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
-                        if (1 == $cnt) $msg .= "i#804 Coordinates updated. Please check 
+                        if (1 == $cnt) $msg .= "i#1374 Coordinates updated. Please check 
                             <a href='/last_seen/' > last seen </a> and the map $eol";
                         else
-                            $msg .= "$errorBeg E#802 Something went wrong in the database update. $errorEnd ";
+                            $msg .= "$errorBeg E#1372 Something went wrong in the database update. $errorEnd ";
                         $msg .= rrwUtil::print_r($sqlup, true, "the update array");
                     }
                     continue; // on to next file
@@ -471,34 +471,34 @@ class dinomitedys_upload
                 if ($debugSave) $msg .= "moving $tmp_name to $saveName $eol";
                 $answer = move_uploaded_file($tmp_name, $saveName);
                 if (false === $answer) {
-                    $msg .= "$errorBeg E#809 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
+                    $msg .= "$errorBeg E#1379 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
                 $numberOfSavedImages++;
                 if ($debugSave) $msg .= "----------------------------- $eol
                                         I# moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
-                if ($debugSave) $msg .= "E#764 resizeImage( 
+                if ($debugSave) $msg .= "E#1334 resizeImage( 
                         $saveName, $finalName, 700, 200 ) $eol";
                 $msg .= uploadProcessDire::resizeImage($saveName, $finalName, 700, 200);
                 if (!empty($photographer)) {
-                    if ($debugSave) $msg .= "I#799 nameToBottom( 
+                    if ($debugSave) $msg .= "I#1369 nameToBottom( 
                                     $finalName, $photographer ); $eol";
 
                     $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
                     if ($debugSave)
-                        $msg .= "I#760 $saveName resized, attributed to $finalName $eol";
+                        $msg .= "I#1330 $saveName resized, attributed to $finalName $eol";
                 } // end if (!empty($photographer))
             } // end foreash ($files)
             $msg .= $eol;
             if ($numberOfSavedImages > 0) {
-                $msg .= "I#789 $$numberOfSavedImages files uploaded $eol";
+                $msg .= "I#1359 $$numberOfSavedImages files uploaded $eol";
                 $msg .= dinomitedys_make_html::UpdateImages($dino);
             }
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#780 update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1350 update $errorEnd";
             throw new Exception("$msg");
         }
         return $msg;

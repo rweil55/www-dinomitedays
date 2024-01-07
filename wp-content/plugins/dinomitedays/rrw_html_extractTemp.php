@@ -63,11 +63,11 @@ class rrwParse {
 
         if (self::$debugParse) self::$trace .= " in trimTo buffer length is " . strlen( SELF::$buffer );
         if ( empty( SELF::$buffer ) )
-           throw new Exception( "$msg $errorBeg E#774 buffer is empty $errorEnd");
+           throw new Exception( "$msg $errorBeg E#1344 buffer is empty $errorEnd");
 
         $iiLook = strpos( SELF::$buffer, $lookfor );
         if ( $iiLook === false )
-            throw new Exception( "$msg $errorBeg E#786 did not finf $lookfor in buffer $errorEnd" );
+            throw new Exception( "$msg $errorBeg E#1356 did not finf $lookfor in buffer $errorEnd" );
         SELF::$buffer = substr( SELF::$buffer, $iiLook );
         return $msg;
     }
@@ -76,7 +76,7 @@ class rrwParse {
         global $eol, $errorBeg, $errorEnd;
         $iiLook = strpos( SELF::$buffer, $lookfor );
         if ( $iiLook === false )
-            throw new Exception( "$msg $errorBeg E#775 did not find $lookfor 
+            throw new Exception( "$msg $errorBeg E#1345 did not find $lookfor 
                     in remaiming buffer $errorEnd" );
         $extracted = substr( SELF::$buffer, 0, $iiLook );   // get the extraction
         $msg .= rrwParse::trimTo( $lookfor );       // and remove it from the buffer
@@ -97,7 +97,7 @@ class rrwParse {
         while ( 1 ) {
             $cnt++;
             if ( $cnt > 50 )
-                throw new Exception( "$msg $errorBeg E#805 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
+                throw new Exception( "$msg $errorBeg E#1375 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
             if ( $iiLookEnd > strlen( $text ) )
                 break;
             $iiLookbeg = strpos( $text, "<", $iiLookEnd );

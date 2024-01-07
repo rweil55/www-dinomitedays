@@ -184,14 +184,14 @@ $eol $eol
                     $sql = "select * from " . self::rrw_dinomites . " where name = '$dino'  and filename = '$designname' ";
                     $recs = $wpdb->get_results($sql, ARRAY_A);
                     if ($wpdb->num_rows != 1)
-                        $msg .= "$errorBeg E#807 Did not find (" . $wpdb->num_rows . ") a dinosour for $errorEnd
+                        $msg .= "$errorBeg E#1377 Did not find (" . $wpdb->num_rows . ") a dinosour for $errorEnd
                             $sql $eol";
                     $set = array("logoFileName" => "$logoName");
                     $which = array("name" => "$dino");
                     if (empty($recs[0]["logoFileName"])) {
                         $recCnt = $wpdb->update(self::rrw_dinomites, $set, $which);
                         if (1 != $recCnt)
-                            $msg .= "$errorBeg E#808 Did not find a dinosour for $errorEnd
+                            $msg .= "$errorBeg E#1378 Did not find a dinosour for $errorEnd
                             $sql $eol";
                     } else {
                         $recCnt = "previously updated ";
@@ -285,7 +285,7 @@ $eol $eol
                 substr($buffer, $iienddiv + 6);
             $msg .= "footer replaced $eol";
         } else {
-            $msg .= "$errorBeg E#794 no footer found $errorEnd";
+            $msg .= "$errorBeg E#1364 no footer found $errorEnd";
             $msg .= htmlspecialchars($buffer);
         }
         return $msg;
@@ -325,7 +325,7 @@ $eol $eol
             if (mkdir($direFinal)) {
                 $msg .= "created directory $direFinal $eol";
             } else {
-                $msg .= "$errorBeg E#781 failed to create directory $direFinal $errorEnd";
+                $msg .= "$errorBeg E#1351 failed to create directory $direFinal $errorEnd";
                 return $msg;
             } // end mkdire
         } // end check for directory and make is neccessary
@@ -377,7 +377,7 @@ $eol $eol
 
         $buffer = file_get_contents("$homePath/designs/$filesource");
         if (false === $buffer) {
-            $msg .= "$errorBeg E#790 failed to read $homePath/designs/$filesource $errorEnd";
+            $msg .= "$errorBeg E#1360 failed to read $homePath/designs/$filesource $errorEnd";
             return $msg;
         }
         // has cmnh footer been replaced already
@@ -398,7 +398,7 @@ $eol $eol
             } else {
                 $iiClose = strrpos($buffer, "Close", -1);
                 if (false === $iiClose) {
-                    $msg .= "$msg $errorBeg E#779 string 'close' not found in $homePath/$filesource $errorEnd
+                    $msg .= "$msg $errorBeg E#1349 string 'close' not found in $homePath/$filesource $errorEnd
                         while tryiing to update footer $errorEnd";
                     return $msg;
                 }
@@ -487,7 +487,7 @@ $eol $eol
                 self::rrw_dinomites . " where filename = '$item' ";
             $recnames = $wpdb->get_results($sql, ARRAY_A);
             if (1 != $wpdb->num_rows) {
-                $msg .= "$errorBeg E#761 Did not find a dinosour for $errorEnd
+                $msg .= "$errorBeg E#1331 Did not find a dinosour for $errorEnd
                 $sql $eol";
                 continue;
             }
@@ -610,7 +610,7 @@ $eol $eol
             rename($fileName, $filenameNew);
             $msg .= " $fileName rejected $eol";
         } else {
-            $msg .= "$errorBeg E#806 file '$fileName' not found to reject $errorEnd";
+            $msg .= "$errorBeg E#1376 file '$fileName' not found to reject $errorEnd";
         }
         $iiSlash = strrpos($fileName, "/");
         $dino = substr($fileName, $iiSlash + 1);
@@ -636,16 +636,16 @@ $eol $eol
         $fileNameOld = "$siteDir/$htmlPath/$dino.htm";
         $filenameSave = "$siteDir/wp-content/$dino" . "_" . date("Y-m-d") . ".htm";
         if (!file_exists($fileNameNew))
-            throw new Exception("$msg $errorBeg E#792 file $fileNameNew not exist $errorEnd ");
+            throw new Exception("$msg $errorBeg E#1362 file $fileNameNew not exist $errorEnd ");
         if (file_exists($fileNameOld)) {
             $result3 = rename($fileNameOld, $filenameSave);
             if (false === $result3)
-                throw new Exception("$msg $errorBeg E#801 failure of
+                throw new Exception("$msg $errorBeg E#1371 failure of
                             rename( $fileNameOld, $filenameSave ); $errorEnd");
         }
         $result2 = rename($fileNameNew, $fileNameOld);
         if (false === $result2)
-            throw new Exception("$msg $errorBeg E#798 failure of
+            throw new Exception("$msg $errorBeg E#1368 failure of
                             rename( $fileNameNew, $fileNameOld ); $errorEnd");
         $msg .= "<a href='/designs/$dino.htm' > Check out final verion </a> $eol";
         return $msg;
@@ -769,13 +769,13 @@ WAIT SECONDS=4$eol";
 
         $handle = opendir("$dir");
         if (!is_resource($handle))
-            throw new Exception("$msg E#803 that is not a directory");
+            throw new Exception("$msg E#1373 that is not a directory");
         $cnt = 0;
         $entry = true;
         while (($entry = readdir($handle)) !== false) {
             $cnt++;
             if ($cnt > 2000)
-                throw new Exception("$msg E#778 - $entry Too mnay times $cnt in the while loop $eol");
+                throw new Exception("$msg E#1348 - $entry Too mnay times $cnt in the while loop $eol");
             if (("." == substr($entry, 0, 1)) || ("wp" == substr($entry, 0, 2)))
                 continue;
             if (strpos($entry, "fix") !== false)
@@ -914,7 +914,7 @@ WAIT SECONDS=4$eol";
 
         $iiloc = strpos($buffer, "Location");
         if (false === $iiloc)
-            return "$msg $errorBeg E#796 the word location was not found. $errorEnd";
+            return "$msg $errorBeg E#1366 the word location was not found. $errorEnd";
         $iiloc = $iiloc + 8; // iiloc is hust after the N
         $msg .= "'" . substr($buffer, $iiloc, 2) . "' $eol";
         if (substr($buffer, $iiloc, 2) == " (")

@@ -143,7 +143,7 @@ class dinomitedys_upload
         $dino = rrwUtil::fetchparameterString("dino");
 
         if (empty($dino)) {
-            return "$msg $errorBeg #790 missing the dinosaur seletion $errorEnd";
+            return "$msg $errorBeg #1360 missing the dinosaur seletion $errorEnd";
         }
         $dino = $_POST["dino"];
         for ($next_number = 1; $next_number < 20; $next_number++) {
@@ -180,18 +180,18 @@ class dinomitedys_upload
                 $answer = move_uploaded_file($tmp_name, $newname);
                 if ($debugSave) $msg .= "moving $tmp_name  to $newname $eol";
                 if (false === $answer) {
-                    $msg .= "$errorBeg E#781 there was a problem in retrieving/move the file $newname $errorEnd ";
+                    $msg .= "$errorBeg E#1351 there was a problem in retrieving/move the file $newname $errorEnd ";
                 } else {
-                    $msg .= "I#794 moved file to $newname $eol";
+                    $msg .= "I#1364 moved file to $newname $eol";
                     if ("coordinates" != $key) {
                         $ii = strrpos($filename, ".");
                         $finalname = "$images/$dino" . ($existing_number - 1) . substr($filename, $ii);
                         $msg .= "copy( $newname, $finalname )$eol";
                         $answer = copy($newname, $finalname);
                         if (false === $answer) {
-                            $msg .= "$errorBeg E#781 there was a problem in copying the fileto $finalname $errorEnd ";
+                            $msg .= "$errorBeg E#1351 there was a problem in copying the fileto $finalname $errorEnd ";
                         } else {
-                            $msg .= "I#810 copy file to $newname $eol";
+                            $msg .= "I#1380 copy file to $newname $eol";
                         }
                     }
                 }
