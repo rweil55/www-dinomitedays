@@ -172,7 +172,7 @@ class dinomitedys_upload
         $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
         $recDinos = $wpdbExtra->get_resultsA($sqldino);
         if (1 != $wpdbExtra->num_rows)
-            throw new Exception("$msg $errorBeg E#136 did not find the
+            throw new Exception("$msg $errorBeg E#1337 did not find the
                             dinosauer $errorEnd $sqldino $eol");
         $recDino = $recDinos[0];
         // $msg .= rrwUtil::print_r($recDino, true, "recDino");

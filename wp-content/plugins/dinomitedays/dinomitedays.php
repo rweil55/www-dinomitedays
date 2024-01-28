@@ -25,7 +25,7 @@ error_reporting(E_ALL | E_STRICT);
 
 require_once "rrw_util_inc.php";
 require_once "freewheelingeasy-wpdpExtra.php";
-require_once "display_stuff_class.php";
+require_once "rrwFormat.php";
 require_once "display_tables_inc.php";
 require_once "display_tables_class.php";
 
