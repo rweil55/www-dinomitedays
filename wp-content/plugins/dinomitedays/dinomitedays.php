@@ -23,14 +23,16 @@ Domain Path: /lang
 ini_set("display_errors", true);
 error_reporting(E_ALL | E_STRICT);
 
+// the follwoing are in the ww-include directory
 require_once "rrw_util_inc.php";
 require_once "freewheelingeasy-wpdpExtra.php";
 require_once "rrwFormat.php";
-require_once "display_tables_inc.php";
+require_once "rrwParam.php";
 require_once "display_tables_class.php";
 
-
+// the following are in the local directory
 require_once "dinomitedays-fix.php";
+require_once "dinomitedays-header-block.php";
 require_once "dinomitedays-upload.php";
 require_once "dinomitedays-make-html.php";
 require_once "dinomitedays-misc-pages.php";
@@ -55,6 +57,8 @@ add_shortcode('dinomitedays-upload', array("dinomitedys_upload", "upload"));
 add_shortcode('dinomitedays-last-seen', array("dinomitedays_misc_pages", "last_seen"));
 add_shortcode('photographers', array("DisplayPhotographers", "Display"));
 add_shortcode('dinomitedays-thumbnails', array("DisplayThumbnails", "Display"));
+add_shortcode('dinomitedays-photographers', array("DisplayPhotographers", "Display"));
+add_shortcode('dinomitedays-header-block', array("dinomitedays_header_block", "header"));   
 
 /* -------------------------------------  cause it to happen
 
