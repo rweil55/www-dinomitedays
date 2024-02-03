@@ -31,6 +31,7 @@ require_once "rrwParam.php";
 require_once "display_tables_class.php";
 
 // the following are in the local directory
+require_once "database.php";
 require_once "dinomitedays-fix.php";
 require_once "dinomitedays-header-block.php";
 require_once "dinomitedays-upload.php";
@@ -58,7 +59,8 @@ add_shortcode('dinomitedays-last-seen', array("dinomitedays_misc_pages", "last_s
 add_shortcode('photographers', array("DisplayPhotographers", "Display"));
 add_shortcode('dinomitedays-thumbnails', array("DisplayThumbnails", "Display"));
 add_shortcode('dinomitedays-photographers', array("DisplayPhotographers", "Display"));
-add_shortcode('dinomitedays-header-block', array("dinomitedays_header_block", "header"));   
+add_shortcode('dinomitedays-header-block', array("dinomitedays_header_block", "header"));
+add_shortcode('dinomitedays-database', array("dinomitedays_database", "displayDatabase"));  
 
 /* -------------------------------------  cause it to happen
 
