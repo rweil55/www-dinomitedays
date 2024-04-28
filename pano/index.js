@@ -6,13 +6,13 @@ function initialize() {
   if (0 == lat || 0 == lng || null == lat || null == lng) {
     alert("No street view available at " + lat + " , " + lng); return;
   }
-  const fenway = new google.maps.LatLng(lat, lng);
+  const location = new google.maps.LatLng(lat, lng);
   const mapIt = new google.maps.Map(document.getElementById("mapPlace"), {
-    center: fenway, zoom: 16,
+    center: location, zoom: 16,
   });
   const panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"),
     {
-      position: fenway, pov: {
+      position: location, pov: {
         heading: 34, pitch: 10,
       },
     },);
