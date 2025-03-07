@@ -1,0 +1,15 @@
+[0114/214911.000:INFO:CONSOLE(1)] "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://goo.gl/7K7WLu", source: https://core-ml-fraud-detection-stage-public.azureedge.net/js/app.7b3adf59.js (1)
+[0114/214911.001:INFO:CONSOLE(1)] "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://goo.gl/7K7WLu", source: https://core-ml-fraud-detection-stage-public.azureedge.net/js/app.7b3adf59.js (1)
+[0114/214911.003:INFO:CONSOLE(1)] "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://goo.gl/7K7WLu", source: https://core-ml-fraud-detection-stage-public.azureedge.net/js/app.7b3adf59.js (1)
+[0114/214911.003:INFO:CONSOLE(1)] "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://goo.gl/7K7WLu", source: https://core-ml-fraud-detection-stage-public.azureedge.net/js/app.7b3adf59.js (1)
+[0114/214911.004:INFO:CONSOLE(1)] "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://goo.gl/7K7WLu", source: https://core-ml-fraud-detection-stage-public.azureedge.net/js/app.7b3adf59.js (1)
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 104 to 127
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 102 to 125
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 104 to 124
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 106 to 123
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 110 to 122
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 103 to 121
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 105 to 120
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 111 to 119
+[0114/214911.004:WARNING:used_ids.h(55)] Duplicate id found. Reassigning from 109 to 118
+[0114/214911.081:WARNING:stun_port.cc(450)] Port[ce099b70:0:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Wildcard:id=0]]: StunPort: stun host lookup received error 0

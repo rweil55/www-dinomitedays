@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+  <title>DinoMite Days - Monroeville Slideshow</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR" content="Quanta Plus">
+
+  <script LANGUAGE="JavaScript">
+  var path = "images/";
+
+  //dinosaur currently being displayed
+  sect = new Array();
+  sect[0]=0;
+  
+ 
+
+  //object for the dinosaurs.  Declares all sections and the parts of the name. 
+  function dinoSection(pic0, name0) {
+        this.pic = new Array();
+        this.pic[0]= path + pic0;
+        
+        
+        this.name = new Array();
+        this.name[0]=name0;
+        
+        
+        }
+
+  //the dinosaurs
+  dinosList = new Array();
+  dinosList[0] = new dinoSection("fly0.jpg", "The dinosaurs arrive in Monroeville.");
+  dinosList[1] = new dinoSection("fly1.jpg", "Anybody lose about 100 dinosaurs?");
+  dinosList[2] = new dinoSection("fly2.jpg", "The fiberglass dinosaur models were created by Research Casting International, just outside of Toronto.  This company also created the model of Dippy that stands outside Carnegie Museum of Natural History.");
+  dinosList[3] = new dinoSection("fly3.jpg", "The models were wrapped in protective sheets of plastic for shipping.");
+  dinosList[4] = new dinoSection("fly4.jpg", "The Torosaurus models were in the most danger of damage, due to their graceful horns and tails.");
+  dinosList[5] = new dinoSection("fly5.jpg", "DinoMite Days gets underway!  In this picture you can see, from left to right: Sparky (W. PA School for the Blind), Fossil Fuels (Daugherty), Primal Cuts (Hill),  Lunasaurus Lux (Gotsch), and Torn Torosaurus (Geiger).");
+  dinosList[6] = new dinoSection("fly6.jpg", "The view from the other end of the row, from right to left:   Troyus Hillosaurus (Cooley), a blank Stegosaurus awaiting its artist, An Ecological History of Pittsburgh (Kline/Docter/Brill), and Florasaurus (Zimmerman/Urbschat).");
+  dinosList[7] = new dinoSection("fly7.jpg", "These dinosaurs are drying after receiving their protective clearcoat, which was donated by PPG Industries.  From left to right: Ketchupsaurus (Martinez), Tea Rex (Soich), and Stegoflorus (Washburn).  The pink dino behind them is Dolly Dollarsaurus (Dymun/Dollar Bank).");
+  dinosList[8] = new dinoSection("fly8.jpg", "The next three in line, left to right, are: Floor to Fauna (Curry), Troyus Hillosaurus (Cooley), and Sign-O-Saurus (Uniontown High School).");
+  dinosList[9] = new dinoSection("fly9.jpg", "Smile for a closeup!");
+  dinosList[10] = new dinoSection("fly10.jpg", "Feast your eyes on the colorful symmetry.");
+  dinosList[11] = new dinoSection("fly11.jpg", "Left to right:  Elementarysaurus (O'Hara Elementary School), Neighborsaurus (Family Communications), and Astorino's Geniusaurus Rex before the addition of the wings.");
+  dinosList[12] = new dinoSection("fly12.jpg", "From left to right, close-ups of Bill & Dolly Dollarsaurus (Dymun/Dollar Bank), Fabosaurus (MacKay), and SEAWolfasaurus (St. Edmund's Academy).");
+  dinosList[13] = new dinoSection("fly13.jpg", "Ready to be shipped to their new homes are, from left to right, SEAWolfasaurus (St. Edmund's Academy), Troyus Hillosaurus (Cooley),  Tea Rex (Soich),  Alphabetosaurus (Phillips Elementary School), Florasaurus (Zimmerman/Urbschat), Sign-O-Saurus (Uniontown High School), and Stegoflorus (Washburn).");
+  dinosList[14] = new dinoSection("fly14.jpg", "Left to right: PPG TyranAQUARIUM Rex (E. Mesa-Gaido), Historapod (Smith), Lost Pittsburgh (Yee), Geniusaurus Rex (Astorino), and Renewalsaur (Klein/Baugh-Sasaki).");
+  dinosList[15] = new dinoSection("fly15.jpg", "Waiting for the clearcoat to dry.");
+  dinosList[16] = new dinoSection("fly16.jpg", "Behind the stegs you can see the beginnings of Geiger's Torn Torosaurus, and in the back on the right you can see the heads of Ticketsaurus (Shaler High School) and Extinction? (Pantalone).");
+  dinosList[17] = new dinoSection("fly17.jpg", "Left to right: Ticketsaurus (Shaler High School),  Extinction? (Pantalone), Elementarysaurus (O'Hara Elementary School) and Neighborsaurus (Family Communications).");
+  dinosList[18] = new dinoSection("fly18.jpg", "Ready to ship: Ticketsaurus (Shaler High School),  Extinction? (Pantalone), and Neighborsaurus (Family Communications).");
+  dinosList[19] = new dinoSection("fly19.jpg", "Ticketsaurus (Shaler High School) and Extinction? (Pantalone).  In the back on the left you can see The Rise of Fossil Fuels (Matthews) and the plates of SEAWolfasaurus (St. Edmund's Academy).");
+  dinosList[20] = new dinoSection("fly20.jpg", "Loaded onto the truck are Dinosurgeon (Seaman) and Neighborsaurus (Family Communications).");
+  dinosList[21] = new dinoSection("fly21.jpg", "Arriving Downtown in style!  On the left you can see Primal Cuts by Michael Hill (the orange and white sections).");
+  dinosList[22] = new dinoSection("end.gif", "...or close this window to return to main site");
+
+
+
+  //code for the up button.  panel is which up button was clicked
+  function doDown(panel) {
+        //changes the current dinosaur to the previous one in the list.  keeps it within bounds
+        sect[panel]=(sect[panel]+1)%dinosList.length;
+        which = sect[panel];
+
+        //set the picture
+        document.images[panel+1].src=dinosList[which].pic[panel];
+
+        //puts the name portion underneath.  does not work for NS4.x browsers
+        if(document.all) {
+                document.all["t" + panel].innerText=dinosList[which].name[panel];
+                }
+
+        if(document.layers) {
+                /*var tochange;
+                switch(panel) {
+                        case 0:
+                                tochange = document.div0;
+                                break;
+                        
+						
+                       
+                        }
+
+                tochange.document.open();
+                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
+                tochange.document.close();*/
+                }
+
+        else {
+                textvar=document.getElementById("t" + panel);
+                textvar.firstChild.nodeValue=dinosList[which].name[panel];
+                }
+        }
+
+  function doUp(panel) {
+        //changes the current dinosaur to the next one in the list.  keeps it within bounds
+        sect[panel]=(sect[panel]+dinosList.length-1)%dinosList.length;
+        which = sect[panel];
+
+        //set the picture
+        document.images[panel+1].src=dinosList[which].pic[panel];
+
+        //puts the name portion underneath.  does not work for NS4.x browsers
+        if(document.all) {
+                document.all["t" + panel].innerText=dinosList[which].name[panel];
+                }
+
+        if(document.layers) {
+                /*var tochange;
+                switch(panel) {
+                        case 0:
+                                tochange = document.div0;
+                                break;
+                        
+						
+                        
+                        }
+
+                tochange.document.open();
+                tochange.document.write("<h3 ID='t" + panel + "'>Will it take a whole sentence</h3>");
+                tochange.document.close();*/
+                }
+
+        else {
+                textvar=document.getElementById("t" + panel);
+                textvar.firstChild.nodeValue=dinosList[which].name[panel];
+                }
+        }
+
+  
+  </script>
+
+</head>
+<body background="../../designs/graphics/bg_blue.gif" topmargin=5 leftmargin=0 marginwidth=0 marginheight=0>
+<table border=1 width=500 bgcolor="#FFFFFF" align=center>
+  <tr><td colspan=3><h4 align="center"><i><font color="#009900" size="3" face="Arial, Helvetica, sans-serif">Views 
+        from Monroeville</font></i></h4>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">Some artists whose 
+        studios couldn't quite accommodate a dinosaur chose to work in the DinoMite 
+        Days studio in Monroeville.&nbsp; This is also where most of the other 
+        dinosaurs are delivered before being shipped off to their summer homes. 
+        </font></p>
+  </td></tr><tr align="center">
+ 
+  </tr>
+  <tr>
+   <td><img src="../../graphics/back.gif" width=59 height=21 border=0 onclick="doUp(0);"></td><td><img src="images/fly0.jpg" width=400 height=300 border=0></td><td><img src="../../graphics/next.gif" width=59 height=21 border=0 onclick="doDown(0);"></td>
+    
+      
+  </tr>
+  <tr align="center">
+  </tr>
+  <tr align=center>
+    <td colspan=3 align=center><div id="div0"> <font face="Arial, Helvetica, sans-serif" size=2 ID="t0">The 
+        dinosaurs arrive in Monroeville.</font> </div></td>
+         
+      
+  </tr>
+</table>
+</body>
+</html>
