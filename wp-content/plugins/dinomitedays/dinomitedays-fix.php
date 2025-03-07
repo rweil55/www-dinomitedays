@@ -102,6 +102,12 @@ class dinomitedys_fix
             case "phototogs":
                 $msg .= DisplayPhotographers::Display($attr);
                 break;
+            case "print":
+                $msg .= self::printPages($attr);
+                break;
+            case "print2":
+                $msg .= self::print2($attr);
+                break;
             case "rejectdesginimage":
                 $msg .= self::rejectDesginImage();
                 return $msg;
@@ -144,11 +150,98 @@ $eol $eol
 ";
                 $msg .= self::SearchForQuery("");
                 break;
-        } // end switch     
+        } // end switch
 
         return $msg;
     } // end function fixit
     //
+
+    public static function print2($attr)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
+        $msg = "";
+        $debugLast = false;
+
+        try {
+            ini_set("display_errors", true);
+            error_reporting(E_ALL | E_STRICT);
+            $msg = "";
+
+            $startAt  = rrwParam::integer("startAt", 0);
+            $sql = "select keyId,  name, status, filename, mapDate,
+                    mapLoc, latitude, longitude
+                    from " .  self::rrw_dinomites .
+                "  order by name";
+            if ($debugLast) $msg .= "$sql $eol";
+            $recs = $wpdbExtra->get_resultsA($sql);
+            if ($debugLast) $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
+
+            $msg .= "<script>\n";
+            $cnt = 0;
+            foreach ($recs as $rec) {
+                $startAt--;
+                if (0 < $startAt)
+                    continue;
+                $cnt++;
+                if (10 < $cnt)
+                    break;
+                $name = $rec["name"];
+                $status = $rec["status"];
+                $filename = $rec["filename"];
+                $mapDate = $rec["mapDate"];
+                $mapLoc = $rec["mapLoc"];
+                $latitude = $rec["latitude"];
+                $longitude = $rec["longitude"];
+                $keyId = $rec["keyId"];
+                $msg .= "\n";
+                $msg .= "window.open(\"https://dinomitedays.org/designs/$filename.htm\");\n";
+            }
+            $msg .= "</script>";
+        } catch (Exception $ex) {
+            throw new Exception("$msg $errorBeg E#1333 dinomitedys_upload:upload: $errorEnd");
+        }
+        return $msg;
+    } //  end function print
+    private static function printPages($attr)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdb;
+        $msg = "into print pages";
+        $which = get_option("which", 0);
+        if (0 == $which)
+            add_option("which", 0);
+        $msg .= "which is $which $eol";
+        $which++;
+        update_option("which", $which);
+        $dir = "/home/pillowan/www-dinomitedays/designs";
+        $urls = array();
+        foreach (new DirectoryIterator($dir) as $fileInfo) {
+            if ($fileInfo->isDot())
+                continue;
+            if ($fileInfo->getExtension() != "htm")
+                continue;
+            $name =  $fileInfo->getFilename();
+            array_push($urls, "$name"); //https://dinomitedays.org/designs/$name");
+        }
+        $msg .= "count of urls " . count($urls) . $eol;
+        asort($urls);
+        $cnt = 0;
+        foreach ($urls as $url) {
+            $cnt++;
+            if ($cnt == $which) {
+                print "processing file $url $eol";
+                $file = "$dir/" . $urls[$cnt];
+                $file = "https://dinomitedays.org/designs/$name";
+                print "file is $file $eol";
+                $contents = file_get_contents($file);
+                print $contents;
+                print $eol . '<input type="button" value="Do it" onclick="window.print();"</input>' . $eol;
+                return "after the print button $eol";
+            }
+        }
+        return "completed the loop which is wrong$eol";
+    } // end function printPages
     private static function findPictures($attr)
     {
         global $eol, $errorBeg, $errorEnd;
@@ -224,7 +317,7 @@ $eol $eol
         global $homePath;
         $msg = "";
 
-        $dino = rrwPara::String("dino");
+        $dino = rrwParam::String("dino");
         $newPath = "designs/";
         $filenameFull = "$homePath/$newPath/$dino-new.htm";
         $result = unlink($filenameFull);
@@ -254,7 +347,7 @@ $eol $eol
         if (false == strpos($buffer, "dinomitedays.css")) {
             $iiHead = strpos($buffer, "</head");
             $buffer = substr($buffer, 0, $iiHead) .
-                "\n<link rel='stylesheet' id='dinomitedays-style-css'  
+                "\n<link rel='stylesheet' id='dinomitedays-style-css'
                       href='https://dinomitedays.org$pluginDire/dinomitedays.css' media='all' />\n" .
                 substr($buffer, $iiHead);
         }
@@ -319,7 +412,7 @@ $eol $eol
 
         $diresource = "$homePath/designs";
         $direFinal = "$homePath/designsnew";
-        $file = rrwPara::String("file");
+        $file = rrwParam::String("file");
 
         if (!is_dir("$direFinal")) {
             if (mkdir($direFinal)) {
@@ -348,7 +441,7 @@ $eol $eol
                 }
                 array_push($list, $entry);
                 $msg .= self::ChangeFooter($entry, "designsnew");
-            } // end while ( false !== ( $entry = readdir( $hd ) ) ) 
+            } // end while ( false !== ( $entry = readdir( $hd ) ) )
             fclose($hd);
         } else {
             $msg .= self::ChangeFooter($file, "designsnew");
@@ -405,7 +498,7 @@ $eol $eol
                 $iiClose = $iiClose - 3;
             } // start of therreplace has been found
             $iitr = strpos($buffer, "</tr", $iiClose); // get end
-            $msg .= "len is " . strlen($buffer) . "close at $iiClose,  
+            $msg .= "len is " . strlen($buffer) . "close at $iiClose,
                         tr at $iitr $eol";
             $footer = file_get_contents(
                 "$homePath/wp-content/plugins/dinomitedays/footer_dino.php"
@@ -510,24 +603,26 @@ $eol $eol
                 );
             }
         } // end directory lok up
-        foreach (array(
-            "merch" => "Dino Store",
-            "media" => "News & Information",
-            "owned" => "Purchased by Sponsors",
-            "pics" => "Pictures",
-            "dug" => "Duquesne",
-            "fun" => "Fun Stuff",
-            "live" => "Live Auction",
-            "lot1" => "Auction Lot 1",
-            "lot2" => "Auction Lot 2",
-            "lot3" => "Auction Lot 3",
-            "raff" => "Raffle",
-            "otoole" => "Toyosaurus - Crane",
-            "results" => "Results",
-            "seek_s" => "Select Sponsor",
-            "steg" => "Stegosaurus",
-            "web" => "Website Information",
-        ) as $file => $name) {
+        foreach (
+            array(
+                "merch" => "Dino Store",
+                "media" => "News & Information",
+                "owned" => "Purchased by Sponsors",
+                "pics" => "Pictures",
+                "dug" => "Duquesne",
+                "fun" => "Fun Stuff",
+                "live" => "Live Auction",
+                "lot1" => "Auction Lot 1",
+                "lot2" => "Auction Lot 2",
+                "lot3" => "Auction Lot 3",
+                "raff" => "Raffle",
+                "otoole" => "Toyosaurus - Crane",
+                "results" => "Results",
+                "seek_s" => "Select Sponsor",
+                "steg" => "Stegosaurus",
+                "web" => "Website Information",
+            ) as $file => $name
+        ) {
             $file = "head_$file.gif";
             $author = "";
             // needs more code to match the fifferent head of these guys
@@ -601,7 +696,7 @@ $eol $eol
         $msg = "";
         $debugreject = true;
 
-        $imagename = rrwPara::String("file");
+        $imagename = rrwParam::String("file");
         $siteDir = "/home/pillowan/www-dinomitedays/";
         $imagePath = "designs/images";
         $fileName = self::baseDire . "/$imagePath/$imagename";
@@ -629,7 +724,7 @@ $eol $eol
     {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
-        $dino = rrwPara::String("dino");
+        $dino = rrwParam::String("dino");
         $siteDir = "/home/pillowan/www-dinomitedays";
         $htmlPath = "designs";
         $fileNameNew = "$siteDir/$htmlPath/$dino-new.htm";
@@ -715,16 +810,16 @@ WAIT SECONDS=4$eol";
                 continue;
             $dino = $item->getBasename("-new.htm");
             $msg .= " Current version <a href='/designs/$dino.htm' target='old'>
-                    $dino.htm</a>, 
-                an  updated verson of <a href='/designs/$dino-new.htm' 
-                target='new' > $dino-new.htm is here</a>. 
-                Check it out. Do NOT forget to refreash. If okay 
+                    $dino.htm</a>,
+                an  updated verson of <a href='/designs/$dino-new.htm'
+                target='new' > $dino-new.htm is here</a>.
+                Check it out. Do NOT forget to refreash. If okay
                 <a href='/fixit/?task=renamenewdino&dino=$dino' target='new'>
-                move to production</a> 
+                move to production</a>
                 or <a href='/fix?task=deletenew&dino=$dino' >delete the newer version </a>
                 or <a href='/update/?dino=$dino' target='update'> retry the update </a> $eol";;
         }
-        $msg .= "$eol found $cntRead dires/files of which 
+        $msg .= "$eol found $cntRead dires/files of which
                     $cntFound were updated $eol";
         return $msg;
     }
@@ -796,13 +891,13 @@ WAIT SECONDS=4$eol";
             $replace = false;
             switch ($fix) {
                 case "find_related":
-                    // display a collectio of files, whose name contains q= 
+                    // display a collectio of files, whose name contains q=
                     if (false === stripos($entry, $options))
                         break; // next file
                     $ext = substr($entry, -3);
                     if (("gif" != $ext) && ("jpg" != $ext)) {
                         // non image file
-                        $msg .= "<a href='$http/$entry' target='nonimage' > 
+                        $msg .= "<a href='$http/$entry' target='nonimage' >
                         <span style='font-size:16; font-weight:bold'> $file </span></a>$eol";
                     } else {
                         $msg .= "<img src='$http/$entry' width='200px' /> <br>
@@ -865,7 +960,7 @@ WAIT SECONDS=4$eol";
                     $msg .= "Diff = $diff  &nbsp; $file $eol";
                     if (68 != $diff)
                         continue 2; // next flle
-                    $tour = "<a href='https://carnegiemnh.org/jurassic-days-dino-statue-driving-tour/' 
+                    $tour = "<a href='https://carnegiemnh.org/jurassic-days-dino-statue-driving-tour/'
 					> a tour was created. </a>";
                     $step = 10;
                     $buffer = substr($buffer, 0, $iidino + $step) .
@@ -876,7 +971,7 @@ WAIT SECONDS=4$eol";
                     $msg .= self::replaceFooter($buffer);
                     break;
                 default:
-                    throw new Exception("$msg $errorBeg #E751 no fix selected 
+                    throw new Exception("$msg $errorBeg #E751 no fix selected
                     $errorEnd");
             } // end switch
             // write the file ifchanges have been made
@@ -939,7 +1034,7 @@ WAIT SECONDS=4$eol";
         fwrite($fp, $buffer);
         $iiSlash = strrpos($fileLocOut, "/");
         $newName = substr($fileLocOut, $iiSlash);
-        $msg .= "<a href='https://www.dinomitedays.org/designs/$newName' 
+        $msg .= "<a href='https://www.dinomitedays.org/designs/$newName'
 			target='new' > $newName </a>";
 
         return $msg;

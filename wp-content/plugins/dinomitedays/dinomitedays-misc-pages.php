@@ -22,14 +22,14 @@ class dinomitedays_misc_pages
             ini_set("display_errors", true);
             error_reporting(E_ALL | E_STRICT);
             $msg = "";
-            $lastOrkey = rrwPara::String("lastorkey", $attr);
+            $lastOrkey = rrwParam::String("lastorkey", $attr);
             if (strcmp("key", $lastOrkey) == 0)
                 $numberorder = true;
             else
                 $numberorder = false;
             if ($debugLast) $msg .= "lastorkey: $lastOrkey, value = $numberorder $eol";
-            $sql = "select keyid,  name, status, filename, mapdate, 
-                    maploc, latitude, longitude 
+            $sql = "select keyid,  name, status, filename, mapdate,
+                    maploc, latitude, longitude
                     from " .  self::rrw_dinos;
             if ($numberorder)
                 $sql .= " order by keyid";

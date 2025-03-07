@@ -17,34 +17,45 @@ class dinomitedays_header_block
     <style>
         .headerItalic {
             font-style: italic;
+            color: #006600;
             weight: bold;
-        }   
+        }
     </style>
     ";
-        $dinoName = rrwPara::String('name', $attr);
+        $dinoName = rrwParam::String('name', $attr);
         $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoName'";
         if ($debug)  $msg .= "$sql $eol";
         $dinos = $wpdbExtra->get_resultsA($sql);
         $dino = $dinos[0];
         $dinoOldName = $dino['Oldname'];
         $sponsor = $dino["Sponsor"];
-        $maploc = $dino["Maploc"];
+        $mapLoc = $dino["Maploc"];
         $latitude = $dino["Latitude"];
         $longitude = $dino["Longitude"];
         $auctionPrice = $dino["ActionPrice"];
         $charity = $dino["Charity"];
         $theme = $dino["Theme"];
-        $materails = $dino["Material"];
-
+        $materials = $dino["Material"];
+        if (0 == $latitude || 0 == $longitude) {
+            $directionsTo = "";
+        } else {
+            $directionsTo = "<a href='https://www.google.com/maps/dir//$latitude,$longitude' target='map' > directions to </a>";
+        }
         $msg .=
-            self::oneline("Sponsored by: $sponsor") .
-            self::oneline("Charity: $charity") .
-            self::oneline("Fossil Location: $maploc") .  // build mapping links here
-            self::oneline("Auction: $auctionPrice") .
-            self::oneline("Theme: $theme ") .
-            self::oneline("Current Materials: $materails");
+            self::oneLine("Sponsored by: $sponsor") .
+            self::oneLine("Charity: $charity");
+        if (!empty($mapLoc)) {
+            $msg .= self::oneLine("Fossil Location: $directionsTo $mapLoc");
+        }
+        if (!empty($auctionPrice)) {
+            $msg .= self::oneLine("Auction: $auctionPrice");
+        }
+        $msg .=
+            self::oneLine("Theme: $theme ") .
+            self::oneLine("Current Materials: $materials");
         if (!empty($dinoOldName)) {
-            $msg .= "The original dinosaurer '$dinoOldName' was retired and replaced by '$dinoName'$eol";
+            $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
+                    <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
             $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoOldName'";
             $dinos = $wpdbExtra->get_resultsA($sql);
             $dino = $dinos[0];
@@ -55,21 +66,27 @@ class dinomitedays_header_block
             $oldmaterails = $dino["Material"];
 
             $msg .=
-                self::oneline("Original Sponsored by: $oldsponsor") .
-                self::oneline("Original Charity: $oldcharity") .
-                self::oneline("Original Auction: $oldauctionPrice") .
-                self::oneline("Original Theme: $oldtheme ") .
-                self::oneline("Original  Materials: $oldmaterails");
+                self::oneLine("Original Sponsored by: $oldsponsor") .
+                self::oneLine("Original Charity: $oldcharity") .
+                self::oneLine("Original Auction: $oldauctionPrice") .
+                self::oneLine("Original Theme: $oldtheme ") .
+                self::oneLine("Original  Materials: $oldmaterails");
         }
         return $msg;
     }
-    private static function oneline($labelvalue)
+    private static function oneLine($labelvalue)
     {
         global $eol;
-        $data  = explode(":", $labelvalue);
-        if (empty(trim($data[1]))) {
-            return "";
+        $iiColon = strpos($labelvalue, ":");
+        if (false === $iiColon) {
+            return "<span class='headerItalic' >$labelvalue</span>$eol";
         }
-        return "<span class='headerItalic' >$data[0]: </span>$data[1]$eol";
+        $header = substr($labelvalue, 0, $iiColon);
+        $value = trim(substr($labelvalue, $iiColon + 1));
+        if (empty($value)) {
+            return "<span class='headerItalic' >$header:</span>$eol";
+        } else {
+            return "<span class='headerItalic' >$header: </span>$value$eol";
+        }
     }
 } //end class

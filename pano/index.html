@@ -3,8 +3,9 @@
 <head>
   <title>Street View split-map-panes</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu4ddeY4GRlVKcDUWxs1Hd9tgVj_KTv9M"></script>
 
-  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
@@ -14,18 +15,7 @@
   <div id="pano">
     <h1>working on it</h1>
   </div>
-
-  <!-- 
-      The `defer` attribute causes the callback to execute after the full HTML
-      document has been parsed. For non-blocking uses, avoiding race conditions,
-      and consistent behavior across browsers, consider loading using Promises.
-      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
-      for more information.
-      -->
   <script src="./index.js"></script>
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUvagxH2HnWmshmiX0Hg361Yv3SynmQ_U&callback=initialize&v=weekly">
-    </script>
 </body>
 
 </html>

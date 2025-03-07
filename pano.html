@@ -3,7 +3,8 @@
 <head>
   <title>Street View split-map-panes</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu4ddeY4GRlVKcDUWxs1Hd9tgVj_KTv9M"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
   <style type="text/css">
     html,
     body {
@@ -13,24 +14,26 @@
     }
 
     #map,
-    #pano {
+    #panoramaCanvas {
       float: left;
       height: 100%;
       width: 50%;
     }
   </style>
+
+
   <script>
-    function initializePano() {
-      alert("initializePano");
-      const fenway = { lat: 42.345573, lng: -71.098326 };
+    function initializePanorama() {
+      alert("into initializePanorama");
+      const FenWayPark = { lat: 42.345573, lng: -71.098326 };
       const map = new google.maps.Map(document.getElementById("map"), {
-        center: fenway,
+        center: FenWayPark,
         zoom: 14,
       });
       const panorama = new google.maps.StreetViewPanorama(
-        document.getElementById("pano"),
+        document.getElementById("panoramaCanvas"),
         {
-          position: fenway,
+          position: FenWayPark,
           pov: {
             heading: 34,
             pitch: 10,
@@ -47,17 +50,19 @@
 <body>
   hello this is the file.
   <div id="map"></div>
-  <div id="pano"></div>
+  <div id="panoramaCanvas"></div>
 
   After the map
   <form>
-    <input type="button" onclick="initializePano()" value="Click Me!" />
+    <input type="button" onclick="initializePanorama()" value="Click Me!" />
   </form>
-  <scrip>
-    alert (1);
-    initializePano();
-    alert(3);
-  </scrip>
+
+  <script>
+    alert("pano.html before calling initializePanorama()");
+    initializePanorama();
+    alert("pano.html after calling initializePanorama()");
+
+  </script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ error_reporting(E_ALL | E_STRICT);
 $picDire = "/home/pillowan/www-shaw-weil-pictures/wp-content/plugins";
 require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
 /*  class uploadProcessDire {
- *       nameToBottom( $sourceFile, $photographer ) 
+ *       nameToBottom( $sourceFile, $photographer )
  *       resizeImage( $pathin, $pathout, $w_max, $h_max ) {
  *   }
  */
@@ -61,14 +61,14 @@ class dinomitedys_upload
             $msg .= self::displayExisting($dino, true);
             // was submit clicked ?
             if (empty($submit)) {
-                $msg .= self::displayPhotosForm($dino); // no ! 
+                $msg .= self::displayPhotosForm($dino); // no !
             } else {
                 $msg .= self::processInputPhotos(); // yes !
             }
             $msg .= "dino is now $dino $eol";
             $msg .= self::formForPictures($dino, $jsFile);
             $msg .= "<br />
- <hr width='2px'><h2> Existing photographs on page 
+ <hr width='2px'><h2> Existing photographs on page
  <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
         } // end try
         catch (Exception $ex) {
@@ -107,9 +107,16 @@ class dinomitedys_upload
         return $msg;
     }
 
+    /**
+     * Builds a form to select a dinosaur.
+     *
+     * @param string $dino The previously selected dinosaur.
+     * @param string $action The action URL where the form will be submitted.
+     * @return string The HTML form as a string.
+     */
     private static function buildDinoSelectionForm($dino, $action)
     {
-        //  build a <form to make a dino section 
+        //  build a <form to make a dino section
         //  $dino    a previous selected dino
         //  $action  where to go wher it is selected
         global $eol, $errorBeg, $errorEnd;
@@ -120,7 +127,7 @@ class dinomitedys_upload
 
         $sql = "select * from $rrw_dinos order by name ";
         $recs = $wpdbExtra->get_resultsA($sql);
-        //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol "; 
+        //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
         $msg .= "<table style=\"border-collapse: collapse; \">
             <tr class=\"freewheel_td\" >
             <td style=\"vertical-align:middle; \">
@@ -138,7 +145,7 @@ class dinomitedys_upload
                 $msg .= " selected=$dino ";
             $msg .= "> $name </option>\n";
         }
-        $msg .= "</select> 
+        $msg .= "</select>
             </td>
             <td>";
         if (empty($dino))
@@ -147,10 +154,10 @@ class dinomitedys_upload
             $source = self::imagePath . "$dino" . "_sm.jpg";
         }
         $msg .= "
-                <img src='$source' height='150px' /> 
+                <img src='$source' height='150px' />
             </td>
         </tr>
-        </table> 
+        </table>
         <br />
             </form>";
         return $msg;
@@ -166,7 +173,7 @@ class dinomitedys_upload
         $debugProgress = false;
         $photographer = rrwUtil::fetchparameterString("photographer");
 
-        $msg .= "<form method=\"post\" action=\"/update\" enctype=\"multipart/form-data\" > 
+        $msg .= "<form method=\"post\" action=\"/update\" enctype=\"multipart/form-data\" >
             <input type='hidden' name='dino' id='dino' value='$dino' />
         ";
         $sqldino = "select * from $rrw_dinos where filename = '$dino' ";
@@ -180,25 +187,28 @@ class dinomitedys_upload
         $mapdate = $recDino["Mapdate"];
         $latitude = $recDino["Latitude"];
         $longitude = $recDino["Longitude"];
+        $sponsor = $recDino["Sponsor"];
+        $status = $recDino["Status"];
+        $note = $recDino["Note"];
+        $msg .= "<input type='hidden' name='dino' id='dino' value='$dino' />\n";
         $limit = 140;
         $size = 50;
         $msg .= "
         <table>
         <tr>
             <td class=\"freewheel_td\" >
-           
-                <strong>Location Description:</strong> This should help a user to locate the dinosaur. 
+
+                <strong>Location Description:</strong> This should help a user to locate the dinosaur.
                 <br> &nbsp; &nbsp;Such as a street address or
                 <br> &nbsp; &nbsp;building name with guide to where inside.<br \>
-                <input type='text' maxlength='$limit' size='$size' 
+                <input type='text' maxlength='$limit' size='$size'
                     name='locationDesc'  id='locationDesc' value='$mapLoc'
                    onkeyup='countChars(\"locationDesc\",\"locationLeft\", $limit);'
                    onkeydown='countChars(\"locationDes<h3></h3>c\",\"locationLeft\", $limit);'
                    onmouseout='countChars(\"locationDesc\",\"locationLeft\", $limit);' />
-                <br> &nbsp; &nbsp; &nbsp; &nbsp; 
-                <span id=\"locationLeft\">$limit</span> Characters left 
+                <br> &nbsp; &nbsp; &nbsp; &nbsp;
+                <span id=\"locationLeft\">$limit</span> Characters left
                 $eol $eol <strong>Photographer</strong> <font color=red >Required if photos below</font>$eol
-                
             <select id=\"photographer\" name=\"photographer\" >
                 <option value=\"\"  >Pick a photographer. </option>
             ";
@@ -211,16 +221,16 @@ class dinomitedys_upload
                 $msg .= " selected ";
             $msg .= "> $name </option>\n";
         }
-        $msg .= "</select> 
+        $msg .= "</select>
         $eol $eol <strong>Last Seen</strong>
         <input type='text' value='$mapdate' name='mapdate' id='mapdate' />
         <br>
                 </td>
-                
+
             <td class=\"freewheel_td\" >
-                <strong>Location Cordinates:</strong> can be determined from a  photgraph taken 
-                    with a device that has location turned on. Should be taken very close to the dinosauer. 
-                    Will not be uased in the collection of photographs on  the detail page.
+                <strong>Location Coordinates:</strong> can be determined from a  photgraph taken
+                    with a device that has location turned on. Should be taken very close to the dinosauer.
+                    Will not be used in the collection of photographs on  the detail page.
                <table>
                <tr>
                   <td width=\"60 px\" >
@@ -230,18 +240,39 @@ class dinomitedys_upload
         if ($debugProgress) $msg .= "after first dropzone $eol";
         $msg .= "</td>
                 <td align='left' valign='center' >
-                    Drop file with embeded location data or enter values $eol
+                    Drop file with embedded location data or enter values $eol
                     Latitude  <input name='latitude' id='latitude' type='text' value='$latitude' > $eol
-                    Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol
+                    Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol";
+        $msg .= self::statusField("status", $status);
+        $msg .= "$eol Note: <input type='text' name='note' id='note' value='$note' width='40' height'2' /> $eol $eol
+                    sponsored by <a href='https://www.google.com/search?q=$sponsor' target='sponsor' > $sponsor </a> $eol
+                    <a href='https://www.latlong.net/convert-address-to-lat-long.html' target='latLong' > Convert address to lat long </a> $eol
                 </td>
                 </tr>
                 </table>
-            </td> 
+            </td>
         </tr>
        </table> ";
 
         return $msg;
     } //end displayPhotosForm
+
+    private static function statusField($field, $currentValue)
+    {
+        global  $wpdbExtra, $rrw_dinos;
+        $fieldNew = "<select id=\"$field\" name=\"$field\"  >";
+        $sqlStatus = "select distinct $field from $rrw_dinos order by $field";
+        $recs = $wpdbExtra->get_resultsA($sqlStatus);
+        foreach ($recs as $rec) {
+            $statusItem = $rec["status"];
+            $fieldNew .= '<option value="' . $statusItem . '"';
+            if ($currentValue == $statusItem)
+                $fieldNew .= " selected ";
+            $fieldNew .= "> $statusItem </option>\n";
+        }
+        $fieldNew .= "</select>";
+        return $fieldNew;
+    }
 
     private static function formForPictures($dino, $jsFile = "")
     {
@@ -270,7 +301,7 @@ class dinomitedys_upload
             $msg .= " </div>
                     <br/>
                     <input type='hidden' name='filesort' value='$fileSort' />
-                    <input type=\"submit\" value=\"Click to process this data\" 
+                    <input type=\"submit\" value=\"Click to process this data\"
                             name=\"submit\" onclick=\"submitClick(this);\" />";
             if ($debugProgress) $msg .= "find related $eol";
             if ($debugProgress) $msg .= "after find related $eol";
@@ -315,7 +346,7 @@ class dinomitedys_upload
             foreach ($filelist as $pic => $dummy) {
                 $cntImage++;
                 $img = "/" . self::imagePath . "$pic";
-                $msg .= "<div class='rrwDinoItem' > 
+                $msg .= "<div class='rrwDinoItem' >
                     <a href='$img' ><img src='$img' width='270px' /></a>";
                 if ($labels) {
                     $filesize = self::imageDire . "/$pic";
@@ -376,37 +407,48 @@ class dinomitedys_upload
             }
             $images = self::imageDire;
 
-            $dino = rrwPara::String("dino");
-            $fileSort = rrwPara::String("filesort");
-            $photographer = rrwPara::String("photographer");
+            $dino = rrwParam::String("dino");
+            $fileSort = rrwParam::String("filesort");
+            $photographer = rrwParam::String("photographer");
             if ($fileSort < 10)
                 $fileSort = 10;
-            if ($debugSave) $msg .= "dino = $dino, filesort = $fileSort, 
+            if ($debugSave) $msg .= "dino = $dino, filesort = $fileSort,
                                         photographer = $photographer $eol";
 
             if (empty($dino)) {
                 return "$msg $errorBeg W#1367 missing the dinosaur seletion $errorEnd";
             }
 
-            if ($debugSave) $msg .= "$fileSort is the highest sort number 
+            if ($debugSave) $msg .= "$fileSort is the highest sort number
             already on the   <a href='/designs/$dino.htm' target='production'
             > dinosaur $dino's  page </a> $eol";
             $uploads_dir = self::siteDir . self::imageSavePath;
             $keySelect = array("filename" => $dino);
             //
             // extract the location description and enter into dataase
-            $locationDesc = rrwPara::String("locationDesc");
+            $locationDesc = rrwParam::String("locationDesc");
             $sqlup = array("maploc" => $locationDesc);
 
             // latitude, longitude may be overwritten by the the image/file named coordinates
-            $latitude = rrwPara::String("latitude");
-            $sqlup["latitude"] = $latitude;
-            $longitude = rrwPara::String("longitude");
-            $sqlup["longitude"] = $longitude;
+            $latitude = rrwParam::String("latitude");
+            $iiComma = strpos($latitude, ",");
+            if (false !== $iiComma) {
+                $longitude = substr($latitude, $iiComma + 1);
+                $latitude = substr($latitude, 0, $iiComma - 1);
+                $sqlup["longitude"] = $longitude;
+                $sqlup["latitude"] = $latitude;
+            } else {
+                $sqlup["latitude"] = $latitude;
+                $longitude = rrwParam::String("longitude");
+                $sqlup["longitude"] = $longitude;
+            }
+            // extract the status and enter into database
+            $sqlup["status"] = rrwParam::String("status");
             //
             // extract the mapdate and enter into dataase
-            $mapdate = rrwPara::String("mapdate");
+            $mapdate = rrwParam::String("mapdate");
             $sqlup["mapdate"] = $mapdate;
+            //
             if ($debugSave) {
                 $msg .= rrwUtil::print_r($sqlup, true, "sql update");
                 $msg .= rrwUtil::print_r($keySelect, true, "sql select");
@@ -455,7 +497,7 @@ class dinomitedys_upload
                         // check ranges
                         $sqlup = array("latitude" => $lat, "longitude" => $lng);
                         $cnt = $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
-                        if (1 == $cnt) $msg .= "i#1374 Coordinates updated. Please check 
+                        if (1 == $cnt) $msg .= "i#1374 Coordinates updated. Please check
                             <a href='/last_seen/' > last seen </a> and the map $eol";
                         else
                             $msg .= "$errorBeg E#1372 Something went wrong in the database update. $errorEnd ";
@@ -478,11 +520,11 @@ class dinomitedys_upload
                 if ($debugSave) $msg .= "----------------------------- $eol
                                         I# moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
-                if ($debugSave) $msg .= "E#1334 resizeImage( 
+                if ($debugSave) $msg .= "E#1334 resizeImage(
                         $saveName, $finalName, 700, 200 ) $eol";
                 $msg .= uploadProcessDire::resizeImage($saveName, $finalName, 700, 200);
                 if (!empty($photographer)) {
-                    if ($debugSave) $msg .= "I#1369 nameToBottom( 
+                    if ($debugSave) $msg .= "I#1369 nameToBottom(
                                     $finalName, $photographer ); $eol";
 
                     $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);

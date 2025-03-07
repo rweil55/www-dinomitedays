@@ -60,8 +60,8 @@ add_shortcode('photographers', array("DisplayPhotographers", "Display"));
 add_shortcode('dinomitedays-thumbnails', array("DisplayThumbnails", "Display"));
 add_shortcode('dinomitedays-photographers', array("DisplayPhotographers", "Display"));
 add_shortcode('dinomitedays-header-block', array("dinomitedays_header_block", "header"));
-add_shortcode('dinomitedays-database', array("dinomitedays_database", "displayDatabase"));  
-
+add_shortcode('dinomitedays-database', array("dinomitedays_database", "displayDatabase"));
+add_shortcode("dinomitedays-print", array("dinomitedays_print", "print"));
 /* -------------------------------------  cause it to happen
 
 require_once "../dinomitedass/plugin_update_check.php";
