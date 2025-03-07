@@ -89,14 +89,14 @@ class dinomitedys_upload
         $maploc = $recs[0]["maploc"];
         $latitude = $recs[0]["latitude"];
         $longitude = $recs[0]["longitude"];
-        $sqlupdat = array();
-        $sqlupdat["maploc"] = $maploc;
-        $sqlupdat["latitude"] = $latitude;
-        $sqlupdat["longitude"] = $longitude;
+        $sqlUpadteHTM = array();
+        $sqlUpadteHTM["maploc"] = $maploc;
+        $sqlUpadteHTM["latitude"] = $latitude;
+        $sqlUpadteHTM["longitude"] = $longitude;
         $sqlWhere = array("name" => $dino);
-        $result = $wpdbExtra->Update($rrw_dinos, $sqlupdat, $sqlWhere);
+        $result = $wpdbExtra->Update($rrw_dinos, $sqlUpadteHTM, $sqlWhere);
         $filenameFull = "$dino" . "_.htm";
-        $msg .= dinomitedys_make_html::updateFosilLocations(
+        $msg .= dinomitedys_make_html::updateFossilLocations(
             $filenameFull,
             $maploc,
             $latitude,
@@ -427,7 +427,7 @@ class dinomitedys_upload
             //
             // extract the location description and enter into dataase
             $locationDesc = rrwParam::String("locationDesc");
-            $sqlup = array("maploc" => $locationDesc);
+            $sqlUpadteArray = array("maploc" => $locationDesc);
 
             // latitude, longitude may be overwritten by the the image/file named coordinates
             $latitude = rrwParam::String("latitude");
@@ -435,31 +435,34 @@ class dinomitedys_upload
             if (false !== $iiComma) {
                 $longitude = substr($latitude, $iiComma + 1);
                 $latitude = substr($latitude, 0, $iiComma - 1);
-                $sqlup["longitude"] = $longitude;
-                $sqlup["latitude"] = $latitude;
+                $sqlUpadteArray["longitude"] = $longitude;
+                $sqlUpadteArray["latitude"] = $latitude;
             } else {
-                $sqlup["latitude"] = $latitude;
+                $sqlUpadteArray["latitude"] = $latitude;
                 $longitude = rrwParam::String("longitude");
-                $sqlup["longitude"] = $longitude;
+                $sqlUpadteArray["longitude"] = $longitude;
             }
             // extract the status and enter into database
-            $sqlup["status"] = rrwParam::String("status");
+            $sqlUpadteArray["status"] = rrwParam::String("status");
+
+            // extract the note and enter into database
+            $sqlUpadteArray["notw"] = rrwParam::String("note");
             //
             // extract the mapdate and enter into dataase
             $mapdate = rrwParam::String("mapdate");
-            $sqlup["mapdate"] = $mapdate;
+            $sqlUpadteArray["mapdate"] = $mapdate;
             //
             if ($debugSave) {
-                $msg .= rrwUtil::print_r($sqlup, true, "sql update");
+                $msg .= rrwUtil::print_r($sqlUpadteArray, true, "sql update");
                 $msg .= rrwUtil::print_r($keySelect, true, "sql select");
             } else {
-                $msg .= rrwUtil::print_r($sqlup, true, "sql update");
+                $msg .= rrwUtil::print_r($sqlUpadteArray, true, "sql update");
             }
-            $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
+            $wpdbExtra->update($rrw_dinos, $sqlUpadteArray, $keySelect);
             $numrowsUpdated = $wpdbExtra->num_rows; // did we change anything
             if ($numrowsUpdated > 0) {  // we changed the database, update original file
                 $msg .= "attempting to update the original htm file $eol";
-                $msg .= dinomitedys_make_html::updateFosilLocations($dino);
+                $msg .= dinomitedys_make_html::updateFossilLocations($dino);
                 $msg .= file_get_contents("https://edit.shaw-weil.com/make-dino-map-files/?nohead=1");
             }
             //
@@ -495,13 +498,13 @@ class dinomitedys_upload
                         $msg .= "$errorBeg E#1370 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
                     } else {
                         // check ranges
-                        $sqlup = array("latitude" => $lat, "longitude" => $lng);
-                        $cnt = $wpdbExtra->update($rrw_dinos, $sqlup, $keySelect);
+                        $sqlUpadteArray = array("latitude" => $lat, "longitude" => $lng);
+                        $cnt = $wpdbExtra->update($rrw_dinos, $sqlUpadteArray, $keySelect);
                         if (1 == $cnt) $msg .= "i#1374 Coordinates updated. Please check
                             <a href='/last_seen/' > last seen </a> and the map $eol";
                         else
                             $msg .= "$errorBeg E#1372 Something went wrong in the database update. $errorEnd ";
-                        $msg .= rrwUtil::print_r($sqlup, true, "the update array");
+                        $msg .= rrwUtil::print_r($sqlUpadteArray, true, "the update array");
                     }
                     continue; // on to next file
                 } // end if (coordinates

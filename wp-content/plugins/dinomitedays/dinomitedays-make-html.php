@@ -17,7 +17,7 @@ class dinomitedys_make_html
         ini_set("display_errore", true);
         try {
             $msg .= self::updateLocationMap();
-            $msg .= self::updateFosilLocations("%");  // do all pages
+            $msg .= self::updateFossilLocations("%");  // do all pages
         } catch (Exception $ex) {
             $msg .= "E#1341 xxx catch " . $ex->getMessage();
         }
@@ -140,7 +140,7 @@ class dinomitedys_make_html
         return "$msg $errorBeg E#1339 did not find a place to
                 insert  the images $errorEnd";
     }
-    static public function updateFosilLocations($filename)
+    static public function updateFossilLocations($filename)
     {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;

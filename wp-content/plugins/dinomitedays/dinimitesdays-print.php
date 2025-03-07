@@ -45,6 +45,6 @@ class dinomitedays_print
             throw new Exception("$msg $errorBeg E#1333 dinomitedys_upload:upload: $errorEnd");
         }
         return $msg;
-    } //  end function print
+    } //  end function print xxx
 
 } // end class
