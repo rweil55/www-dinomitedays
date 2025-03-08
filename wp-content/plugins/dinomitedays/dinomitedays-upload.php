@@ -1,7 +1,7 @@
 <?php
 
 ini_set("display_errors", false);
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 $picDire = "/home/pillowan/www-shaw-weil-pictures/wp-content/plugins";
 require_once "$picDire/roys-picture-processng/uploadProcessDire.php";
@@ -244,7 +244,7 @@ class dinomitedys_upload
                     Latitude  <input name='latitude' id='latitude' type='text' value='$latitude' > $eol
                     Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol";
         $msg .= self::statusField("status", $status);
-        $msg .= "$eol Note: <input type='text' name='note' id='note' value='$note' width='40' height'2' /> $eol $eol
+        $msg .= "$eol Note: <textarea name='note' id='note' value='$note' width='200' height'80' > $note</textarea>$eol $eol
                     sponsored by <a href='https://www.google.com/search?q=$sponsor' target='sponsor' > $sponsor </a> $eol
                     <a href='https://www.latlong.net/convert-address-to-lat-long.html' target='latLong' > Convert address to lat long </a> $eol
                 </td>
@@ -446,7 +446,7 @@ class dinomitedys_upload
             $sqlUpadteArray["status"] = rrwParam::String("status");
 
             // extract the note and enter into database
-            $sqlUpadteArray["notw"] = rrwParam::String("note");
+            $sqlUpadteArray["note"] = rrwParam::String("note");
             //
             // extract the mapdate and enter into dataase
             $mapdate = rrwParam::String("mapdate");

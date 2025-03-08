@@ -1,7 +1,7 @@
 <?php
 
 ini_set("display_errors", true);
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 class dinomitedays_misc_pages
 {
@@ -20,7 +20,7 @@ class dinomitedays_misc_pages
 
         try {
             ini_set("display_errors", true);
-            error_reporting(E_ALL | E_STRICT);
+            error_reporting(E_ALL);
             $msg = "";
             $lastOrkey = rrwParam::String("lastorkey", $attr);
             if (strcmp("key", $lastOrkey) == 0)
@@ -74,5 +74,72 @@ class dinomitedays_misc_pages
         }
         return $msg;
     } // end last_seen
+
+    public static function knownLocation($attribute)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
+        $msg = "";
+        $debugLoc = false;
+
+        $sql = "select keyId,  name, status, filename, mapDate,
+                    mapLoc, latitude, longitude
+                    from " .  self::rrw_dinos .
+            " where status = '' and latitude > 0
+                     order by mapLoc, name limit 50";
+
+        if ($debugLoc) $msg .= "$sql $eol";
+        $recs = $wpdbExtra->get_resultsA($sql);
+        if ($debugLoc) $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
+
+        $msgLeft = "<table border='0' >\n";
+        $msgLeft .= rrwFormat::CellHeaderSize(15, 40);
+        $cnt = 0;
+        foreach ($recs as $rec) {
+            $cnt++;
+            if ($cnt > 38) break;
+            $mapDate = $rec["mapDate"];
+            $filename = $rec["filename"];
+            if ($mapDate > 2023)
+                $mapDate = "Recently";
+            $mapDateDisplay = "<a href='/upd/?dino=$filename' target='update' >$mapDate</a> \n";
+            $mapLoc = $rec["mapLoc"];
+            $msgLeft .= rrwFormat::CellRow($mapDateDisplay, $mapLoc);
+        }
+        $msgLeft .= "</table>";
+
+        $msgRight = "I am trying to locate all the Carnegie History Center's 100 or so dinosaurs
+        that were placed around the city in 2003.  I have found about 25 of them but most have disappeared.</p><p>
+        This is a list of where I have found those.  </p><p>
+        if you see one someplace else please let me know: You can email me at locate@dinomitedays.org or call 412-530-5131.";
+        $msgRight .= " </p><p>Thank you for your help.</p>
+        <h2> https://dinomitedays.org/</h2>$eol
+        <h2>https://dinomitedays.org/kown-locations</h2>$eol$eol
+        <h2>locate@dinomitedays.org</h2>$eol
+        <h2>call 412-530-5131</h2>$eol$eol
+        ";
+
+        foreach ($recs as $rec) {
+            $name = $rec["name"];
+            $filename = $rec["filename"];
+            if (file_exists(self::imageDire . "/$filename.jpg")) {
+                $msgRight .= "<img class='knownLoc' src='/" . self::imagePath . "/$filename.jpg' alt='$filename' width='180px' >";
+            }
+        }
+
+        $msg .= "
+        <style>
+        .knownLoc {
+            margin: 1px;
+        }
+        </style>
+            ";
+
+
+        $msg .= "<table><tr><td width='45px'>$msgLeft</td><td width='120px'>$msgRight</td></tr></table>";
+
+
+        return $msg;
+    } // end knownLocation
 
 } // end class

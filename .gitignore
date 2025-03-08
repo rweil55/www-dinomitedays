@@ -44,7 +44,7 @@ wp-config.php
 #
 # Note: If you wish to whitelist themes,
 # uncomment the next line
-#/wp-content/themes 
+#/wp-content/themes
 
 #dreamweaver
 _notes/
@@ -63,11 +63,12 @@ wp-content/plugins/wp-crontrol
 wp-content/plugins/wp-staging
 wp-content/themes
 wp-content/updraft
-designs_newxxxxxxxxxxxxxx
 wp-content/plugins/dinomitedays/_notes/dwsync.xml
 graphics/_notes/dwsync.xml
 graphics/_notes/dwsync.xml
 online_files/_notes/dwsync.xml
+pano/index.html
+pano/index.php
 releases/_notes/dwsync.xml
 .vscode/sftp.json
 error.php

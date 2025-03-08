@@ -1,6 +1,6 @@
 <?php
 
-class dinomitedys_fix
+class dinomitedays_fix
 {
     const rrw_dinomites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
