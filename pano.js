@@ -5,7 +5,7 @@ function initializePanorama() {
         center: FenWayPark,
         zoom: 14,
     });
-    alert("map created")
+    // alert("map created")
     const panorama = new google.maps.StreetViewPanorama(
         document.getElementById("panoramaCanvas"),
         {
@@ -16,8 +16,8 @@ function initializePanorama() {
             },
         },
     );
-    alert("panorama")
+    //alert("panorama")
     map.setStreetView(panorama);
-    alert("setStreetView called")
+    //alert("setStreetView called")
 
 }

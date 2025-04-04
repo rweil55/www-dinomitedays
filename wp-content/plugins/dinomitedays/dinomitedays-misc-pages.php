@@ -69,6 +69,11 @@ class dinomitedays_misc_pages
                 $msg .= "<a href='/designs/$filename.htm' > $displayName</a>
                                     $displayMap $eol";
             }
+            $msg .= "
+<script>
+document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated 2021-09-01';
+</script>
+";
         } catch (Exception $ex) {
             throw new Exception("$msg $errorBeg E#1333 dinomitedys_upload:upload: $errorEnd");
         }
@@ -80,13 +85,25 @@ class dinomitedays_misc_pages
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         $msg = "";
+        $msg .= "
+<style>
+    @media print {
+      .pageBreak {
+         clear: both;
+         page-break-after: always;
+    }
+}   .knownLoc {
+            margin: 1px;
+    }
+</style>
+        ";
         $debugLoc = false;
 
-        $sql = "select keyId,  name, status, filename, mapDate,
+        $sql = "select keyId,  name, status, filename, logoFileName, mapDate,
                     mapLoc, latitude, longitude
                     from " .  self::rrw_dinos .
-            " where status = '' and latitude > 0
-                     order by mapLoc, name limit 50";
+            " where status ='' and latitude > 0 and mapDate > '2008-01-01'
+             order by mapLoc limit 64";
 
         if ($debugLoc) $msg .= "$sql $eol";
         $recs = $wpdbExtra->get_resultsA($sql);
@@ -99,7 +116,9 @@ class dinomitedays_misc_pages
             $cnt++;
             if ($cnt > 38) break;
             $mapDate = $rec["mapDate"];
-            $filename = $rec["filename"];
+            $filename = $rec["logoFileName"];
+            if (empty($fileName))
+                $filename = $rec["filename"];
             if ($mapDate > 2023)
                 $mapDate = "Recently";
             $mapDateDisplay = "<a href='/upd/?dino=$filename' target='update' >$mapDate</a> \n";
@@ -108,38 +127,63 @@ class dinomitedays_misc_pages
         }
         $msgLeft .= "</table>";
 
-        $msgRight = "I am trying to locate all the Carnegie History Center's 100 or so dinosaurs
-        that were placed around the city in 2003.  I have found about 25 of them but most have disappeared.</p><p>
-        This is a list of where I have found those.  </p><p>
-        if you see one someplace else please let me know: You can email me at locate@dinomitedays.org or call 412-530-5131.";
-        $msgRight .= " </p><p>Thank you for your help.</p>
-        <h2> https://dinomitedays.org/</h2>$eol
-        <h2>https://dinomitedays.org/kown-locations</h2>$eol$eol
-        <h2>locate@dinomitedays.org</h2>$eol
-        <h2>call 412-530-5131</h2>$eol$eol
-        ";
-
+        $msgRight = self::messageRequest();
+        $cnt = 0;
         foreach ($recs as $rec) {
             $name = $rec["name"];
             $filename = $rec["filename"];
             if (file_exists(self::imageDire . "/$filename.jpg")) {
-                $msgRight .= "<img class='knownLoc' src='/" . self::imagePath . "/$filename.jpg' alt='$filename' width='180px' >";
+                $msgRight .= "<img class='knownLoc' src='/" . self::imagePath . "/$filename.jpg' alt='$filename' width='120px' >";
+                $cnt++;
+                if ($cnt > 15) break;
             }
         }
 
-        $msg .= "
-        <style>
-        .knownLoc {
-            margin: 1px;
+        //   $msg .= "<table><tr><td width='60px'>$msgLeft</td><td width='110px'>$msgRight</td></tr></table>";
+        $msg .= "<table><tr><td>$msgLeft</td><td width=560px >$msgRight</td></tr></table>";
+
+        $limit = 6 * 7;
+        $sql = "select keyId,  name, status, filename, mapDate,
+                    mapLoc, latitude, longitude
+                    from " .  self::rrw_dinos .
+            "   where mapDate < '2010-01-01'
+                    order by mapDate desc limit $limit ";
+        if ($debugLoc) $msg .= "$sql $eol";
+        $recs2 = $wpdbExtra->get_resultsA($sql);
+        if ($debugLoc) $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
+
+        //  $msg .=  "<div class='pageBreak' >";
+        //  $msg .= self::messageRequest();
+        $cntSkip = 0;
+        $cntDisplay = 0;
+        foreach ($recs2 as $rec) {
+            $cntSkip++;
+            if ($cntSkip < 1) continue;
+            $name = $rec["name"];
+            $filename = $rec["filename"];
+            if (file_exists(self::imageDire . "/$filename.jpg")) {
+                $msg .= "<img class='knownLoc' src='/" . self::imagePath . "/$filename.jpg' alt='$filename' width='150px' >";
+                $cntDisplay++;
+                if ($cntDisplay > 48) break;
+            }
         }
-        </style>
-            ";
-
-
-        $msg .= "<table><tr><td width='45px'>$msgLeft</td><td width='120px'>$msgRight</td></tr></table>";
-
+        //   $msg  .= "</div>";
 
         return $msg;
     } // end knownLocation
-
+    private static function messageRequest()
+    {
+        global $eol;
+        $msgRequest = "I am trying to locate all the Carnegie History Center's 100 or so dinosaurs
+        that were placed around the city in 2003.  I have found about 25 of them but most have disappeared.</p><p>
+        This is a list of where I have found those.  </p><p>
+        if you see one someplace else please let me know: You can email me at locate@dinomitedays.org or call 412-530-5131.";
+        $msgRequest .= " </p><p>Thank you for your help.</p>
+            <h2> https://dinomitedays.org/</h2>$eol
+            <h2>https://dinomitedays.org/kown-locations</h2>$eol$eol
+            <h2>locate@dinomitedays.org</h2>$eol
+            <h2>call 412-530-5131</h2>$eol$eol
+        ";
+        return $msgRequest;
+    } // end messageRequest
 } // end class
