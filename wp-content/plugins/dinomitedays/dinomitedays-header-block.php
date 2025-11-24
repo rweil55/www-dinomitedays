@@ -36,7 +36,7 @@ class dinomitedays_header_block
      */
     public static function createHeaderBlock($attr)
     {
-        global $eol;
+        global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         $msg = "";
         $debug = false;
@@ -53,61 +53,57 @@ class dinomitedays_header_block
         $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoName'";
         if ($debug)  $msg .= "$sql $eol";
         $dinos = $wpdbExtra->get_resultsA($sql);
-        if (!empty($dinos)) {
-            $dino = $dinos[0];
-            $dinoOldName = $dino['Oldname'];
-            $sponsor = $dino["Sponsor"];
-            $mapLoc = $dino["Maploc"];
-            $latitude = $dino["Latitude"];
-            $longitude = $dino["Longitude"];
-            $auctionPrice = $dino["ActionPrice"];
-            $charity = $dino["Charity"];
-            $theme = $dino["Theme"];
-            $materials = $dino["Material"];
-            if (0 == $latitude || 0 == $longitude) {
-                $directionsTo = "";
-            } else {
-                $directionsTo = "<a href='https://www.google.com/maps/dir//$latitude,$longitude' target='map' > directions to </a>";
-            }
-            $msg .=
-                self::oneLine("Sponsored by: $sponsor") .
-                self::oneLine("Charity: $charity");
-            if (!empty($mapLoc)) {
-                $msg .= self::oneLine("Fossil Location: $directionsTo $mapLoc");
-            }
-            if (!empty($auctionPrice)) {
-                $msg .= self::oneLine("Auction: $auctionPrice");
-            }
-            $msg .=
-                self::oneLine("Theme: $theme ") .
-                self::oneLine("Current Materials: $materials");
-            if (!empty($dinoOldName)) {
-                $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
-                        <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
-                $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoOldName'";
-            if (!empty($dinos)) {
-                $dino = $dinos[0];
-                $oldsponsor = $dino["Sponsor"];
-                $oldauctionPrice = $dino["ActionPrice"];
-                $oldcharity = $dino["Charity"];
-                $oldtheme = $dino["Theme"];
-                $oldmaterails = $dino["Material"];
-                $msg .=
-                    self::oneLine("Original Sponsored by: $oldsponsor") .
-                    self::oneLine("Original Charity: $oldcharity") .
-                    self::oneLine("Original Auction: $oldauctionPrice") .
-                    self::oneLine("Original Theme: $oldtheme ") .
-                    self::oneLine("Original  Materials: $oldmaterails");
-            } else {
-                $msg .= self::oneLine("Original dinosaur record not found.");
-            }
-                        self::oneLine("Original Theme: $oldtheme ") .
-                        self::oneLine("Original  Materials: $oldmaterails");
-                }
-            }
+        if($wpdbExtra->num_rows == 0){
+            $msg .= "$errorBeg Dinosaur record for $dinoName not found. $errorEnd";
+            return $msg;
         }
+        $dino = $dinos[0];
+        $dinoOldName = $dino['Oldname'];
+        $sponsor = $dino["Sponsor"];
+        $mapLoc = $dino["Maploc"];
+        $latitude = $dino["Latitude"];
+        $longitude = $dino["Longitude"];
+        $auctionPrice = $dino["ActionPrice"];
+        $charity = $dino["Charity"];
+        $theme = $dino["Theme"];
+        $materials = $dino["Material"];
+        if (0 == $latitude || 0 == $longitude) {
+            $directionsTo = "";
+        } else {
+            $directionsTo = "<a href='https://www.google.com/maps/dir//$latitude,$longitude' target='map' > directions to </a>";
+        }
+        $msg .=
+            self::oneLine("Sponsored by: $sponsor") .
+            self::oneLine("Charity: $charity");
+        if (!empty($mapLoc)) {
+            $msg .= self::oneLine("Fossil Location: $directionsTo $mapLoc");
+        }
+        if (!empty($auctionPrice)) {
+            $msg .= self::oneLine("Auction: $auctionPrice");
+        }
+        $msg .=
+            self::oneLine("Theme: $theme ") .
+            self::oneLine("Current Materials: $materials");
+        if (empty($dinoOldName)) {
+                    $msg .= self::oneLine("Original dinosaur record not found.");
+                    return $msg;
+        }
+        $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
+                <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
+                //
+        $oldsponsor = $dino["Sponsor"];
+        $oldauctionPrice = $dino["ActionPrice"];
+        $oldcharity = $dino["Charity"];
+        $oldtheme = $dino["Theme"];
+        $oldmaterails = $dino["Material"];
+        $msg .=
+            self::oneLine("Original Sponsored by: $oldsponsor") .
+            self::oneLine("Original Charity: $oldcharity") .
+            self::oneLine("Original Auction: $oldauctionPrice") .
+            self::oneLine("Original Theme: $oldtheme ") .
+            self::oneLine("Original  Materials: $oldmaterails");
         return $msg;
-    }
+    }  // end createHeaderBlock
     private static function oneLine($labelvalue)
     {
         global $eol;
