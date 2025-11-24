@@ -1,15 +1,11 @@
 <?php
-
 require_once "rrw_html_extractTemp.php";
-
-
-class dinomitedys_make_html
+//
+class dinomitedays_make_html
 {
     const rrw_dinomites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
     const design_images_dire = self::baseDire . "/designs/images";
-
-
     public static function make_html_files($attr)
     {
         global $eol, $errorBeg, $errorEnd;
@@ -23,31 +19,25 @@ class dinomitedys_make_html
         }
         return $msg;
     }
-
     static function updateLocationMap()
     {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
-
         $ch = curl_init("https://edit.shaw-weil.com/make-dino-map-files/?switch=clean");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         $msg .= "$result $eol";
         curl_close($ch);
-
         $from = "/home/pillowan/www-freewheel-dev/prebuilt/data/dinomites.txt";
         $to = "/home/pillowan/www-freewheelingeasy/prebuilt/data/dinomites.txt";
-
         $msg .= "copy ($from, $to); $eol";
         $result = copy($from, $to);
         if (false === $result)
             throw new Exception("$msg $errorBeg E#1354 copy failed $errorEnd");
         $msg .= "copy worked $eol";
-
         return $msg;
     }
-
     public static function UpdateImages($dino)
     {
         global $wpdbExtra, $rrw_dino;
@@ -59,7 +49,7 @@ class dinomitedys_make_html
         $buffer = self::findPlace($buffer);
         // build the insert
         $newdiv = '</table><br>' .
-            dinomitedys_upload::displayExisting($dino, false) .
+            dinomitedays_upload::displayExisting($dino, false) .
             "\n<table>\n";
         //  insert and write
         //      $newdiv = str_replace("270","150", $newdiv);
@@ -69,7 +59,6 @@ class dinomitedys_make_html
         if (strpos($buffer, "xxzzy") < 500)
             throw new Exception("$msg $errorBeg #1361 xxzzy to close
                     to frnt of buffer $errorEnd");
-
         $buffer = str_replace("xxzzy", $newdiv, $buffer);
         $filenameNew = str_replace("$dino", "$dino-new", $filename);
         $fp = fopen($filenameNew, "w");
@@ -82,7 +71,6 @@ class dinomitedys_make_html
                 move to production</a>$eol";
         return $msg;
     }
-
     private static function findPlace($buffer)
     {
         //work to find the right place to insert the images
@@ -147,7 +135,7 @@ class dinomitedys_make_html
         $msg = "";
         $debug = false;
         ini_set("display_errors", true);
-        error_reporting(E_ALL | E_STRICT);
+        error_reporting(E_ALL);
         try {
             $sql = "select filename, mapLoc, mapDate, latitude, longitude, status from
                     " . self::rrw_dinomites . "
@@ -172,7 +160,6 @@ class dinomitedys_make_html
                 else
                     $displayDate = $SeenDate->format("Y");
                 $content = "";
-
                 $msg .= self::updateOneLocation(
                     $filenameFull,
                     $maploc,
@@ -186,10 +173,8 @@ class dinomitedys_make_html
             $msg .= "E#1363 xxx catch while processning <a href='/designs/$file.htm' target='final'>
                     $file.htm </a> $eol" . $ex->getMessage();;
         }
-
         return $msg;
     } // end  geocoded
-
     /**
      * Updates the location information in the specified file.
      *
@@ -233,7 +218,6 @@ class dinomitedys_make_html
             $content .= "Not at ";
         }
         $content .= " $mapLoc ($status $displayDate)";
-
         $msg .= rrwParse::trimTo("<br");
         list($msgTemp, $contentRest) = rrwParse::extractTo("</html>");
         $content .= $contentRest . "</html>";
@@ -244,14 +228,11 @@ class dinomitedys_make_html
         if ($debug) $msg .= "Updated $filenameFull  $eol ";
         return $msg;
     }
-
     public static function findRelated($dino, $withDefaults = true)
     {
         // returns a list of filename that aresub pistures for a dino
-
         $debug = false;
         $dire = ABSPATH . "/designs/images";
-
         $numChars = strlen($dino);
         $list = array();
         foreach (new DirectoryIterator($dire) as $fileInfo) {
@@ -281,5 +262,4 @@ class dinomitedys_make_html
             $list = array_merge($pics, $list);
         return $list;
     } // end findRelated
-
 } // end class findRelated

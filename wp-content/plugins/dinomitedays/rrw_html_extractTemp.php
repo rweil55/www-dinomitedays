@@ -11,7 +11,7 @@
  *		edit $buffer and remove all characters befor 'lookfor'
  *		throw error if lookfor not found
  * function extractTo( $lookfor )
- *		returns from the start of buffer,upro, not including, lookfor		
+ *		returns from the start of buffer,upro, not including, lookfor
  *		throw error if lookfor not found
  *		returns array($msgTemp, found string)
  * function removetags( $text )
@@ -21,109 +21,113 @@
  *		returens an array of URLs associated with a href
  *		return ($msg, array of URLs);
  * fextractToEmptyLine( )
- *		===  rrwParse::extracr("\n\n"); 
+ *		===  rrwParse::extracr("\n\n");
  * function recursiveDirectoryIterator ($directory, $files
  *		return a list of all files under directory
  */
 require_once "rrw_util_inc.php";
 
-class rrwParse {
+class rrwParse
+{
     static $buffer;
-    static $debugParse= false;
-    static $trace =  "";   
+    static $debugParse = false;
+    static $trace =  "";
 
-    public static function recursiveDirectoryIterator( $directory = null, $files = array() ) {
-        if ( !is_dir( $directory ) )
-            throw new Exceptin( "'$directory' is not a directory. Now What?" );
-		
-        $iterator = new\ DirectoryIterator( $directory );
-        foreach ( $iterator as $info ) {
+    public static function recursiveDirectoryIterator($directory = null, $files = array())
+    {
+        if (!is_dir($directory))
+            throw new Exception("'$directory' is not a directory. Now What?");
+
+        $iterator = new DirectoryIterator($directory);
+        foreach ($iterator as $info) {
             $filename = $info->__toString();
-            if ( $info->isFile() ) {
-                $files[ "$directory/$filename" ] = "$directory/$filename";
-            } elseif ( $info->isDot() ) {
-				continue;
-			} elseif ($info->isDir() ) {
-                $files = self:: recursiveDirectoryIterator("$directory/$filename", $files);
+            if ($info->isFile()) {
+                $files["$directory/$filename"] = "$directory/$filename";
+            } elseif ($info->isDot()) {
+                continue;
+            } elseif ($info->isDir()) {
+                $files = self::recursiveDirectoryIterator("$directory/$filename", $files);
             } else {
-				rrwUil::print_r($info, true, "a info is not a file, diretory or a dot");
-			}
+                rrwUil::print_r($info, true, "a info is not a file, diretory or a dot");
+            }
         }
         return $files;
     }
-    public static function loadBufferWithFile( $file ) {
-        SELF::$buffer = file_get_contents( $file );
-        $sizeBuffer = strlen( SELF::$buffer );
+    public static function loadBufferWithFile($file)
+    {
+        SELF::$buffer = file_get_contents($file);
+        $sizeBuffer = strlen(SELF::$buffer);
         return "$sizeBuffer";
     }
 
-    public static function trimTo( $lookfor ) {
+    public static function trimTo($lookfor)
+    {
         $msg = "";
         global $eol, $errorBeg, $errorEnd;
 
-        if (self::$debugParse) self::$trace .= " in trimTo buffer length is " . strlen( SELF::$buffer );
-        if ( empty( SELF::$buffer ) )
-           throw new Exception( "$msg $errorBeg E#1344 buffer is empty $errorEnd");
+        if (self::$debugParse) self::$trace .= " in trimTo buffer length is " . strlen(SELF::$buffer);
+        if (empty(SELF::$buffer))
+            throw new Exception("$msg $errorBeg E#1344 buffer is empty $errorEnd");
 
-        $iiLook = strpos( SELF::$buffer, $lookfor );
-        if ( $iiLook === false )
-            throw new Exception( "$msg $errorBeg E#1356 did not finf $lookfor in buffer $errorEnd" );
-        SELF::$buffer = substr( SELF::$buffer, $iiLook );
+        $iiLook = strpos(SELF::$buffer, $lookfor);
+        if ($iiLook === false)
+            throw new Exception("$msg $errorBeg E#1356 did not finf $lookfor in buffer $errorEnd");
+        SELF::$buffer = substr(SELF::$buffer, $iiLook);
         return $msg;
     }
-    public static function extractTo( $lookfor ) {
+    public static function extractTo($lookfor)
+    {
         $msg = "";
         global $eol, $errorBeg, $errorEnd;
-        $iiLook = strpos( SELF::$buffer, $lookfor );
-        if ( $iiLook === false )
-            throw new Exception( "$msg $errorBeg E#1345 did not find $lookfor 
-                    in remaiming buffer $errorEnd" );
-        $extracted = substr( SELF::$buffer, 0, $iiLook );   // get the extraction
-        $msg .= rrwParse::trimTo( $lookfor );       // and remove it from the buffer
-        return array( $msg, $extracted );
+        $iiLook = strpos(SELF::$buffer, $lookfor);
+        if ($iiLook === false)
+            throw new Exception("$msg $errorBeg E#1345 did not find $lookfor
+                    in remaiming buffer $errorEnd");
+        $extracted = substr(SELF::$buffer, 0, $iiLook);   // get the extraction
+        $msg .= rrwParse::trimTo($lookfor);       // and remove it from the buffer
+        return array($msg, $extracted);
     }
 
-    public static function fextractToEmptyLine() {
+    public static function fextractToEmptyLine()
+    {
 
-        return rreParse::extractTo( "\n\n" );
+        return rreParse::extractTo("\n\n");
     }
 
-    public static function removetags( $text ) {
+    public static function removetags($text)
+    {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
 
         $cnt = 0;
         $iiLookEnd = 0;
-        while ( 1 ) {
+        while (1) {
             $cnt++;
-            if ( $cnt > 50 )
-                throw new Exception( "$msg $errorBeg E#1375 to many tags found $errorEnd" . htmlspecialchars( $text ) . $eol );
-            if ( $iiLookEnd > strlen( $text ) )
+            if ($cnt > 50)
+                throw new Exception("$msg $errorBeg E#1375 to many tags found $errorEnd" . htmlspecialchars($text) . $eol);
+            if ($iiLookEnd > strlen($text))
                 break;
-            $iiLookbeg = strpos( $text, "<", $iiLookEnd );
-            if ( false === $iiLookbeg )
+            $iiLookbeg = strpos($text, "<", $iiLookEnd);
+            if (false === $iiLookbeg)
                 break;
-            $iiLookEnd = strpos( $text, ">", $iiLookbeg );
-            if ( substr( $text, $iiLookbeg, 4 ) == "</p>" )
+            $iiLookEnd = strpos($text, ">", $iiLookbeg);
+            if (substr($text, $iiLookbeg, 4) == "</p>")
                 continue; // leave </p> there
-            if ( substr( $text, $iiLookbeg, 2 ) == "<p" ) {
+            if (substr($text, $iiLookbeg, 2) == "<p") {
                 $iiLookbeg = $iiLookbeg + 2; // clen out <p .... >
                 $iiLookEnd--;
             }
 
-            $text = substr( $text, 0, $iiLookbeg ) . substr( $text, $iiLookEnd + 1 );
+            $text = substr($text, 0, $iiLookbeg) . substr($text, $iiLookEnd + 1);
             $numremoved = $iiLookEnd - $iiLookbeg;
             $iiLookEnd = $iiLookEnd - $numremoved;
         }
-        $text = trim( $text );
-        if ( substr( $text, 0, 4 ) == "</p>" )
-            $text = substr( $text, 5 ); // begins with </p>
-        if ( substr( $text, -3 ) == "<p>" )
-            $text = substr( $text, 0, strlen( $text ) - 3 ); // ends with <p>
-        return array( $msg, $text );
+        $text = trim($text);
+        if (substr($text, 0, 4) == "</p>")
+            $text = substr($text, 5); // begins with </p>
+        if (substr($text, -3) == "<p>")
+            $text = substr($text, 0, strlen($text) - 3); // ends with <p>
+        return array($msg, $text);
     }
-    private static function findHref( $text ) {
-
-    }
+    private static function findHref($text) {}
 } // end class
-?>

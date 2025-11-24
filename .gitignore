@@ -1,6 +1,5 @@
 # Wordpress - ignore core, configuration, examples, uploads and logs.
 # https://github.com/github/gitignore/blob/main/WordPress.gitignore
-
 # Core
 #
 # Note: if you want to stage/commit WP core files
@@ -15,37 +14,28 @@
 /license.txt
 /wp-*.php
 /xmlrpc.php
-
 # Configuration
 wp-config.php
-
 # Example themes
 /wp-content/themes/twenty*/
-
 # Example plugin
 /wp-content/plugins/hello.php
-
 # Uploads
 #/wp-content/uploads/
-
 # Log files
 *.log
-
 # htaccess
 #/.htaccess
-
 # All plugins
 #
 # Note: If you wish to whitelist plugins,
 # uncomment the next line
 #/wp-content/plugins
-
 # All themes
 #
 # Note: If you wish to whitelist themes,
 # uncomment the next line
 #/wp-content/themes
-
 #dreamweaver
 _notes/
 *.bak
@@ -53,8 +43,6 @@ _notes/
 **/dwsync.xml
 _compare_dire
 /*/_notes/
-
-
 wp-content/plugins/awesome-support
 wp-content/plugins/updraftplus
 wp-content/plugins/freewheeling-map
@@ -72,5 +60,13 @@ pano/index.php
 releases/_notes/dwsync.xml
 .vscode/sftp.json
 error.php
+error_log
+error.txt
 hellox.bat
 wp-config.php
+hidden files for class definitions/*
+sftp.json
+wp_config
+web.config
+.htaccess
+*.lck

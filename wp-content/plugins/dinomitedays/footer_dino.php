@@ -1,4 +1,5 @@
 <div id="dinofooter" class="dinoFooter">
+	<!-- udated 2025-11-24 -->
     <div id="dinofoorterlinks" align=left>
         <font size="2" face="Arial, Helvetica, sans-serif" style="background-color:orange;">
             <b>Dinosaurs:&nbsp; </b>

@@ -15,7 +15,7 @@ class dinomitedays_fix
         $homePath = substr(ABSPATH, 0, -1);
         $msg = "";
         ini_set("display_errors", true);
-        error_reporting(E_ALL | E_STRICT);
+        error_reporting(E_ALL);
 
         $options = "";
         $task = rrwUtil::fetchparameterString("task");
@@ -199,7 +199,7 @@ $eol $eol
             }
             $msg .= "</script>";
         } catch (Exception $ex) {
-            throw new Exception("$msg $errorBeg E#1333 dinomitedys_upload:upload: $errorEnd");
+            throw new Exception("$msg $errorBeg E#1335 dinomitedays_upload:upload: $errorEnd");
         }
         return $msg;
     } //  end function print
@@ -418,7 +418,7 @@ $eol $eol
             if (mkdir($direFinal)) {
                 $msg .= "created directory $direFinal $eol";
             } else {
-                $msg .= "$errorBeg E#1351 failed to create directory $direFinal $errorEnd";
+                $msg .= "$errorBeg E#1347 failed to create directory $direFinal $errorEnd";
                 return $msg;
             } // end mkdire
         } // end check for directory and make is neccessary
@@ -594,7 +594,7 @@ $eol $eol
             if (file_exists($fileFull) && false) {
                 $url = "/$headImageDire/$file ";
             } else {
-                $msg .= dinomitedys_fix::makeHead(
+                $msg .= dinomitedays_fix::makeHead(
                     $outputDire,
                     $urlDire,
                     $file,
@@ -626,7 +626,7 @@ $eol $eol
             $file = "head_$file.gif";
             $author = "";
             // needs more code to match the fifferent head of these guys
-            $msg .= dinomitedys_fix::makeHead(
+            $msg .= dinomitedays_fix::makeHead(
                 $outputDire,
                 $urlDire,
                 $file,
@@ -712,10 +712,10 @@ $eol $eol
         $iiUnder = strpos($dino, "_");
         $dino = substr($dino, 0, $iiUnder);
         if (true == $debugreject)
-            throw new Exception("$msg $errorBeg dinomitedys_make_html::UpdateImages
+            throw new Exception("$msg $errorBeg dinomitedays_make_html::UpdateImages
                     ( $dino );$errorEnd ");
 
-        $msg .= dinomitedys_make_html::UpdateImages($dino);
+        $msg .= dinomitedays_make_html::UpdateImages($dino);
         $msg .= "<a href='/upload?dinofile=$dino' > Display images </a> $eol";
         return $msg;
     }

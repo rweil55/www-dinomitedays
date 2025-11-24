@@ -75,7 +75,7 @@ document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated
 </script>
 ";
         } catch (Exception $ex) {
-            throw new Exception("$msg $errorBeg E#1333 dinomitedys_upload:upload: $errorEnd");
+            throw new Exception("$msg $errorBeg E#1338 dinomitedays_upload:upload: $errorEnd");
         }
         return $msg;
     } // end last_seen

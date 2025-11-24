@@ -1,5 +1,4 @@
 <?php
-
 class dinomitedays_header_block
 {
     private static $wpdbExtra;
@@ -7,7 +6,35 @@ class dinomitedays_header_block
     {
         self::$wpdbExtra = new wpdbExtra;
     }
-    public static function header($attr)
+    /**
+     * Generates HTML content for a dinosaur header block display.
+     *
+     * This method retrieves dinosaur information from the database based on the provided name
+     * and formats it into an HTML display including sponsor details, charity information,
+     * location data with Google Maps integration, auction prices, themes, and materials.
+     * If the dinosaur has been replaced, it also displays information about the original dinosaur.
+     *
+     * @param array $attr Attributes array containing:
+     *                   - 'name' (string): The name of the dinosaur to retrieve information for
+     *
+     * @return string HTML formatted content including:
+     *                - CSS styles for italic header formatting
+     *                - Sponsor information
+     *                - Charity details
+     *                - Fossil location with Google Maps directions link (if coordinates available)
+     *                - Auction price (if available)
+     *                - Theme and materials information
+     *                - Original dinosaur information (if this is a replacement)
+     *
+     * @global string $eol End of line character for formatting
+     * @global object $wpdbExtra Extended WordPress database object for custom queries
+     *
+     * @uses rrwParam::String() To safely extract the 'name' parameter from attributes
+     * @uses self::oneLine() To format individual lines of dinosaur information
+     *
+     * @since 1.0.0
+     */
+    public static function createHeaderBlock($attr)
     {
         global $eol;
         global $wpdbExtra;
@@ -18,7 +45,7 @@ class dinomitedays_header_block
         .headerItalic {
             font-style: italic;
             color: #006600;
-            weight: bold;
+            font-weight: bold;
         }
     </style>
     ";
@@ -26,51 +53,58 @@ class dinomitedays_header_block
         $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoName'";
         if ($debug)  $msg .= "$sql $eol";
         $dinos = $wpdbExtra->get_resultsA($sql);
-        $dino = $dinos[0];
-        $dinoOldName = $dino['Oldname'];
-        $sponsor = $dino["Sponsor"];
-        $mapLoc = $dino["Maploc"];
-        $latitude = $dino["Latitude"];
-        $longitude = $dino["Longitude"];
-        $auctionPrice = $dino["ActionPrice"];
-        $charity = $dino["Charity"];
-        $theme = $dino["Theme"];
-        $materials = $dino["Material"];
-        if (0 == $latitude || 0 == $longitude) {
-            $directionsTo = "";
-        } else {
-            $directionsTo = "<a href='https://www.google.com/maps/dir//$latitude,$longitude' target='map' > directions to </a>";
-        }
-        $msg .=
-            self::oneLine("Sponsored by: $sponsor") .
-            self::oneLine("Charity: $charity");
-        if (!empty($mapLoc)) {
-            $msg .= self::oneLine("Fossil Location: $directionsTo $mapLoc");
-        }
-        if (!empty($auctionPrice)) {
-            $msg .= self::oneLine("Auction: $auctionPrice");
-        }
-        $msg .=
-            self::oneLine("Theme: $theme ") .
-            self::oneLine("Current Materials: $materials");
-        if (!empty($dinoOldName)) {
-            $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
-                    <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
-            $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoOldName'";
-            $dinos = $wpdbExtra->get_resultsA($sql);
+        if (!empty($dinos)) {
             $dino = $dinos[0];
-            $oldsponsor = $dino["Sponsor"];
-            $oldauctionPrice = $dino["ActionPrice"];
-            $oldcharity = $dino["Charity"];
-            $oldtheme = $dino["Theme"];
-            $oldmaterails = $dino["Material"];
-
+            $dinoOldName = $dino['Oldname'];
+            $sponsor = $dino["Sponsor"];
+            $mapLoc = $dino["Maploc"];
+            $latitude = $dino["Latitude"];
+            $longitude = $dino["Longitude"];
+            $auctionPrice = $dino["ActionPrice"];
+            $charity = $dino["Charity"];
+            $theme = $dino["Theme"];
+            $materials = $dino["Material"];
+            if (0 == $latitude || 0 == $longitude) {
+                $directionsTo = "";
+            } else {
+                $directionsTo = "<a href='https://www.google.com/maps/dir//$latitude,$longitude' target='map' > directions to </a>";
+            }
             $msg .=
-                self::oneLine("Original Sponsored by: $oldsponsor") .
-                self::oneLine("Original Charity: $oldcharity") .
-                self::oneLine("Original Auction: $oldauctionPrice") .
-                self::oneLine("Original Theme: $oldtheme ") .
-                self::oneLine("Original  Materials: $oldmaterails");
+                self::oneLine("Sponsored by: $sponsor") .
+                self::oneLine("Charity: $charity");
+            if (!empty($mapLoc)) {
+                $msg .= self::oneLine("Fossil Location: $directionsTo $mapLoc");
+            }
+            if (!empty($auctionPrice)) {
+                $msg .= self::oneLine("Auction: $auctionPrice");
+            }
+            $msg .=
+                self::oneLine("Theme: $theme ") .
+                self::oneLine("Current Materials: $materials");
+            if (!empty($dinoOldName)) {
+                $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
+                        <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
+                $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoOldName'";
+            if (!empty($dinos)) {
+                $dino = $dinos[0];
+                $oldsponsor = $dino["Sponsor"];
+                $oldauctionPrice = $dino["ActionPrice"];
+                $oldcharity = $dino["Charity"];
+                $oldtheme = $dino["Theme"];
+                $oldmaterails = $dino["Material"];
+                $msg .=
+                    self::oneLine("Original Sponsored by: $oldsponsor") .
+                    self::oneLine("Original Charity: $oldcharity") .
+                    self::oneLine("Original Auction: $oldauctionPrice") .
+                    self::oneLine("Original Theme: $oldtheme ") .
+                    self::oneLine("Original  Materials: $oldmaterails");
+            } else {
+                $msg .= self::oneLine("Original dinosaur record not found.");
+            }
+                        self::oneLine("Original Theme: $oldtheme ") .
+                        self::oneLine("Original  Materials: $oldmaterails");
+                }
+            }
         }
         return $msg;
     }
