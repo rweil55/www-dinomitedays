@@ -29,13 +29,16 @@ require_once "display_tables_class.php";
 // the following are in the local directory
 require_once "database.php";
 //require_once "dinomitedays-database.php";
+require_once "build-dino-html.php";
 require_once "dinomitedays-email-photo.php";
 require_once "dinomitedays-fix.php";
 require_once "dinomitedays-header-block.php";
-require_once "dinomitedays-upload.php";
+require_once "dinomitedays-infor-block.php";
 require_once "dinomitedays-make-html.php";
 require_once "dinomitedays-misc-pages.php";
+require_once "dinomitedays-page-content.php";
 require_once "dinomitedays-print.php";
+require_once "dinomitedays-upload.php";
 require_once "DisplayPhotographers.php";
 require_once "DisplayThumbnails.php";
 //
@@ -47,20 +50,27 @@ global $wpdbExtra, $rrw_dinos, $rrw_photographers;
 $rrw_photographers = "wpprj_0photographers";
 $wpdbExtra = new wpdbExtra;
 $rrw_dinos = "wpprrj_00rrwdinos";
-//
+
+
+add_shortcode("dinomitedays-build-dino", array("BuildDinoHtml", "generateHtml"));
 add_shortcode('dinomitedays-fix', array("dinomitedays_fix", "fix"));
-add_shortcode('dinomitedays-make-html', array("dinomitedays_make_html", "make_html_files"));
+//add_shortcode('dinomitedays-make-html', array("dinomitedays_make_html", "make_html_files"));
 add_shortcode('dinomitedays-email', array("dinomitedays_email_photo", "uploadEmail"));
+add_shortcode('freewheeling-panorama-missing', array('PanoramaUpdate', 'streetViewMissing'));
 add_shortcode('dinomitedays-process-upload', array("dinomitedays_upload", "process_upload"));
 add_shortcode('dinomitedays-upload', array("dinomitedays_upload", "upload"));
 add_shortcode('dinomitedays-last-seen', array("dinomitedays_misc_pages", "last_seen"));
 add_shortcode('dinomitedays-known-locations', array("dinomitedays_misc_pages", "knownLocation"));
-add_shortcode('photographers', array("DisplayPhotographers", "Display"));
 add_shortcode('dinomitedays-thumbnails', array("DisplayThumbnails", "Display"));
 add_shortcode('dinomitedays-photographers', array("DisplayPhotographers", "Display"));
 add_shortcode('dinomitedays-header-block', array("dinomitedays_header_block", "createHeaderBlock"));
 add_shortcode('dinomitedays-database', array("dinomitedays_database", "displayDatabase"));
+add_shortcode('dinomitedays-streetViewUpdate', array("dinomitedays_database", "updateStreetViewField"));
+add_shortcode('dinomitedays-streetViewMissing', array("dinomitedays_database", "updateStreetViewField"));
 add_shortcode("dinomitedays-print", array("dinomitedays_print", "print"));
+add_shortcode('dinomitedays_page_content', array("dinomitedays_Page_Content", "render_page_content"));
+add_shortcode("dinomitedays-information-block", array("dinomitedays_information_block", "doUpdate"));
+
 /* -------------------------------------  cause it to happen
 //
 require_once "../dinomitedays/plugin_update_check.php";

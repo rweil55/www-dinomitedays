@@ -12,29 +12,29 @@ class DisplayThumbnails
 
         $msg .= "dinomitedays-thumbnails: $eol";
         $msg .= '<link rel="stylesheet" type="text/css" href="images/pictures.css" />' . $eol;
-        $sql = "select keyid,  name, status, filename, mapdate, 
-                    maploc, logoFileName 
+        $sql = "select keyid,  dinoName, status, filename, mapDate,
+                    maploc, logoFileName
                     from $rrw_dinos
-                    order by name";
+                    order by dinoName";
         $msg .= "sql: $sql $eol";
         $recs = $wpdbExtra->get_resultsA($sql);
         if ($listdisplay)
             $msg .= '<ul class="rrwPhotoGrid" role="list">';
 
         foreach ($recs as $rec) {
-            $name = $rec["name"];
+            $name = $rec["dinoName"];
             $filename = $rec["filename"];
             $logoFileName = $rec["logoFileName"];
             if (empty($logoFileName)) {
                 $logoFileName = "N/A";
             }
             if ($listdisplay) {
-                $msg .= "<li class='rrwPhotoGrid'><a href='/designs/$filename.htm' > 
-                    <img src='/graphics/$logoFileName' width='135' height='125' 
+                $msg .= "<li class='rrwPhotoGrid'><a href='/designs/$filename.htm' >
+                    <img src='/graphics/$logoFileName' width='135' height='125'
                     alt='$name || $logoFileName' ></a></li>\n";
             } else {
-                $msg .= "<a href='/designs/$filename.htm' > 
-                    <img src='/graphics/$logoFileName' width='135' height='125' 
+                $msg .= "<a href='/designs/$filename.htm' >
+                    <img src='/graphics/$logoFileName' width='135' height='125'
                     alt='$name || $logoFileName' ></a>\n";
             }
         }

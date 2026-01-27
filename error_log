@@ -1,0 +1,88 @@
+[17-Dec-2025 03:06:41 UTC] PHP Fatal error:  Uncaught Error: Class "rrwExtractHtml" not found in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php:143
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(71): dinomitedays_fix::identifyAuctionLots()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): dinomitedays_fix::fix()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php on line 143
+[17-Dec-2025 13:23:10 UTC] PHP Fatal error:  Uncaught Error: Class "rrwExtractHtml" not found in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php:143
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(71): dinomitedays_fix::identifyAuctionLots()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): dinomitedays_fix::fix()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php on line 143
+[17-Dec-2025 13:24:43 UTC] PHP Fatal error:  Uncaught Error: Class "rrwExtractHtml" not found in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php:143
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(71): dinomitedays_fix::identifyAuctionLots()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): dinomitedays_fix::fix()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php on line 143
+[17-Dec-2025 13:28:18 UTC] PHP Warning:  require_once(rrw_html_extract1.php): Failed to open stream: No such file or directory in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php on line 3
+[17-Dec-2025 13:28:18 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'rrw_html_extract1.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php:/home/pillowan/ww-include:/home/pillowan/www_include') in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php:3
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php(33): require_once()
+#1 /home/pillowan/www-dinomitedays/wp-settings.php(560): include_once('/home/pillowan/...')
+#2 /home/pillowan/www-dinomitedays/wp-config.php(97): require_once('/home/pillowan/...')
+#3 /home/pillowan/www-dinomitedays/wp-load.php(50): require_once('/home/pillowan/...')
+#4 /home/pillowan/www-dinomitedays/wp-blog-header.php(13): require_once('/home/pillowan/...')
+#5 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#6 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php on line 3
+[17-Dec-2025 14:12:45 UTC] PHP Fatal error:  Uncaught Exception: did not find '<body' in remaining buffer in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/rrw_html_extract1.php:81
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(145): rrwExtractHtml->findStringInBuffer()
+#1 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(71): dinomitedays_fix::identifyAuctionLots()
+#2 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): dinomitedays_fix::fix()
+#3 [internal function]: do_shortcode_tag()
+#4 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#5 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#6 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#8 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#9 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#11 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#12 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/rrw_html_extract1.php on line 81
+[17-Dec-2025 14:13:13 UTC] PHP Fatal error:  Uncaught Exception: did not find ' sponsors.' in remaining buffer in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/rrw_html_extract1.php:81
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(146): rrwExtractHtml->findStringInBuffer()
+#1 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-fix.php(71): dinomitedays_fix::identifyAuctionLots()
+#2 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): dinomitedays_fix::fix()
+#3 [internal function]: do_shortcode_tag()
+#4 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#5 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#6 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#8 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#9 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#11 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#12 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/rrw_html_extract1.php on line 81

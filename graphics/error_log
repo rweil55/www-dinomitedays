@@ -1,0 +1,218 @@
+[17-Jan-2026 17:42:44 UTC] PHP Warning:  Undefined variable $freewheel_map in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php on line 42
+[17-Jan-2026 17:42:44 UTC] PHP Warning:  require_once(/map-write.php): Failed to open stream: No such file or directory in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php on line 42
+[17-Jan-2026 17:42:44 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/map-write.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php:/home/pillowan/ww-include:/home/pillowan/www_include') in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php:42
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-settings.php(560): include_once()
+#1 /home/pillowan/www-dinomitedays/wp-config.php(97): require_once('/home/pillowan/...')
+#2 /home/pillowan/www-dinomitedays/wp-load.php(50): require_once('/home/pillowan/...')
+#3 /home/pillowan/www-dinomitedays/wp-blog-header.php(13): require_once('/home/pillowan/...')
+#4 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#5 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php on line 42
+[17-Jan-2026 17:43:33 UTC] PHP Warning:  fopen(/home/pillowan/www-dinomitedays/footer_dino.php): Failed to open stream: No such file or directory in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 224
+[17-Jan-2026 17:43:33 UTC] PHP Warning:  filesize(): stat failed for /home/pillowan/www-dinomitedays/footer_dino.php in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 225
+[17-Jan-2026 17:43:33 UTC] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, false given in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:225
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(225): fread()
+#1 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(142): BuildDinoHtml::footer()
+#2 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#3 [internal function]: do_shortcode_tag()
+#4 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#5 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#6 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#8 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#9 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#11 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#12 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 225
+[17-Jan-2026 18:03:31 UTC] PHP Parse error:  syntax error, unexpected double-quote mark in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 228
+[17-Jan-2026 18:03:42 UTC] PHP Parse error:  syntax error, unexpected double-quote mark in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 228
+[17-Jan-2026 18:46:51 UTC] PHP Parse error:  syntax error, unexpected token "=" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 241
+[17-Jan-2026 20:17:53 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:17:53 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:47:54 UTC] WordPress database error Unknown column 'Name' in 'where clause' for query select * from wpprrj_00rrwdinos where Name = 'Skeletosaurus' made by require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), include('/themes/twentythirteen/page.php'), the_content, apply_filters('the_content'), WP_Hook->apply_filters, do_shortcode, preg_replace_callback, do_shortcode_tag, dinomitedays_header_block::createHeaderBlock, wpdbExtra->get_resultsA, wpdbExtra->get_results
+[17-Jan-2026 20:48:47 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:48:47 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:48:47 UTC] PHP Warning:  Undefined variable $actiionDisplay in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 197
+[17-Jan-2026 20:49:35 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:49:35 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:52:57 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:52:57 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:52:57 UTC] PHP Warning:  Undefined array key "filename" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 206
+[17-Jan-2026 20:53:43 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:53:43 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:54:56 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:54:56 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:55:00 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:55:00 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:56:59 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:56:59 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 20:58:54 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 182
+[17-Jan-2026 20:58:54 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 183
+[17-Jan-2026 21:08:34 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:08:34 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:09:06 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:09:06 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:14:31 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:14:31 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:19:33 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:19:33 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:20:27 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:20:27 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:21:25 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:21:25 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:21:51 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:21:51 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 21:22:43 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 21:22:43 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 22:01:07 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 22:01:07 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 188
+[17-Jan-2026 22:02:36 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 22:02:36 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 188
+[17-Jan-2026 22:07:59 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 186
+[17-Jan-2026 22:07:59 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 187
+[17-Jan-2026 22:11:30 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 189
+[17-Jan-2026 22:11:30 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 190
+[17-Jan-2026 22:12:30 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 190
+[17-Jan-2026 22:12:30 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 191
+[17-Jan-2026 22:13:32 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 191
+[17-Jan-2026 22:13:32 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 192
+[17-Jan-2026 22:18:57 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 194
+[17-Jan-2026 22:18:57 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[17-Jan-2026 22:19:32 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 194
+[17-Jan-2026 22:19:32 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[17-Jan-2026 22:20:00 UTC] PHP Warning:  Undefined array key "status" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[17-Jan-2026 22:20:00 UTC] PHP Warning:  Undefined array key "mapDate" in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 196
+[17-Jan-2026 22:23:03 UTC] PHP Fatal error:  Uncaught TypeError: date(): Argument #2 ($timestamp) must be of type ?int, string given in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:196
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(196): date()
+#1 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(154): BuildDinoHtml::details()
+#2 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#3 [internal function]: do_shortcode_tag()
+#4 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#5 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#6 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#8 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#9 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#11 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#12 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 196
+[18-Jan-2026 00:26:55 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:196
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(162): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 196
+[18-Jan-2026 00:29:38 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:196
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(162): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 196
+[18-Jan-2026 00:29:39 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:196
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(162): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 196
+[18-Jan-2026 00:30:19 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:195
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(161): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[18-Jan-2026 00:30:22 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:195
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(161): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[18-Jan-2026 00:31:05 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:195
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(161): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[18-Jan-2026 00:31:12 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: string / string in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php:195
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php(161): BuildDinoHtml::header()
+#1 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(434): BuildDinoHtml::generateHtml()
+#2 [internal function]: do_shortcode_tag()
+#3 /home/pillowan/www-dinomitedays/wp-includes/shortcodes.php(273): preg_replace_callback()
+#4 /home/pillowan/www-dinomitedays/wp-includes/class-wp-hook.php(341): do_shortcode()
+#5 /home/pillowan/www-dinomitedays/wp-includes/plugin.php(205): WP_Hook->apply_filters()
+#6 /home/pillowan/www-dinomitedays/wp-includes/post-template.php(256): apply_filters()
+#7 /home/pillowan/www-dinomitedays/wp-content/themes/twentythirteen/page.php(37): the_content()
+#8 /home/pillowan/www-dinomitedays/wp-includes/template-loader.php(125): include('/home/pillowan/...')
+#9 /home/pillowan/www-dinomitedays/wp-blog-header.php(19): require_once('/home/pillowan/...')
+#10 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#11 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/build-dino-html.php on line 195
+[18-Jan-2026 18:40:44 UTC] PHP Parse error:  Unclosed '{' on line 7 in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays-page-content.php on line 22
+[18-Jan-2026 18:42:17 UTC] PHP Fatal error:  Uncaught Error: Using $this when not in object context in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php:71
+Stack trace:
+#0 /home/pillowan/www-dinomitedays/wp-settings.php(560): include_once()
+#1 /home/pillowan/www-dinomitedays/wp-config.php(97): require_once('/home/pillowan/...')
+#2 /home/pillowan/www-dinomitedays/wp-load.php(50): require_once('/home/pillowan/...')
+#3 /home/pillowan/www-dinomitedays/wp-blog-header.php(13): require_once('/home/pillowan/...')
+#4 /home/pillowan/www-dinomitedays/index.php(17): require('/home/pillowan/...')
+#5 {main}
+  thrown in /home/pillowan/www-dinomitedays/wp-content/plugins/dinomitedays/dinomitedays.php on line 71

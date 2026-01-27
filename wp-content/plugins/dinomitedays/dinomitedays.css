@@ -91,3 +91,127 @@ a.external {
 .badlink {
     text-decoration: line-through;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #ffffff;
+}
+
+.body-outside {
+    font-family: Arial, sans-serif;
+    background-color: #eb9909;
+    max-width: 800px;
+    height: 100%;
+}
+
+.body-inside {
+    background-color: #ffffff;
+    margin: 10px;
+}
+
+.dino-header {
+    font-size: 32px;
+    font-weight: bold;
+    background-color: #eb9909;
+    height: 58px;
+    width: 100%;
+    margin: 0px;
+}
+
+.dino-header-table {
+    border: 2;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.dino-header-text {
+    font-size: 32px;
+    font-weight: bold;
+    padding-left: 10px;
+    text-align: left;
+    background-color: #eb9909
+}
+
+.dino-header-image {
+    height: 58px;
+    width: auto;
+    float: right;
+    display: flex;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    justify-content: flex-end;
+    background-color: #eb9909;
+}
+
+.dino-info {
+    padding-top: 10px;
+    float: center;
+    Align-items: center;
+    background-color: #ffffff;
+}
+
+.dino-page-content {
+    /* font-size: smaller;  */
+    margin-top: 20px;
+    margin-right: inherit;
+    color: black;
+    background-color: #ffffff;
+}
+
+.dino-body-image {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 7px;
+    padding: 6px;
+    float: left;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #ffffff;
+}
+
+.dino-subheader {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.dino-bottom-image {
+    max-width: 40%;
+    width: 300px;
+    height: auto;
+    padding: 7px;
+    background-color: #ffffff;
+}
+
+.dino-footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: black;
+    background-color: #eb9909;
+}
+
+/* Optional styling for visualization */
+.dino-iframe-left,
+.dino-iframe-right {
+    padding: 2px;
+    border: 1px solid black;
+    height: 600px;
+    width: 610px;
+}
+
+.dino-iframe-left {
+    background-color: lightblue;
+}
+
+.dino-iframe-right {
+    background-color: lightgreen;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+}

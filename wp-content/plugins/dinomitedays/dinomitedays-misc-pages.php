@@ -3,6 +3,13 @@
 ini_set("display_errors", true);
 error_reporting(E_ALL);
 
+
+/* DinomiteDays Misc Pages
+ * last_seen
+ * knownLocation
+ * messageRequest
+ * 
+*/
 class dinomitedays_misc_pages
 {
     const rrw_dinos = "wpprrj_00rrwdinos";
@@ -28,29 +35,29 @@ class dinomitedays_misc_pages
             else
                 $numberorder = false;
             if ($debugLast) $msg .= "lastorkey: $lastOrkey, value = $numberorder $eol";
-            $sql = "select keyid,  name, status, filename, mapdate,
+            $sql = "select keyid,  dinoName, status, filename, mapDate,
                     maploc, latitude, longitude
                     from " .  self::rrw_dinos;
             if ($numberorder)
                 $sql .= " order by keyid";
             else
-                $sql .= " order by year(mapDate)  desc, name asc ";
+                $sql .= " order by year(mapDate)  desc, dinoName asc ";
             if ($debugLast) $msg .= "$sql $eol";
             $recs = $wpdbExtra->get_resultsA($sql);
             if ($debugLast) $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
 
             $yearPast = "not yet";
             foreach ($recs as $rec) {
-                $name = $rec["name"];
+                $name = $rec["dinoName"];
                 $status = $rec["status"];
                 $filename = $rec["filename"];
-                $mapdate = $rec["mapdate"];
+                $mapDate = $rec["mapDate"];
                 $maploc = $rec["maploc"];
                 $latitude = $rec["latitude"];
                 $longitude = $rec["longitude"];
                 $keyid = $rec["keyid"];
 
-                $mapYear = new DateTime($mapdate);
+                $mapYear = new DateTime($mapDate);
                 $mapYear = $mapYear->format("Y");
                 if ($mapYear != $yearPast && !$numberorder)
                     $msg .= "<span style='font-weight:bold; ' > $mapYear </span>$eol";
@@ -75,7 +82,7 @@ document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated
 </script>
 ";
         } catch (Exception $ex) {
-            throw new Exception("$msg $errorBeg E#1338 dinomitedays_upload:upload: $errorEnd");
+            throw new Exception("$msg $errorBeg E#1338 dinomitedays_misc_pages:last_seen: $errorEnd");
         }
         return $msg;
     } // end last_seen
@@ -99,7 +106,7 @@ document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated
         ";
         $debugLoc = false;
 
-        $sql = "select keyId,  name, status, filename, logoFileName, mapDate,
+        $sql = "select keyId,  dinoName, status, filename, logoFileName, mapDate,
                     mapLoc, latitude, longitude
                     from " .  self::rrw_dinos .
             " where status ='' and latitude > 0 and mapDate > '2008-01-01'
@@ -130,7 +137,7 @@ document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated
         $msgRight = self::messageRequest();
         $cnt = 0;
         foreach ($recs as $rec) {
-            $name = $rec["name"];
+            $name = $rec["dinoName"];
             $filename = $rec["filename"];
             if (file_exists(self::imageDire . "/$filename.jpg")) {
                 $msgRight .= "<img class='knownLoc' src='/" . self::imagePath . "/$filename.jpg' alt='$filename' width='120px' >";
@@ -143,7 +150,7 @@ document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated
         $msg .= "<table><tr><td>$msgLeft</td><td width=560px >$msgRight</td></tr></table>";
 
         $limit = 6 * 7;
-        $sql = "select keyId,  name, status, filename, mapDate,
+        $sql = "select keyId,  dinoName, status, filename, mapDate,
                     mapLoc, latitude, longitude
                     from " .  self::rrw_dinos .
             "   where mapDate < '2010-01-01'
@@ -159,7 +166,7 @@ document.getElementsByClassName ('entry-title').innerHTML = 'last seen - updated
         foreach ($recs2 as $rec) {
             $cntSkip++;
             if ($cntSkip < 1) continue;
-            $name = $rec["name"];
+            $name = $rec["dinoName"];
             $filename = $rec["filename"];
             if (file_exists(self::imageDire . "/$filename.jpg")) {
                 $msg .= "<img class='knownLoc' src='/" . self::imagePath . "/$filename.jpg' alt='$filename' width='150px' >";

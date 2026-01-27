@@ -1,15 +1,19 @@
 <?php
 
-ini_set("display_errors", false);
+ini_set("display_errors", true);
 error_reporting(E_ALL);
 
 $picDire = "/home/pillowan/www-shaw-weil-pictures/wp-content/plugins";
 require_once "$picDire/roys-picture-processing/uploadProcessDire.php";
+// in the www-include directory
+require_once "loginVerification.php";
 /*  class uploadProcessDire {
  *       nameToBottom( $sourceFile, $photographer )
  *       resizeImage( $pathin, $pathout, $w_max, $h_max ) {
  *   }
  */
+ini_set("display_errors", true);
+error_reporting(E_ALL);
 
 class dinomitedays_email_photo
 {
@@ -19,18 +23,21 @@ class dinomitedays_email_photo
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
     const dinoPlugin = self::http . "wp-content/plugins/dinomitedays/";
+    private static $askFor;
 
-    public static function uploadEmail($attr)
+    public  static function uploadEmail($attributes)
     {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList; // used to create the scriptfile with this input
-        global $wpdbExtra, $rrw_dinos;
+        global $wpdbExtra;
+
         ini_set("display_errors", true);
         error_reporting(E_ALL);
 
         $msg = "";
         try {
             //   $msg .= $_SERVER['REQUEST_URI'];
+
             $debug = false;
             $debugProgress = false;
             $cssFile = self::dinoPlugin . "dinomitedays.css";
@@ -48,7 +55,7 @@ class dinomitedays_email_photo
             if (!is_array($dropdownList))
                 $dropdownList = array();
             // build the input form
-            $msg .= self::buildDinoSelectionForm($dino, "uploadEmail");
+            $msg .= dinomitedays_upload::buildDinoSelectionForm($dino, "/uploadEmail");
             if ($debugProgress) $msg .= "after first form, okay $eol";
             if (!empty($dino))
                 // dino selected so display more information
@@ -69,36 +76,6 @@ class dinomitedays_email_photo
         return $msg;
     } // end upload
 
-    private static function updatHTMfile($dino)
-    {
-        global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra, $rrw_dinos;
-        $msg = "";
-
-        $SqlMapLoc = "select mapLoc, latitude, longitude
-                            from $rrw_dinos where name = '$dino' ";
-        $recs = $wpdbExtra->get_resultsA($SqlMapLoc);
-        $mapLoc = $recs[0]["mapLoc"];
-        $latitude = $recs[0]["latitude"];
-        $longitude = $recs[0]["longitude"];
-        $sqlUpadaeHTM = array();
-        $sqlUpadaeHTM["mapLoc"] = $mapLoc;
-        $sqlUpadaeHTM["latitude"] = $latitude;
-        $sqlUpadaeHTM["longitude"] = $longitude;
-        $sqlWhere = array("name" => $dino);
-        $result = $wpdbExtra->Update($rrw_dinos, $sqlUpadaeHTM, $sqlWhere);
-        $filenameFull = "$dino" . "_.htm";
-        $msg .= dinomitedays_make_html::updateFossilLocations(
-            $filenameFull,
-            $mapLoc,
-            $latitude,
-            $longitude
-        );
-
-
-        return $msg;
-    }
-
     /**
      * Builds a form to select a dinosaur.
      *
@@ -106,69 +83,27 @@ class dinomitedays_email_photo
      * @param string $action The action URL where the form will be submitted.
      * @return string The HTML form as a string.
      */
-    private static function buildDinoSelectionForm($dino, $action)
-    {
-        //  build a <form to make a dino section
-        //  $dino    a previous selected dino
-        //  $action  where to go wher it is selected
-        global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra, $rrw_dinos;
-        $msg = "";
-
-        $msg .= "<form method=\"post\" action=\"/$action\" > ";
-
-        $sql = "select * from $rrw_dinos order by name ";
-        $recs = $wpdbExtra->get_resultsA($sql);
-        //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
-        $msg .= "<table style=\"border-collapse: collapse; \">
-            <tr class=\"freewheel_td\" >
-            <td style=\"vertical-align:middle; \">
-        ";
-        $msg .= '<font color=red >Required</font><br />
-            <select id="dino" name="dino" oninput="submit();" >';
-        if (empty($dino))
-            $msg .= '<option value="" disabled selected >Pick a dinosaur. </option>
-        ';
-        foreach ($recs as $rec) {
-            $name = $rec["Name"];
-            $file = $rec["Filename"];
-            $msg .= '<option value="' . $file . '"';
-            if ($dino == $file)
-                $msg .= " selected=$dino ";
-            $msg .= "> $name </option>\n";
-        }
-        $msg .= "</select>
-            </td>
-            <td>";
-        if (empty($dino))
-            $source = "/graphics/white.gif";
-        else {
-            $source = self::imagePath . "$dino" . "_sm.jpg";
-        }
-        $msg .= "
-                <img src='$source' height='150px' />
-            </td>
-        </tr>
-        </table>
-        <br />
-            </form>";
-        return $msg;
-    }
 
 
     private static function displayPhotosForm($dino)
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra, $rrw_dinos, $rrw_photographers;
+        global $wpdbExtra;
         $msg = "";
-
         $debugProgress = false;
         $photographer = rrwUtil::fetchparameterString("photographer");
+        $sqlExisting = "select mapLoc, mapDate from $wpdbExtra->dinosaurs where fileName = '$dino' ";
+        $redDinos = $wpdbExtra->get_resultsA($sqlExisting);
+        if (count($redDinos) == 1) {
+            $mapLoc = $redDinos[0]["mapLoc"];
+            $mapDate = $redDinos[0]["mapDate"];
+        } else {
+            throw new Exception("$msg $errorBeg E#1380 No record found for dinosaur '$dino' $errorEnd $sqlExisting $eol");
+        }
 
         $msg .= "<form method=\"post\" action=\"/uploadEmail\" enctype=\"multipart/form-data\" >
             <input type='hidden' name='dino' id='dino' value='$dino' />
         ";
-        $msg .= "<input type='hidden' name='dino' id='dino' value='$dino' />\n";
         $limit = 140;
         $size = 50;
         $today = date("Y-m-d");
@@ -181,16 +116,18 @@ class dinomitedays_email_photo
                 <br> &nbsp; &nbsp;Such as a street address or
                building name with guide to where inside.<br \>
                 <input type='text' maxlength='$limit' size='$size'
-                    name='locationDesc'  id='locationDesc' value=''
-                   onkeyup='countChars(\"locationDesc\",\"locationLeft\", $limit);'
-                   onkeydown='countChars(\"locationDes<h3></h3>c\",\"locationLeft\", $limit);'
-                   onmouseout='countChars(\"locationDesc\",\"locationLeft\", $limit);' />
+                    name='mapLoc'  id='mapLoc' value='$mapLoc'
+                   onkeyup='countChars(\"mapLoc\",\"locationLeft\", $limit);'
+                   onkeydown='countChars(\"mapLoc\",\"locationLeft\", $limit);'
+                   onmouseout='countChars(\"mapLoc\",\"locationLeft\", $limit);' />
+                   <input type='hidden' name='mapLocOld' id='mapLocOld' value='$mapLoc' />
                 <br> &nbsp; &nbsp; &nbsp; &nbsp;
                 <span id=\"locationLeft\">$limit</span> Characters left
                 $eol $eol <strong>Photographer</strong> <font color=red >Required if photos below</font>$eol
                   <input type='text' value='$photographer' name='photographer' id='photographer' />
         $eol $eol <strong>Last Seen</strong>
-        <input type='text' name='mapdate' id='mapdate' value='$today' />
+        <input type='text' name='mapDate' id='mapDate' value='$mapDate' />
+        <input type='hidden' name='mapDateOld' id='mapDateOld' value='$mapDate' />
         <br>
                 </td>
 
@@ -306,7 +243,7 @@ class dinomitedays_email_photo
         $msg = "";
         $msg .= "
 
-    <div class=\"drop-zone\" id=\"dropzone_$name\" ondragstart=\"dropzoneDragOver(this);\" ondragsend=\"dropzoneDragLeave_end(this);\" ondragover=\"dropzoneDragOver(this);\" ondragleave=\"dropzoneDragLeave_end(this);\" onchange=\"dropzone_chaange(this, '$name' );\" onclick=\"dropzone_click('$name');\">
+    <div class=\"drop-zone\" id=\"dropzone_$name\" ondragstart=\"dropzoneDragOver(this);\" ondragsend=\"dropzoneDragLeave_end(this);\" ondragover=\"dropzoneDragOver(this);\" ondragleave=\"dropzoneDragLeave_end(this);\" onchange=\"dropzone_change(this, '$name' );\" onclick=\"dropzone_click('$name');\">
         <span class=\"drop-zone__prompt\"></span>
         <input type=\"file\" name=\"$name\" id=\"$name\" class=\"drop-zone__input\">
     </div>
@@ -336,11 +273,11 @@ class dinomitedays_email_photo
             $images = self::imageDire;
 
             $dino = rrwParam::String("dino");
-            $fileSort = rrwParam::String("filesort");
+            $fileSort = rrwParam::String("fileSort");
             $photographer = rrwParam::String("photographer");
             if ($fileSort < 10)
                 $fileSort = 10;
-            if ($debugSave) $msg .= "dino = $dino, filesort = $fileSort,
+            if ($debugSave) $msg .= "dino = $dino, fileSort = $fileSort,
                                         photographer = $photographer $eol";
 
             if (empty($dino)) {
@@ -357,9 +294,18 @@ class dinomitedays_email_photo
             // extract the note and enter into database
             $sqlUpdateArray["note"] = rrwParam::String("note");
             //
-            // extract the mapdate and enter into dataase
-            $mapdate = rrwParam::String("mapdate");
-            $sqlUpdateArray["mapdate"] = $mapdate;
+            // extract the mapDate and enter into database
+            $mapDate = rrwParam::String("mapDate");
+            $mapDateOld = rrwParam::String("mapDateOld");
+            if ($mapDate != $mapDateOld) {
+                $sqlUpdateArray["mapDate"] = $mapDate;
+            }
+            // extract the mapLoc and enter into database
+            $mapLoc = rrwParam::String("mapLoc");
+            $mapLocOld = rrwParam::String("mapLocOld");
+            if ($mapLoc != $mapLocOld) {
+                $sqlUpdateArray["mapLoc"] = $mapLoc;
+            }
             //
             if ($debugSave) {
                 $msg .= rrwUtil::print_r($sqlUpdateArray, true, "sql update");
@@ -459,7 +405,8 @@ class dinomitedays_email_photo
             $to = "dinoAdmin@royweil.com";
             $subject = "New dinosaur(s) uploaded to dinomitedays.org";
             $body = "The following $numberOfSavedImages files were uploaded to dinomitedays.org by $photographer. \n
-                The files are: $fileNamesMoved \n
+                The files are: $fileNamesMoved \n";
+            $body = rrwUtil::print_r($sqlUpdateArray, true, "the update array") . "\n
                 Please check them and move to \n /home/pillowan/www-dinomitedays/www-dinomitedays/designs/images. \n
                 Thanks, \n
                 Roy Weil \n ";

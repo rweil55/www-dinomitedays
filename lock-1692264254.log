@@ -1,0 +1,7 @@
+Please find our analysis result below.
+In order to make your website functional again you need to change file permissions at least to 604 after cleaning up.
+
+The following files have been likely modified by others.
+Please check these files and re-upload them from a clean backup.
+~/clickandbuilds/Joomla/Greenway2/index.php
+

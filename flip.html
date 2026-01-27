@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+
+<HEAD>
+    <TITLE>creative-nudges</TITLE>
+
+
+    <style>
+        .flip-horizontal {
+            transform: scaleX(.5);
+        }
+
+        .flip-vertical {
+            transform: scaleY(.25);
+        }
+    </style>
+</HEAD>
+
+<body></body>
+
+<img id="myImage" src="https://creative-nudges.com/wp-content/plugins/creative-nudges/images-combined/combined-56.png"
+    alt="Description" height="200px">
+<button onclick="flipImageHorizontal()">Flip Horizontal</button>
+<button onclick="flipImageVertical()">Flip Vertical</button>
+
+<script>
+
+    function flipImageHorizontal() {
+        const image = document.getElementById('myImage');
+        image.classList.toggle('flip-horizontal');
+    }
+
+    function flipImageVertical() {
+        const image = document.getElementById('myImage');
+        image.classList.toggle('flip-vertical');
+    }
+
+</script>
+
+</html>
+</body>

@@ -1,0 +1,6 @@
+"intelephense.environment.includePaths": [
+    "../freewheeling-edit/includes",
+    "../freewheeling-edit",
+    "../freewheeling-map",
+    "c:/inetpub/wwwroot/ww-include"
+],

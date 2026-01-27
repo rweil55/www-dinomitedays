@@ -53,14 +53,14 @@ class dinomitedays_header_block
         $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoName'";
         if ($debug)  $msg .= "$sql $eol";
         $dinos = $wpdbExtra->get_resultsA($sql);
-        if($wpdbExtra->num_rows == 0){
+        if ($wpdbExtra->num_rows == 0) {
             $msg .= "$errorBeg Dinosaur record for $dinoName not found. $errorEnd";
             return $msg;
         }
         $dino = $dinos[0];
         $dinoOldName = $dino['Oldname'];
         $sponsor = $dino["Sponsor"];
-        $mapLoc = $dino["Maploc"];
+        $mapLoc = $dino["mapLoc"];
         $latitude = $dino["Latitude"];
         $longitude = $dino["Longitude"];
         $auctionPrice = $dino["ActionPrice"];
@@ -85,12 +85,12 @@ class dinomitedays_header_block
             self::oneLine("Theme: $theme ") .
             self::oneLine("Current Materials: $materials");
         if (empty($dinoOldName)) {
-                    $msg .= self::oneLine("Original dinosaur record not found.");
-                    return $msg;
+            $msg .= self::oneLine("Original dinosaur record not found.");
+            return $msg;
         }
         $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
                 <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
-                //
+        //
         $oldsponsor = $dino["Sponsor"];
         $oldauctionPrice = $dino["ActionPrice"];
         $oldcharity = $dino["Charity"];

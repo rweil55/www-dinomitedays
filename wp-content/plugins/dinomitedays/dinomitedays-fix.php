@@ -1,8 +1,9 @@
 <?php
 
+require_once "rrw_html_extract1.php";
 class dinomitedays_fix
 {
-    const rrw_dinomites = "wpprrj_00rrwdinos";
+    const rrw_dinoMites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
     const design_images_dire = self::baseDire . "/designs/images";
 
@@ -26,7 +27,7 @@ class dinomitedays_fix
         }
         if (rrwUtil::NotallowedToEdit(" fix things", "any", true))
             return "$msg not allowed to fix things";
-        $msg .= "task of $task $eol ";
+        $msg .= "entered task of $task $eol ";
         switch ($task) {
             case "deletenew":
                 $msg .= self::deleteNew($attr);
@@ -59,45 +60,21 @@ class dinomitedays_fix
                 $fix = "find_images";
                 $msg .= self::doFixLoop($fix, $homePath, $options);
                 break;
-            case "findinfofiles":
-                return "$msg table has been loaded, therefore nothing to do here $eol";
-                /*
-                $file = "$homePath/artist.htm";
-                $dom = file_get_html($file);
-                $anchors = $dom->find("a");
-                $cnt = 300;
-                foreach ($anchors as $anchor) {
-                    $cnt++;
-                    $name = $anchor->href;
-                    if ("designs" != substr($name, 0, 7))
-                        continue;
-                    $fileData = "$homePath/$name";
-                    $name = str_replace("designs/", "", $name);
-                    $name = str_replace(".htm", "", $name);
-                    $buffer = file_get_contents($fileData);
-                    $iidip = strpos($buffer, "/dip");
-                    if (false !== $iidip)
-                        $num = substr($buffer, $iidip + 4, 2);
-                    else
-                        $num = $cnt;
-                    $num = str_replace(".", " ", $num);
-                    $msg .= " $num - $name $eol";
-                    $update = array("infofilename" => $name, "id" => $num);
-                    $msg .= $wpdb->insert(
-                        self::rrw_dinomites,
-                        $update
-                    ) . $eol;
-                }
-                break;
-                */
             case "findnew":
                 $msg .= self::findNew($attr);
                 break;
             case "findpictures":
                 $msg .= self::findPictures($attr);
                 break;
+            case "lots":
+                $msg .= "identifying auction lots $eol";
+                $msg .= self::identifyAuctionLots();
+                break;
             case "missing_sm":
                 $msg .= self::missing_sm($attr);
+                break;
+            case "missing_author_jpg":
+                $msg .= self::missing_author_jpg();
                 break;
             case "phototogs":
                 $msg .= DisplayPhotographers::Display($attr);
@@ -155,7 +132,88 @@ $eol $eol
         return $msg;
     } // end function fixit
     //
+    private static function missing_author_jpg()
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
+        $msg = "";
+        $dire = self::design_images_dire;
+        $sql = "select DinoName, filename from " . self::rrw_dinoMites .
+            " where filename <> '' order by filename, DinoName ";
+        $recs = $wpdbExtra->get_resultsA($sql);
+        foreach ($recs as $rec) {
+            $DinoName = $rec["DinoName"];
+            $author = $rec["filename"];
+            $authorFile = str_replace(" ", "_", strtolower($author)) . ".jpg";
+            $picFile = str_replace(" ", "_", strtolower($author)) . "_pic.jpg";
+            $fileFullA = "$dire/$authorFile";
+            if (file_exists($fileFullA))
+                $mainExist = true;
+            else
+                $mainExist = false;
 
+            $fileFullP = "$dire/$picFile";
+            if (file_exists($fileFullP))
+                $picExist = true;
+            else
+                $picExist = false;
+            if ((!$mainExist) && (!$picExist)) {
+                $msg .= "both missing $fileFullA -- $fileFullP  $eol";
+            }
+            if ((!$mainExist) && ($picExist)) {
+                $msg .= "got pic, main missing $fileFullA -- $fileFullP  --------------------------$eol";
+                $msg .= "copy($fileFullP, $fileFullA);" . $eol;
+                copy($fileFullP, $fileFullA);
+            }
+            if (($mainExist) && (!$picExist)) {
+                $msg .= "got main, pic missing $fileFullA -- $fileFullP  $eol";
+            }
+            if (($mainExist) && ($picExist)) {
+                $msg .= "got both $DinoName - $author $eol";
+            }
+        } // end foreach
+        return $msg;
+    } // end function missing_author_jpg
+    private static function identifyAuctionLots()
+    {
+        global $eol;
+        $msg = "";
+        for ($ii = 1; $ii <= 3; $ii++) {
+            $lotFile = "/home/pillowan/www-dinomitedays/live.htm";
+            if (file_exists($lotFile)) {
+                $msg .= "Auction lot $ii file exists: $lotFile <br/>";
+            } else {
+                $msg .= "Auction lot $ii file missing: $lotFile <br/>";
+                return $msg;
+            }
+            $html = new rrwExtractHtml($lotFile);
+            $html->findStringInBuffer("<BODY");
+            $html->findStringInBuffer(" sponsors");
+            try {
+                $cnt = 0;
+                while (1) {
+                    $cnt++;
+                    if ($cnt > 125)
+                        break;
+                    $html->findStringInBuffer("<td");
+                    $html->FindEndOfTagInBuffer("font");
+                    // $msg .= $html->showBuffer(50, 50);
+                    $dinoName = $html->extractTo("<");
+                    $dinoName = substr($dinoName, 1); // remove leading >
+                    if (empty($dinoName))
+                        break;
+                    // $msg .= $html->showBuffer(100, 100);
+                    $msg .= "update " . self::rrw_dinoMites . " set action_lot = 4 where DinoName = '$dinoName'; $eol";
+                }
+            } catch (Exception $ex) {
+                $msg .= rrwFormat::backTrace();
+                $msg .= $html->showBuffer(100, 100);
+                $msg .= "Error processing $lotFile: " . $ex->getMessage() . "<br/>";
+                return $msg;
+            }
+        }
+        return $msg;
+    }
     public static function print2($attr)
     {
         global $eol, $errorBeg, $errorEnd;
@@ -169,10 +227,10 @@ $eol $eol
             $msg = "";
 
             $startAt  = rrwParam::integer("startAt", 0);
-            $sql = "select keyId,  name, status, filename, mapDate,
+            $sql = "select keyId,  DinoName, status, filename, mapDate,
                     mapLoc, latitude, longitude
-                    from " .  self::rrw_dinomites .
-                "  order by name";
+                    from " .  self::rrw_dinoMites .
+                "  order by DinoName";
             if ($debugLast) $msg .= "$sql $eol";
             $recs = $wpdbExtra->get_resultsA($sql);
             if ($debugLast) $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
@@ -186,7 +244,7 @@ $eol $eol
                 $cnt++;
                 if (10 < $cnt)
                     break;
-                $name = $rec["name"];
+                $DinoName = $rec["DinoName"];
                 $status = $rec["status"];
                 $filename = $rec["filename"];
                 $mapDate = $rec["mapDate"];
@@ -199,7 +257,7 @@ $eol $eol
             }
             $msg .= "</script>";
         } catch (Exception $ex) {
-            throw new Exception("$msg $errorBeg E#1335 dinomitedays_upload:upload: $errorEnd");
+            throw new Exception("$msg $errorBeg E#1335 dinomitedays_fix:print2:upload: $errorEnd $sql $eol" . $ex->getMessage());
         }
         return $msg;
     } //  end function print
@@ -245,7 +303,7 @@ $eol $eol
     private static function findPictures($attr)
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdb;
+        global $wpdbExtra;
         $msg = "";
         $dire = self::baseDire;
         for ($iiPicNum = 1; $iiPicNum < 6; $iiPicNum++) {
@@ -274,15 +332,15 @@ $eol $eol
                         $dino = self::FindText($line, 'alt="', '"');
                     }
                     $designname = str_replace(".htm", "", $fileName);
-                    $sql = "select * from " . self::rrw_dinomites . " where name = '$dino'  and filename = '$designname' ";
-                    $recs = $wpdb->get_results($sql, ARRAY_A);
-                    if ($wpdb->num_rows != 1)
-                        $msg .= "$errorBeg E#1377 Did not find (" . $wpdb->num_rows . ") a dinosour for $errorEnd
+                    $sql = "select * from " . self::rrw_dinoMites . " where name = '$dino'  and filename = '$designname' ";
+                    $recs = $wpdbExtra->get_resultsA($sql);
+                    if ($wpdbExtra->num_rows != 1)
+                        $msg .= "$errorBeg E#1377 Did not find (" . $wpdbExtra->num_rows . ") a dinosaur for $errorEnd
                             $sql $eol";
                     $set = array("logoFileName" => "$logoName");
-                    $which = array("name" => "$dino");
+                    $which = array("DinoName" => "$dino");
                     if (empty($recs[0]["logoFileName"])) {
-                        $recCnt = $wpdb->update(self::rrw_dinomites, $set, $which);
+                        $recCnt = $wpdbExtra->update(self::rrw_dinoMites, $set, $which);
                         if (1 != $recCnt)
                             $msg .= "$errorBeg E#1378 Did not find a dinosour for $errorEnd
                             $sql $eol";
@@ -305,10 +363,10 @@ $eol $eol
         if (false === $iiDes)
             return "";
         $iiEnd = strpos($line, $term, $iiDes + $searchlen);
-        $Dinoname = substr($line, $iiDes + $searchlen, $iiEnd - $iiDes - $searchlen);
-        $Dinoname = str_replace('"', "", $Dinoname);
+        $DinoName = substr($line, $iiDes + $searchlen, $iiEnd - $iiDes - $searchlen);
+        $DinoName = str_replace('"', "", $DinoName);
         $line = substr($line, $iiEnd);
-        return $Dinoname;
+        return $DinoName;
     }
     private static function deletenew($attr)
     {
@@ -516,7 +574,7 @@ $eol $eol
     private static function geocoded()
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdb;
+        global $wpdbExtra;
         $msg = "";
 
         $febugGeo = true;
@@ -533,11 +591,11 @@ $eol $eol
             $key = $data[0];
             $lat = $data[2];
             $long = $data[3];
-            $sql = " update " . self::rrw_dinomites .
+            $sql = " update " . self::rrw_dinoMites .
                 " set latitude = $lat, longitude = $long where keyid = $key ";
-            $answer = $wpdb->query($sql);
+            $answer = $wpdbExtra->query($sql);
             $msg .= rrwFormat::CellRow($key, $lat, $long, $answer, $sql);
-            $wpdb->query($sql);
+            $wpdbExtra->query($sql);
         } // end while
         $msg .= "</table>";
         $msg .= "processed $cnt items $eol";
@@ -549,7 +607,7 @@ $eol $eol
     {
         // --------------------------------------- look at the heads files
         global $eol, $errorBeg, $errorEnd;
-        global $wpdb;
+        global $wpdbExtra;
         $msg = "";
 
         $headImageDire = "designs/graphics";
@@ -576,10 +634,10 @@ $eol $eol
 
         $cnt = 0;
         foreach ($list as $item => $val) {
-            $sql = "select Filename, name, author from " .
-                self::rrw_dinomites . " where filename = '$item' ";
-            $recnames = $wpdb->get_results($sql, ARRAY_A);
-            if (1 != $wpdb->num_rows) {
+            $sql = "select Filename, dinoName, author from " .
+                self::rrw_dinoMites . " where filename = '$item' ";
+            $recnames = $wpdbExtra->get_resultsA($sql);
+            if (1 != $wpdbExtra->num_rows) {
                 $msg .= "$errorBeg E#1331 Did not find a dinosour for $errorEnd
                 $sql $eol";
                 continue;
@@ -587,7 +645,7 @@ $eol $eol
             $recname = $recnames[0];
             $cnt++;
             $Filename = $recname["Filename"];
-            $name = $recname["name"];
+            $name = $recname["dinoName"];
             $author = $recname["author"];
             $file = "/head_$Filename.gif";
             $fileFull = "$inageDir/$file";
@@ -762,12 +820,12 @@ $eol $eol
         }
         $sqlTrys = array(
             "name" => "filename",
-            "filename" => "name",
+            "filename" => "Dinoname",
         );
 
         $msg .= "also try: ";
         foreach ($sqlTrys as $name => $filename) {
-            $sql = " select $name from " . self::rrw_dinomites . " where $filename like '%$query%'
+            $sql = " select $name from " . self::rrw_dinoMites . " where $filename like '%$query%'
                 order by $name ";
             $recnames = $wpdb->get_results($sql, ARRAY_A);
             foreach ($recnames as $recname) {
@@ -784,7 +842,7 @@ $eol $eol
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
         $msg = "";
-        $sql = "select Filename from " . self::rrw_dinomites . " order by Filename ";
+        $sql = "select Filename from " . self::rrw_dinoMites . " order by Filename ";
         $recnames = $wpdb->get_results($sql, ARRAY_A);
         $cnt = 0;
         foreach ($recnames as $recname) {
@@ -829,7 +887,7 @@ WAIT SECONDS=4$eol";
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
         $msg = "";
-        $sql = "select Filename from " . self::rrw_dinomites . " order by Filename ";
+        $sql = "select Filename from " . self::rrw_dinoMites . " order by Filename ";
         $recnames = $wpdb->get_results($sql, ARRAY_A);
         foreach ($recnames as $recname) {
             $name = $recname["Filename"];
