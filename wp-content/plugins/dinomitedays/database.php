@@ -5,15 +5,16 @@ class dinomitedays_database
 
     public  static function displayDatabase($attr)
     {
+        global $wpdbExtra;
         $action = rrwUtil::fetchparameterString("action");
         $msg = "";
 
         $table = new  rrwDisplayTable();
-        $table->tablename('wpprrj_00rrwdinos');
+        $table->tablename($wpdbExtra->dinosaurs);
         $table->sortdefault('Name');
-        $table->keyname('keyid');
+        $table->keyname('keyId');
         $table->columnread("dinasourer name", "Name", 30, 1);
-        $table->columnread("keyid", "keyid", 10, 1);
+        $table->columnread("keyId", "keyId", 10, 1);
         $table->columns("map location description", "mapLoc", 69);
         $table->columns("last seen", "mapDate", 20);
         $table->columns("Latitude", "Latitude", 20);
@@ -28,10 +29,10 @@ class dinomitedays_database
     }
     public static function updateStreetViewField($attributes)
     {
-        global $wpdb;
+        global $wpdbExtra;
         global $eol;
         $msg = "";
-        $table_name = $wpdb->prefix . '00rrwdinos';
+        $table_name = $wpdbExtra->dinosaurs;
 
         $dinoFileName = rrwParam::String('dinoFileName', $attributes);
         if (empty($dinoFileName)) {

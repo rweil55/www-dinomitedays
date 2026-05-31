@@ -22,54 +22,46 @@ class dinomitedays_upload
 
     public static function upload($attr)
     {
+
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList; // used to create the script file with this input
-        $msg = "";
-        $msg .= "<h1> Dinosaur Photograph Upload Page </h1> $eol";
+        $dropdownList = array(); // used to create the script file with this input
+        $msg = "<!-- upload page #2 --------------------------------------------------------------------------- -->\n";
+
         try {
-            if (!is_user_logged_in()) {
-                $msg .= rrwUtil::showLoginform(
-                    "to update the information. $eol
-                    Login below or to get a login, Contact <a href='https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=dinodaysWebmaster@shaw-weil.com'> the webmaster</a> with who you are, email, and why you should
-                        have access.<br />"
-                );
+            if (rrwUtil::notAllowedToEdit("upload", "dinoFile", true))
                 return $msg;
-            }
-            $msg .= $_SERVER['REQUEST_URI'];
-            $debug = false;
             $debugProgress = rrwParam::isDebugMode("progress");
             $cssFile = self::dinoPlugin . "dinomitedays.css";
             $msg .= "<link rel='stylesheet' id='dropzone-css'  href='$cssFile' />";
-
-            $dino = rrwUtil::fetchparameterString("dino");
-            $submit = rrwUtil::fetchparameterString("submit");
-            if ($debugProgress) {
-                $msg .= "dino = $dino, submit = $submit $eol ";
-                $msg .= rrwUtil::print_r($_POST, true, "post data ");
-            }
             $plugDire = "/wp-content/plugins/dinomitedays";
             $jsFile = "$plugDire/dropzone.js";
 
-            if (!is_array($dropdownList))
-                $dropdownList = array();
-            // build the input form
-            $msg .= self::buildDinoSelectionForm($dino, "/update");
-            if ($debugProgress) $msg .= "after first form, okay $eol";
-            if (empty($dino))
+            $dinoFile = "";
+            $msg .= dinomitedays_upload::buildDinoSelectionForm($dinoFile);
+            if (empty($dinoFile)) {
                 return $msg;
+            }
+            //  assert we now have the dinosaur file name in $dinoFile
+            $submit = rrwUtil::fetchparameterString("submit");
+            if (!empty($submit)) {
+                $msg .= self::processInputPhotos(); // yes !
+            }
+
+            if ($debugProgress) $msg .= "after first form, okay $eol";
             // dino selected so display more information
-            $msg .= self::displayExisting($dino, true);
+            $msg .= self::displayExisting($dinoFile, true);
             // was submit clicked ?
             if (empty($submit)) {
-                $msg .= self::displayPhotosForm($dino); // no !
+                $msg .= self::displayPhotosForm($dinoFile); // no !
             } else {
                 $msg .= self::processInputPhotos(); // yes !
             }
-            $msg .= "dino is now $dino $eol";
-            $msg .= self::formForPictures($dino, $jsFile);
+            $msg .= "dino is now $dinoFile $eol";
+            $msg .= self::formForPictures($dinoFile, $jsFile);
             $msg .= "<br />
  <hr width='2px'><h2> Existing photographs on page
- <a href='/designs/$dino.htm' target='pic'> $dino.htm</a> </h2>$eol";
+ <a href='/designs/$dinoFile.htm' target='pic'> $dinoFile.htm</a> </h2>$eol";
         } // end try
         catch (Exception $ex) {
             $msg .= $ex->getMessage() . "$errorBeg  E#1336 main update $errorEnd";
@@ -77,7 +69,7 @@ class dinomitedays_upload
         return $msg;
     } // end upload
 
-    private static function updateHTMfile($dino)
+    private static function updateHTMfile(string $dino)
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
@@ -104,12 +96,12 @@ class dinomitedays_upload
 
     /**
      * Builds a form to select a dinosaur.
+     * * from sets the $_POST "dino" which is the filename of the dinosaur record in the database. This is used to populate the form with existing data and to know which dinosaur to update when the form is submitted.
      *
-     * @param string $dino The previously selected dinosaur.
-     * @param string $action The action URL where the form will be submitted.
+     * @param string $dinoFile The previously selected dinosaur.
      * @return string The HTML form as a string.
      */
-    public static function buildDinoSelectionForm($dino, $callback = "")
+    public static function buildDinoSelectionForm(&$dinoFile): string
     {
         //  build a <form to make a dino section
         //  $dino    a previous selected dino
@@ -117,10 +109,37 @@ class dinomitedays_upload
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         $msg = "";
+        $optionName = "dinomitedays_dino";
+        $dinoFile1 = get_option($optionName);
+        $dinoFile2 = rrwParam::String("dino", $_POST);
+        if (empty($dinoFile2)) {
+            $dinoFile = $dinoFile1;
+        } else {
+            $dinoFile = $dinoFile2;
+            update_option($optionName, $dinoFile2, true);
+        }
+        $target = "target='edit'";
+        $msg .= "
+        <h2>Update
+            [ <a href='/hunters' $target >Hunters</a> ]
+            [ <a href='/tracker' $target >Tracker </a> ]
+            [ <a href='/leads' $target >hints about where to look </a> ]
+             [ <a href='/upload' $target >Upload</a> ]";
+        if (is_user_logged_in()) {
+            $msg .= "
+            [ <a href='/info-update' target='infoUpdate' >Information Block</a> ]
+            [ <a href='/update/' $target >Photos</a> ]
+            [ <a href='/content/' $target>Page Content</a> ]
+            [ <a href='/build-dino-page/' $target >Compare Page Content</a> ]";
+        }
+        if (! empty($dinoFile)) {
+            $msg .= " [ <a href='/designs/$dinoFile.htm' target='finalPage' >Show Page</a> ]";
+        }
+        $msg .= "</h2>";
 
-        $msg .= "<form method=\"post\" action=\"$callback\" > ";
+        $msg .= "<form method=\"post\" > ";
 
-        $sql = "select dinoName, filename from $wpdbExtra->dinosaurs order by dinoName ";
+        $sql = "select dinoName, filename, logoFilename from $wpdbExtra->dinosaurs order by dinoName ";
         $recs = $wpdbExtra->get_resultsA($sql);
         //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
         $msg .= "<table style=\"border-collapse: collapse; \">
@@ -129,37 +148,45 @@ class dinomitedays_upload
         ";
         $msg .= '<font color=red >Required</font><br />
             <select id="dino" name="dino" oninput="submit();" >';
-        if (empty($dino))
+        if (empty($dinoFile))
             $msg .= '<option value="" disabled selected >Pick a dinosaur. </option>
         ';
+        $SavedLogoFilename = "white.gif";
         foreach ($recs as $rec) {
             $name = $rec["dinoName"];
             $file = $rec["filename"];
+            $logoFilename = $rec["logoFilename"];
             $msg .= '<option value="' . $file . '"';
-            if ($dino == $file)
-                $msg .= " selected=$dino ";
-            $msg .= "> $name </option>\n";
-        }
+            if ($dinoFile == $file || $dinoFile == $name) {
+                $msg .= " selected ";
+                $SavedLogoFilename = $logoFilename;
+            }
+            $msg .= "> $name  </option>\n";
+        } // end foreach
+        $sql2 = str_replace("by dinoName", "by filename", $sql);
+        $recs = $wpdbExtra->get_resultsA($sql2);
+        foreach ($recs as $rec) {
+            $name = $rec["dinoName"];
+            $file = $rec["filename"];
+            $logoFilename = $rec["logoFilename"];
+            $msg .= "<option value=\"$file\">$file</option>\n";
+        } // end foreach
         $msg .= "</select>
             </td>
             <td>";
-        if (empty($dino))
-            $source = "/graphics/white.gif";
-        else {
-            $source = self::imagePath . "$dino" . "_sm.jpg";
-        }
+        $source = site_url() . "/graphics/$SavedLogoFilename"; // default at the end of the selection
         $msg .= "
-                <img src='$source' height='150px' />
+                <img height='75' src='$source'  />
             </td>
         </tr>
         </table>
         <br />
             </form>";
         return $msg;
-    }
+    } // end buildDinoSelectionForm
 
 
-    private static function displayPhotosForm($dino)
+    private static function displayPhotosForm(string $dino)
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra, $rrw_photographers;
@@ -184,7 +211,7 @@ class dinomitedays_upload
         $longitude = $recDino["Longitude"];
         $sponsor = $recDino["Sponsor"];
         $status = $recDino["Status"];
-        $note = $recDino["Note"];
+        $notes = $recDino["notes"];
         $msg .= "<input type='hidden' name='dino' id='dino' value='$dino' />\n";
         $limit = 140;
         $size = 50;
@@ -238,8 +265,8 @@ class dinomitedays_upload
                     Drop file with embedded location data or enter values $eol
                     Latitude  <input name='latitude' id='latitude' type='text' value='$latitude' > $eol
                     Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol";
-        $msg .= self::statusField("status", $status);
-        $msg .= "$eol Note: <textarea name='note' id='note' value='$note' width='200' height'80' > $note</textarea>$eol $eol
+        $msg .=  "Status:" . self::statusField("status", $status);
+        $msg .= "$eol Notes: <textarea name='notes' id='notes' width='auto' > $notes</textarea>$eol $eol
                     sponsored by <a href='https://www.google.com/search?q=$sponsor' target='sponsor' > $sponsor </a> $eol
                     <a href='https://www.latlong.net/convert-address-to-lat-long.html' target='latLong' > Convert address to lat long </a> $eol
                 </td>
@@ -252,11 +279,11 @@ class dinomitedays_upload
         return $msg;
     } //end displayPhotosForm
 
-    private static function statusField($field, $currentValue)
+    private static function statusField(string $field, string $currentValue)
     {
-        global  $wpdbExtra, $rrw_dinos;
+        global $wpdbExtra;
         $fieldNew = "<select id=\"$field\" name=\"$field\"  >";
-        $sqlStatus = "select distinct $field from $rrw_dinos order by $field";
+        $sqlStatus = "select distinct $field from $wpdbExtra->dinosaurs order by $field";
         $recs = $wpdbExtra->get_resultsA($sqlStatus);
         foreach ($recs as $rec) {
             $statusItem = $rec["status"];
@@ -269,7 +296,7 @@ class dinomitedays_upload
         return $fieldNew;
     }
 
-    private static function formForPictures($dino, $jsFile = "")
+    private static function formForPictures(string $dino, string $jsFile = "")
     {
         global $eol, $errorBeg, $errorEnd;
         global $dropdownList;
@@ -288,7 +315,7 @@ class dinomitedays_upload
                     $fileSort = max($fileSort, $matches[1]);
                 }
             }
-            $msg .= "<div class='rrwDinoGrid' > ";
+            $msg .= "<div class='dinomitedaysGrid' > ";
             for ($ii = 0; $ii < 6; $ii++) {
                 $msg .= self::dropzone_div("picture$ii");
             }
@@ -319,13 +346,13 @@ class dinomitedays_upload
             document.getElementById('dino').focus;
             </script> $eol";
         } catch (Exception $ex) {
-            throw new Exception("$msg E#13647 " . $ex->getMessage() .
+            throw new Exception("$msg E#1375 " . $ex->getMessage() .
                 "$errorBeg dinomitedays_:formForPictures $errorEnd");
         }
         return $msg;
     } // end formForPictures
 
-    public static function displayExisting($dino, $labels)
+    public static function displayExisting(string $dino, bool $labels)
     {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -337,23 +364,23 @@ class dinomitedays_upload
             // -----------------------------  display the collection
             $fileList = dinomitedays_make_html::findRelated($dino, $labels);
             if ($debugProgress) $msg .= rrwUtil::print_r($fileList, true, "found files");
-            $msg .= "<div id='dinoImages' class='rrwDinoGrid'>\n";
+            $msg .= "<div id='dinoImages' class='dinomitedaysGrid'>\n";
             foreach ($fileList as $pic => $dummy) {
                 $cntImage++;
                 $img = "/" . self::imagePath . "$pic";
-                $msg .= "<div class='rrwDinoItem' >
+                $msg .= "<div class='dinomitedaysGridItem' >
                     <a href='$img' ><img src='$img' width='270px' /></a>";
                 if ($labels) {
-                    $filesize = self::imageDire . "/$pic";
-                    if (file_exists($filesize)) {
-                        $size = getimagesize($filesize);
+                    $fileName = self::imageDire . "/$pic";
+                    if (file_exists($fileName)) {
+                        $size = getimagesize($fileName);
                         $meta = $size[0] . " X " . $size[1];
                     } else {
                         $meta = "";
                     }
                     $msg .= "<br />$pic $meta";
                     if ($cntImage > 3)
-                        $msg .= "<br/><a href='/fixit/?task=rejectdesginimage&amp;file=$pic' > reject</a>";
+                        $msg .= "<br/><a href='/fixit/?task=rejectdesignimage&amp;file=$pic' > reject</a>";
                 }
                 $msg .= "\n</div>";
             } // for each page to display
@@ -367,9 +394,9 @@ class dinomitedays_upload
 
 
     // ------------------------------------------------ create a dropzone div
-    static private function dropzone_div($name)
+    static private function dropzone_div(string $name)
     {
-        global $dropdownList; // used to create the scriptfile with this input
+        global $dropdownList; // used to create the script file with this input
         $msg = "";
         $msg .= "
 
@@ -441,7 +468,7 @@ class dinomitedays_upload
             $sqlUpdateArray["status"] = rrwParam::String("status");
 
             // extract the note and enter into database
-            $sqlUpdateArray["note"] = rrwParam::String("note");
+            $sqlUpdateArray["notes"] = rrwParam::String("notes");
             //
             // extract the mapDate and enter into database
             $mapDate = rrwParam::String("mapDate");
@@ -494,7 +521,7 @@ class dinomitedays_upload
                     } else {
                         // check ranges
                         $sqlUpdateArray = array("latitude" => $lat, "longitude" => $lng);
-                        $cnt = $wpdbExtra->update($rrw_dinos, $sqlUpdateArray, $keySelect);
+                        $cnt = $wpdbExtra->update($wpdbExtra->dinosaurs, $sqlUpdateArray, $keySelect);
                         if (1 == $cnt) $msg .= "i#1374 Coordinates updated. Please check
                             <a href='/last_seen/' > last seen </a> and the map $eol";
                         else
@@ -511,7 +538,7 @@ class dinomitedays_upload
                 if ($debugSave) $msg .= "moving $tmp_name to $saveName $eol";
                 $answer = move_uploaded_file($tmp_name, $saveName);
                 if (false === $answer) {
-                    $msg .= "$errorBeg E#1379 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
+                    $msg .= "$errorBeg E#1380 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
                 $numberOfSavedImages++;
@@ -544,7 +571,7 @@ class dinomitedays_upload
         return $msg;
     } // end process_upload
 
-    private static function uploadErrorMsg($err)
+    private static function uploadErrorMsg(string $err)
     {
         $phpFileUploadErrors = array(
             0 => 'There is no error, the file uploaded with success',

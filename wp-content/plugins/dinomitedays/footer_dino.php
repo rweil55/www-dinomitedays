@@ -1,5 +1,5 @@
-<div id="dinofooter" class="dinoFooter">
-	<!-- udated 2025-11-24 -->
+<div id="dino-footer" class="dino-footer">
+    <!-- udated 2025-11-24 -->
     <div id="dinofoorterlinks" align=left>
         <font size="2" face="Arial, Helvetica, sans-serif" style="background-color:orange;">
             <b>Dinosaurs:&nbsp; </b>
@@ -13,7 +13,7 @@
             <a href="/media.htm">media room</a> .
             <a href="/sponsorship.htm">sponsorship</a> .
             <a href="/events.htm">events</a> .
-            <a href="/index.htm">home</a> .
+            <a href="/">home</a> .
             <a href="mailto:dinomite@carnegiemuseums.org">contact us</a> .
             <a href="/web.htm">website</a> .
             <a href='https://carnegiemnh.org/jurassic-days-dino-statue-driving-tour/'> driving tour</a>
@@ -33,4 +33,4 @@
             hosted by<a href='https://freewheelingeasy.com' class="external"> freewheeling Easy</a>
         </font> <br />
     </div> <!-- end dinofoorterlinks -->
-</div> <!-- end dinofooter -->
+</div> <!-- end dino-footer -->

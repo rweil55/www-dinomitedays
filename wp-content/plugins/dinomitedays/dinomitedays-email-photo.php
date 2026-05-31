@@ -55,7 +55,7 @@ class dinomitedays_email_photo
             if (!is_array($dropdownList))
                 $dropdownList = array();
             // build the input form
-            $msg .= dinomitedays_upload::buildDinoSelectionForm($dino, "/uploadEmail");
+            $msg .= dinomitedays_upload::buildDinoSelectionForm($dino);
             if ($debugProgress) $msg .= "after first form, okay $eol";
             if (!empty($dino))
                 // dino selected so display more information
@@ -71,7 +71,7 @@ class dinomitedays_email_photo
             $msg .= $eol;
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#1336 main update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1436 main update $errorEnd";
         }
         return $msg;
     } // end upload
@@ -98,7 +98,7 @@ class dinomitedays_email_photo
             $mapLoc = $redDinos[0]["mapLoc"];
             $mapDate = $redDinos[0]["mapDate"];
         } else {
-            throw new Exception("$msg $errorBeg E#1380 No record found for dinosaur '$dino' $errorEnd $sqlExisting $eol");
+            throw new Exception("$msg $errorBeg E#1340 No record found for dinosaur '$dino' $errorEnd $sqlExisting $eol");
         }
 
         $msg .= "<form method=\"post\" action=\"/uploadEmail\" enctype=\"multipart/form-data\" >
@@ -189,7 +189,7 @@ class dinomitedays_email_photo
             document.getElementById('dino').focus;
             </script> $eol";
         } catch (Exception $ex) {
-            throw new Exception("$msg E#13647 " . $ex->getMessage() .
+            throw new Exception("$msg E#1447 " . $ex->getMessage() .
                 "$errorBeg dinomitedays_:formForPictures $errorEnd");
         }
         return $msg;
@@ -207,11 +207,11 @@ class dinomitedays_email_photo
             // -----------------------------  display the collection
             $fileList = dinomitedays_make_html::findRelated($dino, $labels);
             if ($debugProgress) $msg .= rrwUtil::print_r($fileList, true, "found files");
-            $msg .= "<div id='dinoImages' class='rrwDinoGrid'>\n";
+            $msg .= "<div id='dinoImages' class='DinomitedaysGrid'>\n";
             foreach ($fileList as $pic => $dummy) {
                 $cntImage++;
                 $img = "/" . self::imagePath . "$pic";
-                $msg .= "<div class='rrwDinoItem' >
+                $msg .= "<div class='DinomitedaysGridItem' >
                     <a href='$img' ><img src='$img' width='270px' /></a>";
                 if ($labels) {
                     $filesize = self::imageDire . "/$pic";
@@ -229,7 +229,7 @@ class dinomitedays_email_photo
             } // for each impage to display
             $msg .= "</div> <!-- end dinoImages -->\n"; /* match the rrwDinoGrid  */
         } catch (Exception $ex) {
-            throw new Exception(" $msg E#1365 " . $ex->getMessage() .
+            throw new Exception(" $msg E#1465 " . $ex->getMessage() .
                 "$errorBeg dinomitedays_:displayExisting $errorEnd");
         }
         return $msg;
@@ -261,7 +261,7 @@ class dinomitedays_email_photo
         //      resize, add photographer
         //      create "new" dinosaurer display
         global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra, $rrw_dinos;
+        global $wpdbExtra;
         $msg = "";
         $debugSave = false;
 
@@ -281,7 +281,7 @@ class dinomitedays_email_photo
                                         photographer = $photographer $eol";
 
             if (empty($dino)) {
-                return "$msg $errorBeg W#1367 missing the dinosaur selection $errorEnd";
+                return "$msg $errorBeg W#1467 missing the dinosaur selection $errorEnd";
             }
 
             if ($debugSave) $msg .= "$fileSort is the highest sort number
@@ -292,7 +292,7 @@ class dinomitedays_email_photo
             //
 
             // extract the note and enter into database
-            $sqlUpdateArray["note"] = rrwParam::String("note");
+            $sqlUpdateArray["notes"] = rrwParam::String("notes");
             //
             // extract the mapDate and enter into database
             $mapDate = rrwParam::String("mapDate");
@@ -333,7 +333,7 @@ class dinomitedays_email_photo
                     continue; // no entry is this dropbox
                 if ("jpg" != $extension  && "png" != $extension && "jpeg" != $extension) {
                     $msg .= rrwUtil::print_r($fileInfo, true, "the file info");
-                    $msgError = "$errorBeg E#1375 The file '$fileName' is not a jpg/jpeg/png file. It is $fileName. $errorEnd ";
+                    $msgError = "$errorBeg E#1475 The file '$fileName' is not a jpg/jpeg/png file. It is $fileName. $errorEnd ";
                     throw new Exception("$msg $msgError");
                 }
 
@@ -352,15 +352,15 @@ class dinomitedays_email_photo
                         $lng = 0;
                     }
                     if (0 == $lat || false === $lat || 0 == $lng || false === $lng) {
-                        $msg .= "$errorBeg E#1370 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
+                        $msg .= "$errorBeg E#1470 Got invalid coordinates of '$lat, $lng' from the location file. No update occured.";
                     } else {
                         // check ranges
                         $sqlUpdateArray = array("latitude" => $lat, "longitude" => $lng);
-                        $cnt = $wpdbExtra->update($rrw_dinos, $sqlUpdateArray, $keySelect);
-                        if (1 == $cnt) $msg .= "i#1374 Coordinates updated. Please check
+                        $cnt = $wpdbExtra->update($wpdbExtra->dinomite, $sqlUpdateArray, $keySelect);
+                        if (1 == $cnt) $msg .= "i#1474 Coordinates updated. Please check
                             <a href='/last_seen/' > last seen </a> and the map $eol";
                         else
-                            $msg .= "$errorBeg E#1372 Something went wrong in the database update. $errorEnd ";
+                            $msg .= "$errorBeg E#1472 Something went wrong in the database update. $errorEnd ";
                         $msg .= rrwUtil::print_r($sqlUpdateArray, true, "the update array");
                     }
                     continue; // on to next file
@@ -374,33 +374,33 @@ class dinomitedays_email_photo
                 if ($debugSave) $msg .= "moving $tmp_name to $saveName $eol";
                 $answer = move_uploaded_file($tmp_name, $saveName);
                 if (false === $answer) {
-                    $msg .= "$errorBeg E#1379 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
+                    $msg .= "$errorBeg E#1479 there was a problem in retrieving/move the file '$tmp_name' to '$saveName' $errorEnd ";
                     continue;
                 }
                 $numberOfSavedImages++;
                 if ($debugSave) $msg .= "----------------------------- $eol
-                                        I# moved file to  $saveName $eol";
+                                        I#1471 moved file to  $saveName $eol";
                 $finalName = self::imageDire . $shortName;
-                if ($debugSave) $msg .= "E#1334 resizeImage(
+                if ($debugSave) $msg .= "E#1434 resizeImage(
                         $saveName, $finalName, 700, 200 ) $eol";
                 //  $msg .= uploadProcessDire::resizeImage($saveName, $finalName, 700, 200);
                 if (!empty($photographer)) {
-                    if ($debugSave) $msg .= "I#1369 nameToBottom(
+                    if ($debugSave) $msg .= "I#1469 nameToBottom(
                                     $finalName, $photographer ); $eol";
 
                     //      $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
                     if ($debugSave)
-                        $msg .= "I#1330 $saveName resized, attributed to $finalName $eol";
+                        $msg .= "I#1430 $saveName resized, attributed to $finalName $eol";
                 } // end if (!empty($photographer))
                 else {
-                    $msg .= "$errorBeg W#1383 No photographer so no attribution $errorEnd ";
+                    $msg .= "$errorBeg E#1473 No photographer so no attribution $errorEnd ";
                 }
                 $fileNamesMoved .= "$saveName, ";
             } // end foreach ($files)
             $msg .= $eol;
             if ($numberOfSavedImages > 0) {
-                $msg .= "I#1359 $$numberOfSavedImages files uploaded with names of: $fileNamesMoved $eol";
+                $msg .= "I#1459 $$numberOfSavedImages files uploaded with names of: $fileNamesMoved $eol";
             }
             $to = "dinoAdmin@royweil.com";
             $subject = "New dinosaur(s) uploaded to dinomitedays.org";
@@ -413,14 +413,14 @@ class dinomitedays_email_photo
             $headers[] = "FROM: dinoPhoto@royweil.com ";
             $mailResult = wp_mail($to, $subject, $body, $headers);
             if ($mailResult)
-                $msg .= "I#1387 An email was sent to the administrator. $eol";
+                $msg .= "I#1477 An email was sent to the administrator. $eol";
             else
-                $msg .= "$errorBeg E#1389 There was a problem sending the email to the admin. $errorEnd
+                $msg .= "$errorBeg E#1478 There was a problem sending the email to the admin. $errorEnd
             please copy any error messages from above and use the feedback form to explain what you did and the errors you got. $eol
             $body $eol $headers[0] $eol ";
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#1350 update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1450 update $errorEnd";
             throw new Exception("$msg");
         }
         return $msg;
@@ -439,7 +439,7 @@ class dinomitedays_email_photo
             8 => 'A PHP extension stopped the file upload.',
         );
         if ($err > 8 || $err < 0)
-            return "Unkown file upload error #$err ";
+            return "Unknown file upload error #$err ";
         return $phpFileUploadErrors[$err];
     }
 } // end class

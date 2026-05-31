@@ -2,28 +2,29 @@
 //
 class dinomitedays_make_html
 {
-    const rrw_dinoMites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
     const design_images_dire = self::baseDire . "/designs/images";
+
+    /*
     private static function make_html_files($attr)
     {
         global $eol, $errorBeg, $errorEnd;
         $msg = "update some pages $eol";
-        ini_set("display_errore", true);
+        ini_set("display_errors", true);
         try {
             if (rrwUtil::notAllowedToEdit("design_html", "all", false)) {
-                $msg .= "$errorBeg E#1340 not allowed to edit $errorEnd";
+                $msg .= "$errorBeg E#1440 not allowed to edit $errorEnd";
                 return $msg;
             }
-            return "$msg $errorBeg E#1342 makefile not working $errorEnd ";
+            return "$msg $errorBeg E#1444 makefile not working $errorEnd ";
             $msg .= self::updateLocationMap();  // rebuild the dinomites.txt
             $msg .= self::updateFossilLocations("%");  // do all pages
         } catch (Exception $ex) {
-            $msg .= "E#1341 xxx catch " . $ex->getMessage();
+            $msg .= "E#1441 xxx catch " . $ex->getMessage();
         }
         return $msg;
     }
-    static function updateLocationMap()
+    private static function updateLocationMap()
     {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;
@@ -32,19 +33,19 @@ class dinomitedays_make_html
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         $msg .= "$result $eol";
-        curl_close($ch);
+
         $from = "/home/pillowan/www-freewheel-dev/prebuilt/data/dinomites.txt";
         $to = "/home/pillowan/www-freewheelingeasy/prebuilt/data/dinomites.txt";
         $msg .= "copy ($from, $to); $eol";
         $result = copy($from, $to);
         if (false === $result)
-            throw new Exception("$msg $errorBeg E#1354 copy failed $errorEnd");
+            throw new Exception("$msg $errorBeg E#1454 copy failed $errorEnd");
         $msg .= "copy worked $eol";
         return $msg;
     }
-    private static function UpdateImages($dino)
+    public static function UpdateImages(string $dino)
     {
-        global $wpdbExtra, $rrw_dino;
+        global $wpdbExtra;
         global $eol, $errorBeg, $errorEnd;
         $dirDesign = "/home/pillowan/www-dinomitedays/designs";
         $msg = "";
@@ -52,18 +53,18 @@ class dinomitedays_make_html
         $buffer = file_get_contents($filename);
         $buffer = self::findPlace($buffer);
         // build the insert
-        $newdiv = '</table><br>' .
+        $newDiv = '</table><br>' .
             dinomitedays_upload::displayExisting($dino, false) .
             "\n<table>\n";
         //  insert and write
-        //      $newdiv = str_replace("270","150", $newdiv);
+        //      $newDiv = str_replace("270","150", $newDiv);
         if (false === strpos($buffer, "xxzzy"))
-            throw new Exception("$msg $errorBeg E#1353 buffer does
+            throw new Exception("$msg $errorBeg E#1453 buffer does
                     not contain xxzzy $errorEnd");
         if (strpos($buffer, "xxzzy") < 500)
-            throw new Exception("$msg $errorBeg #1361 xxzzy to close
+            throw new Exception("$msg $errorBeg #1461 xxzzy to close
                     to frnt of buffer $errorEnd");
-        $buffer = str_replace("xxzzy", $newdiv, $buffer);
+        $buffer = str_replace("xxzzy", $newDiv, $buffer);
         $filenameNew = str_replace("$dino", "$dino-new", $filename);
         $fp = fopen($filenameNew, "w");
         fwrite($fp, $buffer);
@@ -88,7 +89,7 @@ class dinomitedays_make_html
             $iiDivEnd = strpos($buffer, "end dinoImages", $iiDiv);
             if (false === $iiDivEnd)
                 throw new Exception("$msg $errorBeg
-                        E#1332 did not find end dnImages' $errorEnd");
+                        E#1432 did not find end dnImages' $errorEnd");
             $iiDivEnd = strpos($buffer, ">", $iiDivEnd) + 1;
             if ($debug) print "get buffer to $iiDiv, then from $iiDivEnd $eol";
             $buffer = substr($buffer, 0, $iiDiv) . "xxzzy" .
@@ -103,36 +104,36 @@ class dinomitedays_make_html
             $iiDiv = strrpos($buffer, "<p", $iiStart);
             $iiDivEnd = strpos($buffer, "</table", $iiDiv);
             if (false === $iiDivEnd)
-                throw new Exception("$msg $errorBeg E#1343 missing </table $errorEnd");
+                throw new Exception("$msg $errorBeg E#1443 missing </table $errorEnd");
             $iiDivEnd = $iiDivEnd + 14;
             $buffer = substr($buffer, 0, $iiDiv) . "xxzzy" .
                 substr($buffer, $iiDivEnd);
             return $buffer;
         }
-        // not previous, nor orginal, try working up from footer
-        $iiFoot = strpos($buffer, '<div id="dinofooter');
+        // not previous, nor original, try working up from footer
+        $iiFoot = strpos($buffer, '<div id="dino-footer');
         if (false !== $iiFoot) {
             if ($debug) print "findPlace:up from footer insert $eol";
             $iiStart = $iiFoot - strlen($buffer);
             $iiDivEnd = strrpos($buffer, "<tr", $iiStart);
             if (false === $iiDivEnd)
-                throw new Exception("$msg $errorBeg E#1352 missing
+                throw new Exception("$msg $errorBeg E#1452 missing
                             &lt;tr starting at $iiFoot ($iiStart) $errorEnd");
             $iiStart = $iiDivEnd - strlen($buffer) - 3;
             $iiDiv = strrpos($buffer, "<tr", $iiStart);
             $dist = $iiStart - $iiDiv;
             if (200 < $dist)
-                throw new Exception("$msg $errorBeg E#1358 distance between
+                throw new Exception("$msg $errorBeg E#1458 distance between
                 start and finish ($dist) > 200 $errorEnd");
             $buffer = substr($buffer, 0, $iiDiv) . "xxzzy" .
                 substr($buffer, $iiDivEnd);
             return $buffer;
         }
-        // I give up, the templat file was not followed
-        return "$msg $errorBeg E#1339 did not find a place to
+        // I give up, the template file was not followed
+        return "$msg $errorBeg E#1439 did not find a place to
                 insert  the images $errorEnd";
     }
-    static private function updateFossilLocations($filename)
+    static public function updateFossilLocations(string $filename)
     {
         global $wpdb;
         global $eol, $errorBeg, $errorEnd;
@@ -141,10 +142,10 @@ class dinomitedays_make_html
         ini_set("display_errors", true);
         error_reporting(E_ALL);
         try {
-            return "$msg $errorBeg E#1342 makefile not working $errorEnd ";
+            return "$msg $errorBeg E#1442 makefile not working $errorEnd ";
 
             $sql = "select filename, mapLoc, mapDate, latitude, longitude, status from
-                    " . self::rrw_dinoMites . "
+                    " . $wpdbExtra->dinosaurs . "
                         where filename like '$filename'
                         order by filename ";
             $pages = $wpdb->get_results($sql, ARRAY_A);
@@ -154,7 +155,7 @@ class dinomitedays_make_html
                 if ($cnt > 140)
                     break;
                 $file = $page["filename"];
-                $maploc = $page["mapLoc"];
+                $mapLoc = $page["mapLoc"];
                 $mapDate = $page["mapDate"];
                 $latitude = $page["latitude"];
                 $longitude = $page["longitude"];
@@ -168,7 +169,7 @@ class dinomitedays_make_html
                 $content = "";
                 $msg .= self::updateOneLocation(
                     $filenameFull,
-                    $maploc,
+                    $mapLoc,
                     $latitude,
                     $longitude,
                     $displayDate,
@@ -176,7 +177,7 @@ class dinomitedays_make_html
                 );
             } // end of each page/file
         } catch (Exception $ex) {
-            $msg .= "E#1363 xxx catch while processing <a href='/designs/$filename.htm' target='final'>
+            $msg .= "E#1463 xxx catch while processing <a href='/designs/$filename.htm' target='final'>
                     $filename.htm </a> $eol" . $ex->getMessage();;
         }
         return $msg;
@@ -190,35 +191,35 @@ class dinomitedays_make_html
      * directions.
      *
      * @param string $filenameFull The full path to the file to be updated.
-     * @param string $maploc The name of the location to be updated.
+     * @param string $mapLoc The name of the location to be updated.
      * @param float $latitude The latitude of the location.
      * @param float $longitude The longitude of the location.
      * @param string $displayDate The display date for the location.
      * @return string A message indicating the result of the update operation.
-     */
+
     private static function updateOneLocation(
         $filenameFull,
         $mapLoc,
         $latitude,
         $longitude,
         $displayDate,
-        $status
+        string $status
     ) {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
         $debug = false;
         $iiDesign = strpos($filenameFull, "designs");
         if (false === $iiDesign)
-            throw new Exception("$msg $errorBeg E#1351 did not find 'designs' in $filenameFull $errorEnd");
+            throw new Exception("$msg $errorBeg E#1451 did not find 'designs' in $filenameFull $errorEnd");
         $pageRef = substr($filenameFull, $iiDesign);;
         $msg .= "updateOneLocation($filenameFull, $mapLoc, $latitude, $longitude, $displayDate, $status)
         <a href='/$pageRef' target='new'  > $pageRef</a> $eol";
         $content = "";
         $html = new rrwExtractHtml();
         $cntOriginal =  $html->loadBufferWithFile($filenameFull);
-        list($msgTemp, $outcontent) =  $html->extractTo("Fossil Location");
+        list($msgTemp, $outContent) =  $html->extractTo("Fossil Location");
         $msg .= $msgTemp;
-        $content .= $outcontent . "Fossil Location:</b></i></font> ";
+        $content .= $outContent . "Fossil Location:</b></i></font> ";
         if (0 != $latitude) {
             $content .= "<a href='https://www.google.com/maps/dir//$latitude,$longitude/@$latitude,$longitude,17z/' > directions to </a> ]";
         } else {
@@ -229,7 +230,7 @@ class dinomitedays_make_html
 
             $msg .= $html->discardTo();
         } else {
-            throw new Exception("$msg $errorBeg E#1364 did not find <br> after location info $errorEnd");
+            throw new Exception("$msg $errorBeg E#1464 did not find <br> after location info $errorEnd");
         }
         list($msgTemp, $contentRest) =  $html->extractTo("</html>");
         $content .= $contentRest . "</html>";
@@ -240,9 +241,11 @@ class dinomitedays_make_html
         if ($debug) $msg .= "Updated $filenameFull  $eol ";
         return $msg;
     }
-    private static function findRelated($dino, $withDefaults = true)
+
+    */
+    public static function findRelated(string $dino, bool $withDefaults = true)
     {
-        // returns a list of filename that aresub pistures for a dino
+        // returns a list of filename that are sub pictures for a dino
         $debug = false;
         $dire = ABSPATH . "/designs/images";
         $numChars = strlen($dino);
@@ -274,4 +277,4 @@ class dinomitedays_make_html
             $list = array_merge($pics, $list);
         return $list;
     } // end findRelated
-} // end class findRelated
+} // end of class

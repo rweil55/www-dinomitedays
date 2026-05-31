@@ -6,7 +6,8 @@ class dinomitedays_print
     const imageDire = self::siteDir . self::imagePath;
     const http = "https://dinomitedays.org/";
 
-    public static function print($attr)
+
+    /*    public static function print($attr)
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
@@ -21,7 +22,7 @@ class dinomitedays_print
             $howMany = rrwParam::Number("howMany", $attr, 120);
             $startAt = rrwParam::Number("startAt", $attr, 0);
             $msg = "How many: $howMany, start at: $startAt $eol";
-            $sql = "select keyId,  DinoName, status, fileName, mapDate,
+            $sql = "select keyId,  dinoName, status, fileName, mapDate,
                         mapLoc, latitude, longitude
                     from $wpdbExtra->dinosaurs
                     order by dinoName";
@@ -38,7 +39,7 @@ class dinomitedays_print
                 if ($startAt > $cnt) {
                     continue; // skip until we reach the startAt
                 }
-                $name = $rec["DinoName"];
+                $name = $rec["dinoName"];
                 $status = $rec["status"];
                 $fileName = $rec["fileName"];
                 $mapDate = $rec["mapDate"];
@@ -61,5 +62,5 @@ class dinomitedays_print
         }
         return $msg;
     } //  end function print xxx
-
+*/
 } // end class

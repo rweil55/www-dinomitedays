@@ -1,8 +1,8 @@
-<div id="dinofooter" class="dinomenu">
+<div id="dino-footer" class="dinoMenu">
 	<div>
 		<font face="Arial, Helvetica, sans-serif">
 			<strong>Dinosaurs:&nbsp; </strong>
-			<a href="/index.htm">home</a> .
+			<a href="/">home</a> .
 			<a href="/map/">map</a> .
 			<a href="/auctions.htm">gala &amp; auction</a> .
 			<a href="/pictures.htm">dino pictures</a> .

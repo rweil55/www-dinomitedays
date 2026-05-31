@@ -3,7 +3,6 @@
 require_once "rrw_html_extract1.php";
 class dinomitedays_fix
 {
-    const rrw_dinoMites = "wpprrj_00rrwdinos";
     const baseDire = "/home/pillowan/www-dinomitedays";
     const design_images_dire = self::baseDire . "/designs/images";
 
@@ -118,7 +117,7 @@ class dinomitedays_fix
 <a href='/fixit/?task=findnew' >locate unprocessed -new files </a></a>$eol
 <a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions</a>$eol
 <a href='/fixit/?task=replacefooter' >update the footers </a>$eol
-<a href='/last_seen?lastorkey=key' > list by keyid/number </a>$eol
+<a href='/last_seen?lastorkey=key' > list by keyId/number </a>$eol
 <strong> Database wp541 </strong>$eol
 <strong> obsolete </strong>$eol
 <a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng </a>$eol
@@ -138,11 +137,11 @@ $eol $eol
         global $wpdbExtra;
         $msg = "";
         $dire = self::design_images_dire;
-        $sql = "select DinoName, filename from " . self::rrw_dinoMites .
-            " where filename <> '' order by filename, DinoName ";
+        $sql = "select dinoName, filename from " . $wpdbExtra->dinosaurs .
+            " where filename <> '' order by filename, dinoName ";
         $recs = $wpdbExtra->get_resultsA($sql);
         foreach ($recs as $rec) {
-            $DinoName = $rec["DinoName"];
+            $dinoName = $rec["dinoName"];
             $author = $rec["filename"];
             $authorFile = str_replace(" ", "_", strtolower($author)) . ".jpg";
             $picFile = str_replace(" ", "_", strtolower($author)) . "_pic.jpg";
@@ -169,7 +168,7 @@ $eol $eol
                 $msg .= "got main, pic missing $fileFullA -- $fileFullP  $eol";
             }
             if (($mainExist) && ($picExist)) {
-                $msg .= "got both $DinoName - $author $eol";
+                $msg .= "got both $dinoName - $author $eol";
             }
         } // end foreach
         return $msg;
@@ -177,6 +176,7 @@ $eol $eol
     private static function identifyAuctionLots()
     {
         global $eol;
+        global $wpdbExtra;
         $msg = "";
         for ($ii = 1; $ii <= 3; $ii++) {
             $lotFile = "/home/pillowan/www-dinomitedays/live.htm";
@@ -203,7 +203,7 @@ $eol $eol
                     if (empty($dinoName))
                         break;
                     // $msg .= $html->showBuffer(100, 100);
-                    $msg .= "update " . self::rrw_dinoMites . " set action_lot = 4 where DinoName = '$dinoName'; $eol";
+                    $msg .= "update " . $wpdbExtra->dinosaurs . " set action_lot = 4 where dinoName = '$dinoName'; $eol";
                 }
             } catch (Exception $ex) {
                 $msg .= rrwFormat::backTrace();
@@ -214,12 +214,13 @@ $eol $eol
         }
         return $msg;
     }
-    public static function print2($attr)
+    private static function print2($attr)
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
         $msg = "";
         $debugLast = false;
+        $sql = "NOT ESTABLISHED";
 
         try {
             ini_set("display_errors", true);
@@ -227,10 +228,10 @@ $eol $eol
             $msg = "";
 
             $startAt  = rrwParam::integer("startAt", 0);
-            $sql = "select keyId,  DinoName, status, filename, mapDate,
+            $sql = "select keyId,  dinoName, status, filename, mapDate,
                     mapLoc, latitude, longitude
-                    from " .  self::rrw_dinoMites .
-                "  order by DinoName";
+                    from " . $wpdbExtra->dinosaurs .
+                "  order by dinoName";
             if ($debugLast) $msg .= "$sql $eol";
             $recs = $wpdbExtra->get_resultsA($sql);
             if ($debugLast) $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
@@ -244,7 +245,7 @@ $eol $eol
                 $cnt++;
                 if (10 < $cnt)
                     break;
-                $DinoName = $rec["DinoName"];
+                $dinoName = $rec["dinoName"];
                 $status = $rec["status"];
                 $filename = $rec["filename"];
                 $mapDate = $rec["mapDate"];
@@ -294,7 +295,7 @@ $eol $eol
                 print "file is $file $eol";
                 $contents = file_get_contents($file);
                 print $contents;
-                print $eol . '<input type="button" value="Do it" onclick="window.print();"</input>' . $eol;
+                //              print $eol . '<input type="button" value="Do it" onclick="window.print();"</input>' . $eol;
                 return "after the print button $eol";
             }
         }
@@ -332,15 +333,15 @@ $eol $eol
                         $dino = self::FindText($line, 'alt="', '"');
                     }
                     $designname = str_replace(".htm", "", $fileName);
-                    $sql = "select * from " . self::rrw_dinoMites . " where name = '$dino'  and filename = '$designname' ";
+                    $sql = "select * from " . $wpdbExtra->dinosaurs . " where name = '$dino'  and filename = '$designname' ";
                     $recs = $wpdbExtra->get_resultsA($sql);
                     if ($wpdbExtra->num_rows != 1)
                         $msg .= "$errorBeg E#1377 Did not find (" . $wpdbExtra->num_rows . ") a dinosaur for $errorEnd
                             $sql $eol";
                     $set = array("logoFileName" => "$logoName");
-                    $which = array("DinoName" => "$dino");
+                    $which = array("dinoName" => "$dino");
                     if (empty($recs[0]["logoFileName"])) {
-                        $recCnt = $wpdbExtra->update(self::rrw_dinoMites, $set, $which);
+                        $recCnt = $wpdbExtra->update($wpdbExtra->dinosaurs, $set, $which);
                         if (1 != $recCnt)
                             $msg .= "$errorBeg E#1378 Did not find a dinosour for $errorEnd
                             $sql $eol";
@@ -363,10 +364,10 @@ $eol $eol
         if (false === $iiDes)
             return "";
         $iiEnd = strpos($line, $term, $iiDes + $searchlen);
-        $DinoName = substr($line, $iiDes + $searchlen, $iiEnd - $iiDes - $searchlen);
-        $DinoName = str_replace('"', "", $DinoName);
+        $dinoName = substr($line, $iiDes + $searchlen, $iiEnd - $iiDes - $searchlen);
+        $dinoName = str_replace('"', "", $dinoName);
         $line = substr($line, $iiEnd);
-        return $DinoName;
+        return $dinoName;
     }
     private static function deletenew($attr)
     {
@@ -425,7 +426,7 @@ $eol $eol
         if ($debugFooter) $msg .= "----------------- #3 " . htmlspecialchars($buffer) . "$eol ---------------- $3 $eol";
 
         // replace the footer
-        $iiDiv = strpos($buffer, '<div id="dinofooter"');
+        $iiDiv = strpos($buffer, '<div id="dino-footer"');
         if ($debugFooter) $msg .= "in replace footer:div start = $iiDiv $eol";
         if (false !== $iiDiv) {
             // replace it
@@ -453,7 +454,7 @@ $eol $eol
                 $msg .= "good load $eol";
             else
                 $msg = "$errorBeg E#xxx load of dom sodument failed $errorEnd";
-            $div = $dom->getElementById( 'dinofooter' );
+            $div = $dom->getElementById( 'dino-footer' );
             print "<pre>";
             $cnt++;
             print "---------------------------------  $eol";
@@ -532,7 +533,7 @@ $eol $eol
             return $msg;
         }
         // has cmnh footer been replaced already
-        $iiDiv = strpos($buffer, '<div id="dinofooter"');
+        $iiDiv = strpos($buffer, '<div id="dino-footer"');
         if (false !== $iiDiv) {
             // replace new style footer
             if ($debug) $msg .= "replaceing new style footer $eol";
@@ -591,8 +592,8 @@ $eol $eol
             $key = $data[0];
             $lat = $data[2];
             $long = $data[3];
-            $sql = " update " . self::rrw_dinoMites .
-                " set latitude = $lat, longitude = $long where keyid = $key ";
+            $sql = " update " . $wpdbExtra->dinosaurs .
+                " set latitude = $lat, longitude = $long where keyId = $key ";
             $answer = $wpdbExtra->query($sql);
             $msg .= rrwFormat::CellRow($key, $lat, $long, $answer, $sql);
             $wpdbExtra->query($sql);
@@ -635,7 +636,7 @@ $eol $eol
         $cnt = 0;
         foreach ($list as $item => $val) {
             $sql = "select Filename, dinoName, author from " .
-                self::rrw_dinoMites . " where filename = '$item' ";
+                $wpdbExtra->dinosaurs . " where filename = '$item' ";
             $recnames = $wpdbExtra->get_resultsA($sql);
             if (1 != $wpdbExtra->num_rows) {
                 $msg .= "$errorBeg E#1331 Did not find a dinosour for $errorEnd
@@ -714,7 +715,7 @@ $eol $eol
         $draw1->setStrokeWidth(5);
         $draw1->setGravity(Imagick::GRAVITY_WEST);
 
-        $bgColor = new ImagickPixel("#f8ac05"); //"#eb9909" );
+        $bgColor = new ImagickPixel("#eb9909");
         $image->newImage(551, 58, $bgColor);
         $image->annotateImage($draw1, 10, 0, 0, $name);
         $image->setImageFormat('gif');
@@ -807,7 +808,7 @@ $eol $eol
     private static function SearchForQuery($query = "")
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdb;
+        global $wpdbExtra;
         $msg = "";
 
         if (empty($query)) {
@@ -825,9 +826,9 @@ $eol $eol
 
         $msg .= "also try: ";
         foreach ($sqlTrys as $name => $filename) {
-            $sql = " select $name from " . self::rrw_dinoMites . " where $filename like '%$query%'
+            $sql = " select $name from " . $wpdbExtra->dinosaurs . " where $filename like '%$query%'
                 order by $name ";
-            $recnames = $wpdb->get_results($sql, ARRAY_A);
+            $recnames = $wpdbExtra->get_resultsA($sql);
             foreach ($recnames as $recname) {
                 $nameout = $recname["$name"];
                 $msg .= "[ <a href='/fix/?q=$nameout' >$nameout </a> ] ";
@@ -840,10 +841,10 @@ $eol $eol
     private static function makeImacro()
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdb;
+        global $wpdbExtra;
         $msg = "";
-        $sql = "select Filename from " . self::rrw_dinoMites . " order by Filename ";
-        $recnames = $wpdb->get_results($sql, ARRAY_A);
+        $sql = "select Filename from " . $wpdbExtra->dinosaurs . " order by Filename ";
+        $recnames = $wpdbExtra->get_resultsA($sql);
         $cnt = 0;
         foreach ($recnames as $recname) {
             $cnt++;
@@ -885,10 +886,10 @@ WAIT SECONDS=4$eol";
     private static function missing_sm($attr)
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdb;
+        global $wpdbExtra;
         $msg = "";
-        $sql = "select Filename from " . self::rrw_dinoMites . " order by Filename ";
-        $recnames = $wpdb->get_results($sql, ARRAY_A);
+        $sql = "select Filename from " . $wpdbExtra->dinosaurs . " order by Filename ";
+        $recnames = $wpdbExtra->get_resultsA($sql);
         foreach ($recnames as $recname) {
             $name = $recname["Filename"];
             $filesm = self::design_images_dire . "/$name" . "_sm.jpg";

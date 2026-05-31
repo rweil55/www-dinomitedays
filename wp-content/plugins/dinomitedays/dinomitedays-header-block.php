@@ -41,6 +41,8 @@ class dinomitedays_header_block
         $msg = "";
         $debug = false;
         $msg .= "
+<link rel='stylesheet' id='admin-bar-css' href='https://dinomitedays.org/wp-includes/css/admin-bar.min.css?ver=6.9.4' media='all' />
+
     <style>
         .headerItalic {
             font-style: italic;
@@ -48,16 +50,23 @@ class dinomitedays_header_block
             font-weight: bold;
         }
     </style>
+    <style id='admin-bar-inline-css'>
+
+		@media screen { html { margin-top: 32px !important; } }
+		@media screen and ( max-width: 782px ) { html { margin-top: 46px !important; } }
+        @media print { #wpadminbar { display:none; } }
+        /*# sourceURL=admin-bar-inline-css */
+    </style>
     ";
         $dinoName = rrwParam::String('name', $attr);
-        $sql = "select * from wpprrj_00rrwdinos where Name = '$dinoName'";
+        $sql = "select * from {$wpdbExtra->dinosaurs} where Name = '$dinoName'";
         if ($debug)  $msg .= "$sql $eol";
-        $dinos = $wpdbExtra->get_resultsA($sql);
+        $recDino = $wpdbExtra->get_resultsA($sql);
         if ($wpdbExtra->num_rows == 0) {
             $msg .= "$errorBeg Dinosaur record for $dinoName not found. $errorEnd";
             return $msg;
         }
-        $dino = $dinos[0];
+        $dino = $recDino[0];
         $dinoOldName = $dino['Oldname'];
         $sponsor = $dino["Sponsor"];
         $mapLoc = $dino["mapLoc"];
@@ -91,32 +100,51 @@ class dinomitedays_header_block
         $msg .= "The original dinosaur <strong>$dinoOldName</strong> was retired and replaced by
                 <a href='$dinoName.htm' > <strong>$dinoName</strong></a>$eol";
         //
-        $oldsponsor = $dino["Sponsor"];
-        $oldauctionPrice = $dino["ActionPrice"];
-        $oldcharity = $dino["Charity"];
-        $oldtheme = $dino["Theme"];
-        $oldmaterails = $dino["Material"];
+        $oldSponsor = $dino["Sponsor"];
+        $oldAuctionPrice = $dino["ActionPrice"];
+        $oldCharity = $dino["Charity"];
+        $oldTheme = $dino["Theme"];
+        $oldMaterials = $dino["Material"];
         $msg .=
-            self::oneLine("Original Sponsored by: $oldsponsor") .
-            self::oneLine("Original Charity: $oldcharity") .
-            self::oneLine("Original Auction: $oldauctionPrice") .
-            self::oneLine("Original Theme: $oldtheme ") .
-            self::oneLine("Original  Materials: $oldmaterails");
+            self::oneLine("Original Sponsored by: $oldSponsor") .
+            self::oneLine("Original Charity: $oldCharity") .
+            self::oneLine("Original Auction: $oldAuctionPrice") .
+            self::oneLine("Original Theme: $oldTheme ") .
+            self::oneLine("Original  Materials: $oldMaterials");
         return $msg;
     }  // end createHeaderBlock
-    private static function oneLine($labelvalue)
+    private static function oneLine(string $labelValue)
     {
         global $eol;
-        $iiColon = strpos($labelvalue, ":");
+        $iiColon = strpos($labelValue, ":");
         if (false === $iiColon) {
-            return "<span class='headerItalic' >$labelvalue</span>$eol";
+            return "<span class='headerItalic' >$labelValue</span>$eol";
         }
-        $header = substr($labelvalue, 0, $iiColon);
-        $value = trim(substr($labelvalue, $iiColon + 1));
+        $header = substr($labelValue, 0, $iiColon);
+        $value = trim(substr($labelValue, $iiColon + 1));
         if (empty($value)) {
             return "<span class='headerItalic' >$header:</span>$eol";
         } else {
             return "<span class='headerItalic' >$header: </span>$value$eol";
         }
-    }
+    }   // end oneLine
+    /*
+    public static function createHeaderNavMenu()
+    {
+        $msg = "";
+        $msg .= '
+			<div id="navbar" class="navbar">
+				<nav id="site-navigation" class="navigation main-navigation">
+					<button class="menu-toggle">Menu</button>
+					<div class="menu-menu-1-container">
+                    ';
+        $msg .=  BuildMenus::getMenu()();
+        print "
+                    </div>
+                </nav>
+            </div>
+";
+        return $msg;
+    } // end createHeaderNavMenu
+     */
 } //end class

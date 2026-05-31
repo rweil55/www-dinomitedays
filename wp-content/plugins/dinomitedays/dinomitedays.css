@@ -1,8 +1,8 @@
 @charset "utf-8";
 
 /* CSS Document */
-.dinoFooter {
-    background-color: orange;
+:root {
+    --primary-color: #dd9933;
 }
 
 a.external {
@@ -84,6 +84,21 @@ a.external {
     grid-column-gap: 1px;
 }
 
+.dinomitedaysGrid {
+    display: grid;
+    grid-gap: 2px;
+    background-color: #fff;
+    color: black;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 120px));
+}
+
+.dinomitedaysGridItem {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 0px;
+}
+
 .rrwDinoItemWrap {
     overflow-wrap: normal;
 }
@@ -100,21 +115,35 @@ body {
 
 .body-outside {
     font-family: Arial, sans-serif;
-    background-color: #eb9909;
-    max-width: 800px;
+    background-color: var(--primary-color);
     height: 100%;
 }
 
 .body-inside {
-    background-color: #ffffff;
+    background-color: white;
     margin: 10px;
+}
+
+.body-inside-margin {
+    margin: 5px;
+}
+
+.dinoMenu {
+    color: black;
+    background-color: var(--primary-color);
+    text-align: left;
+    line-height: 1;
+}
+
+.dinoMenu a {
+    color: black;
 }
 
 .dino-header {
     font-size: 32px;
     font-weight: bold;
-    background-color: #eb9909;
-    height: 58px;
+    background-color: var(--primary-color);
+    height: 70px;
     width: 100%;
     margin: 0px;
 }
@@ -122,7 +151,7 @@ body {
 .dino-header-table {
     border: 2;
     width: 100%;
-    background-color: lightgray;
+    background-color: var(--primary-color);
 }
 
 .dino-header-text {
@@ -130,7 +159,17 @@ body {
     font-weight: bold;
     padding-left: 10px;
     text-align: left;
-    background-color: #eb9909
+    background-color: var(--primary-color);
+}
+
+.site-title {
+    font-size: 24px;
+    line-height: 0.35;
+    font-weight: bold;
+    padding-top: 15px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    background-color: var(--primary-color);
 }
 
 .dino-header-image {
@@ -141,7 +180,7 @@ body {
     padding-right: 10px;
     padding-bottom: 10px;
     justify-content: flex-end;
-    background-color: #eb9909;
+    background-color: var(--primary-color);
 }
 
 .dino-info {
@@ -156,15 +195,34 @@ body {
     margin-top: 20px;
     margin-right: inherit;
     color: black;
-    background-color: #ffffff;
+    background-color: white;
 }
 
-.dino-body-image {
+.dino-page-about {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    font-weight: bold;
+    font-style: italic;
+    color: #003399;
+}
+
+.dino-body-image-left {
     max-width: 200px;
     height: auto;
     margin-bottom: 7px;
     padding: 6px;
     float: left;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #ffffff;
+}
+
+.dino-body-image-right {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 7px;
+    padding: 6px;
+    float: right;
     display: flex;
     justify-content: flex-end;
     background-color: #ffffff;
@@ -187,7 +245,12 @@ body {
     margin-top: 20px;
     font-size: 14px;
     color: black;
-    background-color: #eb9909;
+    background-color: var(--primary-color);
+}
+
+.dino-footer-copyright {
+    font-size: 10px;
+    padding: 10px;
 }
 
 /* Optional styling for visualization */
@@ -214,4 +277,95 @@ iframe {
 
 .container {
     display: flex;
+}
+
+.pageBreakBefore {
+    clear: both;
+    page-break-before: always;
+}
+
+.knownLoc {
+    margin: 1px;
+}
+
+.knownLocTr td {
+    vertical-align: top;
+}
+
+.menu-item {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 10px;
+    color: black;
+    background-color: var(--primary-color);
+}
+
+.dino-header {
+    font-size: 32px;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    height: 80px;
+    width: 100%;
+    margin: 0px;
+}
+
+.dino-header-table {
+    border: 2;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+.dino-header-menu {
+    text-align: right;
+    background-color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 10px;
+    text-align: left;
+    line-height: 1;
+}
+
+.menucolor {
+    color: black;
+    background-color: var(--primary-color);
+    min-height: 14px;
+}
+
+.menuitem {
+    color: #000000;
+    background-color: var(--primary-color);
+    min-height: 26px;
+}
+
+.nav-menu a {
+    color: #000000 !important;
+    background-color: var(--primary-color);
+    min-height: 26px;
+}
+
+.nav-menu .current_page_item>a,
+.nav-menu .current_page_ancestor>a,
+.nav-menu .current-menu-item>a,
+.nav-menu .current-menu-ancestor>a {
+    color: #000000 !important;
+    background-color: var(--primary-color);
+}
+
+.nav-menu .sub-menu,
+.nav-menu .children {
+    background-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.nav-menu li:hover>a,
+.nav-menu li a:hover,
+.nav-menu li:focus>a,
+.nav-menu li a:focus {
+    background-color: var(--primary-color);
+    color: #ff0000;
+}
+
+.site-footer a {
+    color: #000000 !important;
+    background-color: var(--primary-color);
 }

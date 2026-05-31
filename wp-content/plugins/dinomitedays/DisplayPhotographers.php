@@ -9,7 +9,10 @@ class DisplayPhotographers
         global $eol, $errorBeg, $errorEnd;
         global  $rrw_photographers;
         $msg = "";
-
+        if (rrwUtil::notAllowedToEdit("design_html", "all", false)) {
+            $msg .= "$errorBeg E#1445 not allowed to edit $errorEnd";
+            return $msg;
+        }
         $action = rrwUtil::fetchparameterString("action");
         $table = new rrwDisplayTable();
         $msg .= $table->tablename($rrw_photographers);
