@@ -3,6 +3,7 @@ class homeOriginal
 {
     public static function display(array $attributes)
     {
+        global $wpdbExtra;
         $msg = "";
         $msg .= '<base href="https://dinomitedays.org/" />';
         $msg .= '
@@ -30,7 +31,7 @@ class homeOriginal
     <div class="flex-col">
         <div class="flex-container">
             <div class="flex-col">
-                <img src="graphics/head_block_left.gif" width="234" height="128" align=left hspace=0 vspace=0 alt="Geniusaurus">
+                <img src="graphics/head_block_left.gif" width="234" height="128" align=right hspace=0 vspace=0 alt="Geniusaurus">
                 <font size="2" face="Arial, Helvetica, sans-serif">We are
                     proud to present DinoMite Days<sup>SM</sup>,
                     an event that turned back the clock
@@ -94,11 +95,14 @@ class homeOriginal
                         click to update information</b></font></a>
             </div>
             <div class="flex-col">
-                <font color="#003399" size="2" face="Arial, Helvetica, sans-serif">
-                    <b>Search by picture !<br>
-                        <a href="/pictures.htm"><img src="graphics/pictureCollection2.png" alt="magnet" width="200" border="0"></a>
-                        </b></font>
-                        </div>
+             <font color="#003399" size="2" face="Arial, Helvetica, sans-serif">
+                    <b>Search by picture !</b></font><br>
+    ';
+        $sqlAll = dinomitedays_misc_pages::dinoSglSelect . " $wpdbExtra->dinosaurs ORDER BY dinoName";
+        $msg .= dinomitedays_misc_pages::gridDisplay($sqlAll, "nameOnly");
+        $msg  .= '
+
+            </div>
             <div class="flex-col">
                         <img src="transparent.gif" width="10"></td>
                                         </tr>

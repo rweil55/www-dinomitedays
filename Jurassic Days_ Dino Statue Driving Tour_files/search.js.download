@@ -1,0 +1,59 @@
+jQuery(function($) {
+
+$(document).ready(function(){
+    $(".menu-item-11606").click(function(){
+        $(".nav-primary").toggleClass("show");
+    });
+});
+
+$(document).ready(function(){
+    $(".visitor-icon").click(function(){
+        $(".visitor-results").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".educator-icon").click(function(){
+        $(".educator-results").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".researcher-icon").click(function(){
+        $(".researcher-results").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".event-icon").click(function(){
+        $(".event-results").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".press-icon").click(function(){
+        $(".press-results").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".post-icon").click(function(){
+        $(".post-results").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".cart-icon").click(function(e){
+        e.preventDefault();
+        $(".cart-popup").toggleClass("hide");
+    });
+});
+
+$(document).ready(function(){
+    $(".swidget_buttons").click(function(){
+        $(".quick-cart").addClass("show");
+    });
+});
+
+
+});

@@ -40,6 +40,8 @@ class dinomitedays_Page_Content
             $contentNew = str_replace("'", "'", $contentNew);
             $msg .= self::addClassAbout($contentNew);
             $msg .= self::addClassParagraph($contentNew);
+            $contentNew = str_replace("</span>", "", $contentNew);  // remove all end span tags, they are left over
+            $contentNew = str_replace("<span", " ***** remove me", $contentNew);  // flag all start span tags, they are left over
             $sqlUpdate = "update $wpdbExtra->dinosaurs set pageContent = '$contentNew' where fileName = '$FileName'";
             if ($debugRenderPageContent) $msg .= htmlspecialchars("I#1490 SQL Update: $sqlUpdate $eol");
             $recordUpdatedCount = $wpdbExtra->query($sqlUpdate);

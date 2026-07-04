@@ -7,21 +7,36 @@
  *      move contents of file to $buffer for later extraction
  *      throw error if file not available or other problems
  *      returns number of characters loaded
+ * function showBuffer($numBefore, $numAfter): string
+ *     returns a string showing the buffer with position marked, and numBefore and numAfter characters on either side
  * function findStringInBuffer($lookFor)
  *     set position to location of lookFor in buffer
+ *      return true is found, false if not found
+ * function FindStartOfTagInBuffer($tag)
+ *     set position to location of tag, ie "<" in buffer
+ *      return true is found, false if not found
+ * function FindEndOfTagInBuffer($tag)
+ *      set position to location of ">" in buffer, after the tag*
+ *      return true is found, false if not found
  * function FindTagInBuffer($tag)
  *    set position to beginning of tag in buffer
  * function DiscardTo( $lookFor )
  *		edit $buffer and remove all characters before 'lookFor'
  *		throw error if lookFor not found
- * function extractTo( $lookFor )
+ * function discardAll(string $lookFor)
+ *      remove from the buffer all characters that match lookFor
+ *      resets the position to the start of the buffer
+ * function extractTo(string $lookFor)
  *		returns from the start of buffer,upto, not including, lookFor
  *		throw error if lookFor not found
  *		returns array($msgTemp, found string)
- * function removeTags( $text )
+ * function extractToEmptyLine()
+ *		returns from the start of buffer,upto, not including, first empty line
+ * function removeTags( string $text )
  * 		removes html tags from $text
  *		returns ($msg, cleaned out $text)
  * function findHref($text)
+ *       **** Not implemented  ****
  *		returns an array of URLs associated with a href
  *		return ($msg, array of URLs);
  * function extractToEmptyLine( )
@@ -33,8 +48,10 @@ require_once "rrw_util_inc.php";
 
 class rrwExtractHtml
 {
-    private $buffer = "";
-    private $position = -1;
+    private $buffer = "";       // data to be parsed
+    private $position = -1;     // current pointer in buffer for parsing,
+    // all search functions start at this position, and set this to the location of the found item
+    // all functions that search buffer should set this to the location of the found item
     public $debugParse = false;
     function __construct($file = "")
     {
@@ -54,34 +71,41 @@ class rrwExtractHtml
     } // end function __construct
 
 
-    public function loadBufferWithFile($file)
+    public function loadBufferWithFile(string $filename, bool $use_include_path = false): int
     {
-        $this->buffer = file_get_contents($file);
+        $this->buffer = file_get_contents($filename, $use_include_path);
         $sizeBuffer = strlen($this->buffer);
         $this->position = 0;
-        return "# buffer loaded $file, with $sizeBuffer  characters";
+        return $sizeBuffer;;
     }
-    public function loadBufferWithString($string)
+    public function loadBufferWithString(string $string): bool
     {
         $this->buffer = $string;
-        $sizeBuffer = strlen($this->buffer);
         $this->position = 0;
-        return "$sizeBuffer  characters";
+        return true;
     }
-    public function findStringInBuffer($lookFor)
+    public function set_position(int $position)
     {
-        if ($this->position >= strlen($this->buffer))
-            throw new Exception("position " . $this->position . " is at or beyond end of buffer " . strlen($this->buffer));
+        if ($position < 0)
+            throw new Exception("position $position is less than 0");
+        if ($position >= strlen($this->buffer))
+            throw new Exception("position $position is at or beyond end of buffer " . strlen($this->buffer));
+        $this->position = $position;
+        return true;
+    }
+    public function findStringInBuffer(string $lookFor)
+    {
         if (empty($lookFor))
             throw new Exception("lookFor is empty");
         if (empty($this->buffer))
             throw new Exception("buffer is empty");
-        $this->position = strpos($this->buffer, $lookFor, $this->position);
-        if (false === $this->position)
-            throw new Exception("did not find '$lookFor' in remaining buffer");
+        $tempPosition = strpos($this->buffer, $lookFor, $this->position);
+        if (false === $tempPosition)
+            return false;
+        $this->position = $tempPosition;
         return true;
     }
-    public function FindStartOfTagInBuffer($tag)
+    public function FindStartOfTagInBuffer(string $tag)
     {
         $msg = "";
         global $eol, $errorBeg, $errorEnd;
@@ -92,7 +116,7 @@ class rrwExtractHtml
             throw new Exception("$msg $errorBeg E#933 did not find beginning of $tag in preceding buffer $errorEnd");
         return true;
     }
-    public function FindEndOfTagInBuffer($tag)
+    public function FindEndOfTagInBuffer(string $tag)
     {
         $msg = "";
         global $eol, $errorBeg, $errorEnd;
@@ -106,21 +130,26 @@ class rrwExtractHtml
             throw new Exception("$msg $errorBeg E#933 did not find beginning of $tag in preceding buffer $errorEnd");
         return true;
     }
-    public function discardTo()
+    public function discardTo(string $lookFor)
     {
-        $msg = "";
-        global $eol, $errorBeg, $errorEnd;
-        if ($this->position < 0)
-            throw new Exception("$msg $errorBeg E#932 position not set in buffer $errorEnd");
+        self::validateBuffer($lookFor);
         $this->buffer = substr($this->buffer, $this->position);
         return true;
     }
-    public function extractTo($lookFor)
+    public function discardAll(string $lookFor)
+    {    //     remove from the buffer all characters that match lookFor
+        //      resets the position to the start of the buffer
+        self::validateBuffer($lookFor);
+        str_replace($lookFor, "", $this->buffer);
+        $this->position = 0;
+        return true;
+    }
+
+    public function extractTo(string $lookFor)
     {
         $msg = "";
         global $eol, $errorBeg, $errorEnd;
-        if ($this->position < 0)
-            throw new Exception("$msg $errorBeg E#932 position not set in buffer $errorEnd");
+        self::validateBuffer($lookFor);
         $startPosition = $this->position;
         if (false === $this->findStringInBuffer($lookFor))
             throw new Exception("$msg $errorBeg E#917 did not find $lookFor in remaining buffer $errorEnd");
@@ -134,7 +163,7 @@ class rrwExtractHtml
         return $this->extractTo("\n\n");
     }
 
-    public  function removeTags($text)
+    public  function removeTags(string $text)
     {
         global $eol, $errorBeg, $errorEnd;
         $msg = "";
@@ -169,7 +198,10 @@ class rrwExtractHtml
             $text = substr($text, 0, strlen($text) - 3); // ends with <p>
         return array($msg, $text);
     }
-    private static function findHref($text) {}
+    private static function findHref($text)
+    {
+        throw new Exception("findHref not implemented yet");
+    }
 
 
     public static function recursiveDirectoryIterator($directory = null, $files = array())
@@ -192,7 +224,7 @@ class rrwExtractHtml
         }
         return $files;
     }
-    public function showBuffer($numBefore, $numAfter): string
+    public function showBuffer(int $numBefore, int $numAfter): string
     {
         $msg = "";
         global $eol;
@@ -206,4 +238,13 @@ class rrwExtractHtml
         $msg .= str_repeat("V", 100) . $eol;
         return $msg;
     }  // end function showBuffer
+
+    private function validateBuffer(...$things)
+    {
+        if (empty($lookFor))
+            throw new Exception("lookFor is empty");
+        if (empty($this->buffer))
+            throw new Exception("buffer is empty");
+        return true;
+    }  // end function validateBuffer
 } // end class

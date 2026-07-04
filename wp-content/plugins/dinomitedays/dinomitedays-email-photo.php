@@ -223,7 +223,7 @@ class dinomitedays_email_photo
                     }
                     $msg .= "<br />$pic $meta";
                     if ($cntImage > 3)
-                        $msg .= "<br/><a href='/fixit/?task=rejectdesginimage&amp;file=$pic' > reject</a>";
+                        $msg .= "<br/><a href='/FixTask/?task=rejectdesginimage&amp;file=$pic' > reject</a>";
                 }
                 $msg .= "\n</div>";
             } // for each impage to display

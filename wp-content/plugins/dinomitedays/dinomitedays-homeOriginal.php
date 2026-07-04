@@ -3,6 +3,7 @@ class homeOriginal
 {
     public static function display(array $attributes)
     {
+        global $wpdbExtra;
         $msg = "";
         $msg .= '<base href="https://dinomitedays.org/" />';
         $msg .= '
@@ -21,8 +22,8 @@ class homeOriginal
                     <DIV align=center>
                         <table bgcolor="#FFFFFF" width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td ><img src="graphics/head_block_left.gif" width="234" height="128" align=left hspace=0 vspace=0 alt="Geniusaurus">
-                                    <font size="2" face="Arial, Helvetica, sans-serif">We are
+                                <td ><img src="graphics/head_block_left.gif" width="234" height="128" style="float:right;" hspace=0 vspace=0 alt="Geniusaurus">
+                                    <font size="2" face="Arial, Helvetica, sans-serif">We xxxx are
                                         proud to present DinoMite Days<sup>SM</sup>,
                                         an event that turned back the clock
                                         to the Age of Dinosaurs!</font>
@@ -97,9 +98,17 @@ class homeOriginal
                                             <td width=10 background="fun/graphics/mid_top.gif" valign=top><img src="transparent.gif" width="10"></td>
                                             <td valign=top width=249 background="graphics/white.gif">
                                                 <p align="center">
-                                                    <font color="#003399" size="2" face="Arial, Helvetica, sans-serif"><b>Search by picture !<br>
-                                                            <a href="/pictures.htm"><img src="graphics/pictureCollection2.png" alt="magnet" width="200" border="0"></a>
-                                                        </b></font>
+                                                    <font color="#003399" size="2" face="Arial, Helvetica, sans-serif"><b>Search by picture</b></font> !<br>
+                                                    ';
+
+        $msg .= '<a href="/search/"><img src="graphics/search_by_photo.gif" alt="Search by photo" width="200" border="0"></a>';
+        if (false) {
+            $msg .= '<a href="/pictures.htm"><img src="graphics/pictureCollection2.png" alt="magnet" width="200" border="0"></a>';
+        } else {
+            $sqlAll = dinomitedays_misc_pages::dinoSglSelect . " FROM $wpdbExtra->dinosaurs WHERE ORDER BY dinoName";
+            $msg .= dinomitedays_misc_pages::gridDisplay($sqlAll, "nameOnly");
+        }
+        $msg  .= '
                                                 </p>
                                             </td>
                                             <td width=20 valign=top background="graphics/green_right.gif"><img src="transparent.gif" width="10"></td>

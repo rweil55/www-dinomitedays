@@ -11,28 +11,47 @@ class DisplayThumbnails
         error_reporting(E_ALL);
         $listDisplay = false;
         $sqlWhere = "";
+        $typeArray = array("stegosaurus" => "sq_s%", "torosaurus" => "sq_t%", "t-rex" => "sq_r%");
 
-        $msg .= "<form method='post' action=''>\n";
-        foreach (array("stegosaurus" => "sq_s%", "torosaurus" => "sq_t%", "t-rex" => "sq_r%") as $type => $logoPrefix) {
-            $checked = (isset($_POST['dinoType']) && $_POST['dinoType'] == $type) ? "checked" : "";
-            $msg .= "<input type='checkbox' name='$type' value='$type' $checked onchange='this.form.submit()'> $type \n";
-            $item = rrwParam::Boolean($type);
-            if ($item) {
-                $sqlWhere .= " logoFilename like '$logoPrefix' or";
+        $typeIn = rrwParam::string("type", $attr, "");
+        $showSelection = "<h2> Select a type: ";
+        foreach ($typeArray as $key => $value) {
+            $showSelection .= "<a href='?type=$key'";
+            if ($typeIn == $key) {
+                $showSelection .= " class='selected'";
             }
+            $showSelection .= " >$key</a> &nbsp; ";
         }
-        if (!empty($sqlWhere)) {
-            $sqlWhere = " where " . substr($sqlWhere, 0, -3); // remove the last 'or'
+        $showSelection .= "</h2>\n";
+
+        switch ($typeIn) {
+            case "stegosaurus":
+                $learnMore = "or You can also <a href='/steg_about.htm'>learn about Stegosaurus</a>!";
+                break;
+            case "torosaurus":
+                $learnMore =  ""; // "or You can also <a href='/torosaurus_about.htm'>learn about Torosaurus</a>!";
+                break;
+            case "t-rex":
+                $learnMore = "or You can also <a href='/rex_about.htm'>learn about Tyrannosaurus rex</a>!";
+                break;
+            default:
+                $learnMore = "";
         }
-        $msg .= "</form>\n";
-        $sql = "select keyId,  dinoName, status, filename, mapDate,
-                    mapLoc, logoFileName
-                    from $wpdbExtra->dinosaurs
-                    $sqlWhere
-                    order by dinoName";
-        $msg .= "sql: $sql $eol";
+        $msg .= "$showSelection &nbsp; &nbsp; $learnMore $eol";
+        if (!empty($typeIn)) {
+            $logoPrefix = $typeArray[$typeIn];
+            $sqlWhere = " where   logoFilename like '$logoPrefix' ";
+        } else {
+            $sqlWhere = "";
+        }
+        $sqlWhat = dinomitedays_misc_pages::dinoSglSelect . " $wpdbExtra->dinosaurs
+                        $sqlWhere
+                        order by dinoName";
+        // $msg .= "sql: $sql $eol";
+        $msg .= dinomitedays_misc_pages::gridDisplay($sqlWhat,  "nameOnly");
+        /*
         $recs = $wpdbExtra->get_resultsA($sql);
-        $msg .= "Number of records found: " . $wpdbExtra->num_rows . " $eol";
+        // $msg .= "Number of records found: " . $wpdbExtra->num_rows . " $eol";
         $msg .= "
         <style>
         .grid {
@@ -62,6 +81,7 @@ class DisplayThumbnails
                     alt='$name || $logoFileName' ></a><br>$name</div>\n";
         }
         $msg .= "</div>\n";
+        */
         return $msg;
     }
 }

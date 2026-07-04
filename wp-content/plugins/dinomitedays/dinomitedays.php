@@ -10,11 +10,10 @@ Author:      Roy Weil
 Author URI:  https://RoyWeil.com
 Donate URI: https://plugins.royweil.com/donate
 Requires at least: 4.6.1
-Tested up to: 6.1.3
 Depends: rrw-utilities-common
 Depends: rrw_parser
 License: private
-Version: 1.2.50
+Version: 1.2.51
 Text Domain: dinomitedays
 Domain Path: /lang
 */
@@ -39,7 +38,7 @@ require_once "dinomitedays-fix.php";
 //require_once "dinomitedays-format.php";
 require_once "dinomitedays-homeFlex.php";
 require_once "dinomitedays-header-block.php";
-require_once "dinomitedays-infor-block.php";
+require_once "dinomitedays-info-block.php";
 require_once "dinomitedays-make-htm.php";
 require_once "dinomitedays-menu.php";
 require_once "dinomitedays-misc-pages.php";

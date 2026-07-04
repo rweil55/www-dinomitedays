@@ -1,6 +1,31 @@
 <?php
+
+// This class is responsible for generating and displaying the HTML for a dinosaur, including
 class BuildDinoHtml
 {
+    public static function fixUpdateSome($attribute)
+    {
+        global $wpdbExtra, $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        try {
+            $ql2Fix = "select * from $wpdbExtra->dinosaurs where not pageContent = ''  order by dinoName ";
+            $recsFix = $wpdbExtra->get_resultsA($ql2Fix);
+            $cnt = 0;
+            foreach ($recsFix as $dinoData) {
+                $cnt++;
+                if ($cnt > 120)
+                    continue;
+                $fileName = trim($dinoData["fileName"]);
+                $dinoName = trim($dinoData["dinoName"]);
+                $msg .= "I#1350 Processing dinosaur $dinoName -- $fileName" . $eol;
+                $msg .= self::generateOneDino($dinoData);    // create the HTML for this dinosaur
+                $msg .= self::moveNew2Old($fileName);
+            }
+        } catch (Exception $e) {
+            $msg .= $errorBeg . "Exception: " . $e->getMessage() . $errorEnd . $eol;
+        }
+        return $msg;
+    } // end function fixUpdateSome
     private static function displayHtml($attribute)
     {
         global $eol, $errorBeg, $errorEnd;
@@ -18,10 +43,10 @@ class BuildDinoHtml
                 $msg .= $errorBeg . "Error: E#1386 Multiple entries found for dinosaur '$dinoInput'." . $errorEnd . $eol;
                 return $msg;
             }
-            $painterName = trim($dinoData[0]["fileName"]);
-            $newLink = "https://dinomitedays.org/designsNew/$painterName.htm";
-            $buffer = file_get_contents($newLink);
-            return $buffer;
+            //           $painterName = trim($dinoData[0]["fileName"]);
+            //           $newLink = "https://dinomitedays.org/designsNew/$painterName.htm";
+            //           $buffer = file_get_contents($newLink);
+            //           return $buffer;
         } catch (Exception $e) {
             $msg .= $errorBeg . "Exception: " . $e->getMessage() . $errorEnd . $eol;
         }
@@ -61,18 +86,61 @@ class BuildDinoHtml
                 return $msg;
             }
             $dinoData = $dinoData[0];
+            $msg .= self::generateOneDino($dinoData);    // create the HTML for this dinosaur
             $fileName = trim($dinoData["fileName"]);
             $submit = rrwParam::String('replace', $attribute);
-            if (! empty($submit)) {
-                $fileNameCurrent = ABSPATH . "designs/$fileName.htm";
-                $fileNameNew = ABSPATH . "designsNew/$fileName.htm";
-                $fileNameSave = ABSPATH . "designsOld/$fileName" . "_" . date("Y-m-d_Hi") . ".htm";
-                $msg .= "I#1379 rename $fileNameCurrent to <a href='$fileNameSave'>$fileNameSave</a> $eol
-                        $fileNameNew to <a href='$fileNameCurrent'>$fileNameCurrent</a> $eol";
-                rename($fileNameCurrent, $fileNameSave);
-                rename($fileNameNew, $fileNameCurrent);
+            if (! empty($submit)) { // the save new to final button was clicked.
+                $msg .= self::moveNew2Old($fileName);
                 return $msg;
             }
+            if (strpos($msg, "E#") !== false) {
+                $msg .= $errorBeg . "Error: E#1385 Found previous Issues encountered during HTML generation." . $errorEnd . $eol;
+                return $msg;    // previous error
+            }
+            $existingLink = "https://dinomitedays.org/designs/$fileName.htm";
+            $newLink = "https://dinomitedays.org/designsNew/$fileName.htm";
+            $compare = "<div class='dino-iframe-left' ><a target='single' href='$existingLink' ><h2 >Existing version $existingLink</h2></a><br />
+                                <iframe class='iframe' src='$existingLink'  ></iframe></div>
+                        <div class='dino-iframe-right'><a target='single' href='$newLink' ><h2>New version $newLink</h2></a><br />
+                                <iframe class='iframe'  src='$newLink' ></iframe></div>
+               ";
+            $compare = "<div class='container'>$compare</div>";
+            // output the page content and the compare side by side, and then have buttons to replace the old version with the new one, or to update just the content, or to update just the information block.
+            $msg .= $compare . $eol . $eol;
+            $msg .= "$eol <form action='/build-dino-page' ><input type='submit' name='replace' value='replace the old version with the new one' />
+                        <input type='hidden' name='dino' value='$fileName' /></form>$eol $eol";
+        } catch (Exception $e) {
+            $msg .= $errorBeg . "Error: E#1394 Exception occurred: " . $e->getMessage() . $errorEnd . $eol;
+        }
+        return $msg;
+    } // end of function buildDinoHtml
+    public static function moveNew2Old(string $fileName)
+    {
+        global $eol;
+        $msg = "";
+        $fileNameCurrent = ABSPATH . "designs/$fileName.htm";
+        $urlCurrent = "https://dinomitedays.org/designs/$fileName.htm";
+        $fileNameNew = ABSPATH . "designsNew/$fileName.htm";
+        $urlNew = "https://dinomitedays.org/designsNew/$fileName.htm";
+        $fileNameSave = ABSPATH . "designsOld/$fileName" . "_" . date("Y-m-d_Hi") . ".htm";
+        $urlSave = "https://dinomitedays.org/designsOld/$fileName" . "_" . date("Y-m-d_Hi") . ".htm";
+        $msg .= "I#1379 rename $fileNameCurrent to <a href='$urlSave' target='save'>$fileNameSave</a> $eol
+                        $fileNameNew to <a href='$urlCurrent' target='new'>$fileNameCurrent</a> $eol";
+        rename($fileNameCurrent, $fileNameSave);
+        rename($fileNameNew, $fileNameCurrent);
+        return $msg;
+    } // end of function moveNew2Old;
+    //
+    //  create one dinosaur HTML page from the database data
+    //     retrieve from the database,
+    //     generate the HTML content for the dinosaur page.
+    //     save it as an HTML file in the designsNew directory.
+    public static function generateOneDino(array $dinoData)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        $msg = "";
+        try {
+            $debugBuild = false;
             if ($debugBuild)
                 $msg .= rrwUtil::print_r($dinoData, true, "I#1381 Dinosaur Data");
             // class for the public page of a dinosaur, which is generated from the database and saved as an HTML file in the designs directory.
@@ -121,22 +189,6 @@ class BuildDinoHtml
             $fp = fopen($fileNameFull, 'w');
             fwrite($fp, $html);
             fclose($fp);
-            if (strpos($msg, "E#") !== false) {
-                $msg .= $errorBeg . "Error: E#1385 Found previous Issues encountered during HTML generation." . $errorEnd . $eol;
-                return $msg;    // previous error
-            }
-            $existingLink = "https://dinomitedays.org/designs/$painterName.htm";
-            $newLink = "https://dinomitedays.org/designsNew/$painterName.htm";
-            $compare = "<div class='dino-iframe-left' ><a target='single' href='$existingLink' ><h2 >Existing version $existingLink</h2></a><br />
-                                <iframe class='iframe' src='$existingLink'  ></iframe></div>
-                        <div class='dino-iframe-right'><a target='single' href='$newLink' ><h2>New version $newLink</h2></a><br />
-                                <iframe class='iframe'  src='$newLink' ></iframe></div>
-               ";
-            $compare = "<div class='container'>$compare</div>";
-            // output the page content and the compare side by side, and then have buttons to replace the old version with the new one, or to update just the content, or to update just the information block.
-            $msg .= $compare . $eol . $eol;
-            $msg .= "$eol <form action='/build-dino-page' ><input type='submit' name='replace' value='replace the old version with the new one' />
-                        <input type='hidden' name='dino' value='$fileName' /></form>$eol $eol";
         } catch (Exception $e) {
             $msg .= $errorBeg . "Exception: " . $e->getMessage() . $errorEnd . $eol;
         }
@@ -147,7 +199,6 @@ class BuildDinoHtml
         global $eol;
         $title = htmlspecialchars($dinoData["dinoName"]);
         $html = "
-
         <div id=dinoMenu class='menucolor' > <!-- entire space is orange -->
             <table class='menucolor' style='table-layout: auto;' >
             <tr class='menucolor' >
@@ -160,7 +211,7 @@ class BuildDinoHtml
         $html .= "
                 </td>
                 <td class='menucolor' >
-                    <a href='/' ><img src='/wp-content/themes/roys-header/images/dinomiteLogo-85.png' > </a>
+                    <a href='/' ><img src='/wp-content/themes/roys-header/images/dinomiteLogo-85.png' alt='dinomitedays logo image' > </a>
                 </td>
             </tr>
             </table>
@@ -168,22 +219,6 @@ class BuildDinoHtml
     ";
         return $html;
     } // end header
-    /*
-
-
-        $tableHtml = "<table class='dino-header-table'>
-            <tr>
-                <td class='dino-header'>" .
-            htmlspecialchars($dinoData['dinoName']) . "
-            <span class='dino-header-menu' >" . BuildMenus::getMenu() . "</span>
-            </td><td class='dino-header-image'float-right>
-                        <a href='/' > <img src='https://dinomitedays.org/graphics/logo-bordered.png' alt='dinomitedays logo' height=58px >
-                    </a>
-        </td></tr></table>
-                </div>";
-        return "$html\n";
-    }
-        */
     private static function details(array $dinoData, string &$msg)
     {
         global $eol;
@@ -211,7 +246,7 @@ class BuildDinoHtml
             $pano = explode(",", $view);
             $locationDisplay .= "<a href='https://dinomitedays.org/wp-content/plugins/freewheeling-map/pano/panora345.php?&fileName=" . $dinoData["filename"] .
                 "&amp;lat=$pano[2]&amp;lng=$pano[3]&amp;zoom=$pano[5]&amp;heading=$pano[0]&amp;pitch=$pano[1]&amp;nohead=1' >
-                            <img src='pegman' </a>";
+                            <img src='pegman' alt='street view pegman' ></a>";
         }
         if (empty($dinoData["ActionPrice"])) {
             $actionDisplay = "";
@@ -239,10 +274,10 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
     $dinoData is an associative array containing the dinosaur's information, including fileName, dinoName, and pageContent.
      $msg return messages during the build process, currently unused but could be used for debugging or error reporting.
 
-    initializes $html with an opening <div> using the class dino-page-content. 
-     It appends an <img> tag whose src is constructed from a fixed base URL plus $dinoData["fileName"].jpg. 
-     The alt text includes $dinoData["dinoName"], 
-    it appends $dinoData["pageContent"] and $eol, then closes the wrapping <div>, 
+    initializes $html with an opening <div> using the class dino-page-content.
+     It appends an <img> tag whose src is constructed from a fixed base URL plus $dinoData["fileName"].jpg.
+     The alt text includes $dinoData["dinoName"],
+    it appends $dinoData["pageContent"] and $eol, then closes the wrapping <div>,
     and returns the complete HTML string.
 
     */

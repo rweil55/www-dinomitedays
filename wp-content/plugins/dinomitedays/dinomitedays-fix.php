@@ -5,9 +5,10 @@ class dinomitedays_fix
 {
     const baseDire = "/home/pillowan/www-dinomitedays";
     const design_images_dire = self::baseDire . "/designs/images";
+    /*
+*/
 
-
-    public static function fix($attr)
+    public static function fix($attributes)
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdb;
@@ -26,16 +27,20 @@ class dinomitedays_fix
         }
         if (rrwUtil::NotallowedToEdit(" fix things", "any", true))
             return "$msg not allowed to fix things";
+
         $msg .= "entered task of $task $eol ";
         switch ($task) {
+            case "deleteImage":
+                $msg .= self::deleteImage($attributes);
+                return $msg;
             case "deletenew":
-                $msg .= self::deleteNew($attr);
+                $msg .= self::deleteNew($attributes);
                 break;
             case "designfooter":
                 $msg .= self::designfooter();
                 return $msg;
             case "drivingtour":
-                $fix = "drivingtour";
+                $fix = "driving";
                 $msg .= self::doFixLoop($fix, $homePath, $options);
                 break;
             case "find_filename":
@@ -60,29 +65,29 @@ class dinomitedays_fix
                 $msg .= self::doFixLoop($fix, $homePath, $options);
                 break;
             case "findnew":
-                $msg .= self::findNew($attr);
+                $msg .= self::findNew($attributes);
                 break;
             case "findpictures":
-                $msg .= self::findPictures($attr);
+                $msg .= self::findPictures($attributes);
                 break;
             case "lots":
                 $msg .= "identifying auction lots $eol";
                 $msg .= self::identifyAuctionLots();
                 break;
             case "missing_sm":
-                $msg .= self::missing_sm($attr);
+                $msg .= self::missing_sm($attributes);
                 break;
             case "missing_author_jpg":
                 $msg .= self::missing_author_jpg();
                 break;
             case "phototogs":
-                $msg .= DisplayPhotographers::Display($attr);
+                $msg .= DisplayPhotographers::Display($attributes);
                 break;
             case "print":
-                $msg .= self::printPages($attr);
+                $msg .= self::printPages($attributes);
                 break;
             case "print2":
-                $msg .= self::print2($attr);
+                $msg .= self::print2($attributes);
                 break;
             case "rejectdesginimage":
                 $msg .= self::rejectDesginImage();
@@ -93,7 +98,10 @@ class dinomitedays_fix
             case "replacefooter":
                 $dir = "$homePath/designs";
                 $fix = "replacefooter";
-                $msg .= self::doFixLoop($fix, $dir, $options);
+                $msg .= self::doFixLoop($fix, $dir, $attributes);
+                break;
+            case "review":
+                $msg .= self::review();
                 break;
             case "test":
                 $msg .= "<img src='file://P:/digipix-trips/lake-pleasant/P8070586-adj-1067x800.jpg' width='768px'>
@@ -101,27 +109,39 @@ class dinomitedays_fix
                     test file";
                 return $msg;
                 break;
+            case "unBlankStreetView":
+                $msg .= self::unBlankStreetView();
+                break;
             case "unlink":
                 $msg .= self::unlink();
                 return $msg;
+            case "updatenew":
+                $fix = "updatnew";
+                $msg .= BuildDinoHtml::fixUpdateSome($attributes);
+                return $msg;
             default:
-                $msg .= "
-<a href='/fixit/?task=designfooter' >Update the footers</a> - currently only workd on the the 200 detail pages</a>$eol
+                $msg .= "$errorBeg E#1346 no or invalid task specified $errorEnd
+<a href='/FixTask/?task=deleteimage' >deletes the /&image file in the design/images directory.or directory &dire=???</a>>$eol
+<a href='/FixTask/?task=deletenew' >deletes the dinosaur file in the designNew director. Use avter deleting/renameong a Dino</a>>$eol
+<a href='/FixTask/?task=designfooter' >Update the footers</a> - currently only workd on the the 200 detail pages</a>$eol
 <a href='https://edit.shaw-weil.com/make-dino-map-files/' > Update the map</a>$eol
-<a href='/fixit/?task=phototogs' > Update the photographer list</a>$eol
-<a href='/fixit/?task=test' >Some random test</a> of one off code </a>$eol
-<a href='/fixit/?task=missing_sm' >Create am _sm </a>file if not one there$eol
-<a href='/fixit/?task=find_images' >given a dino </a>find all images$eol
-<a href='/fixit/?task=imacro' >make 100</a> imacro commands $eol
-<a href='/fixit/?task=heads' >generate the missing </a>'head' images $eol
-<a href='/fixit/?task=findnew' >locate unprocessed -new files </a></a>$eol
-<a href='/fixit/?task=http2https' >Change http: to </a>https: and other                         mechanical actions</a>$eol
-<a href='/fixit/?task=replacefooter' >update the footers </a>$eol
+<a href='/FixTask/?task=find_images' >given a dino </a>find all images$eol
+<a href='/FixTask/?task=findnew' >locate unprocessed -new files </a></a>$eol
+<a href='/FixTask/?task=heads' >generate the missing </a>'head' images $eol
+<a href='/FixTask/?task=imacro' >make 100</a> imacro commands $eol
+<a href='/FixTask/?task=http2https' >Change http: to </a>https: and other  mechanical actions</a>$eol
 <a href='/last_seen?lastorkey=key' > list by keyId/number </a>$eol
+<a href='/FixTask/?task=missing_sm' >Create am _sm </a>file if not one there$eol
+<a href='/FixTask/?task=phototogs' > Update the photographer list</a>$eol
+<a href='/FixTask/?task=reject' >update the footers </a>$eol
+<a href='/FixTask/?task=replacefooter' >update the footers </a>$eol
+<a href='/FixTask/?task=review' >review the updated dinosaurs</a>$eol
+<a href='/FixTask/?task=test' >Some random test</a> of one off code </a>$eol
+<a href='/FixTask/?task=updatenew' >update the updated dinosaurs </a>$eol
 <strong> Database wp541 </strong>$eol
 <strong> obsolete </strong>$eol
-<a href='/fixit/?task=geocoded' >read csv geocode </a>file, set database lat,lng </a>$eol
-<a href='/fixit/?task=drivingtour' >update the driving tour</a> links</a>$eol
+<a href='/FixTask/?task=geocoded' >read csv geocode </a>file, set database lat,lng </a>$eol
+<a href='/FixTask/?task=drivingtour' >update the driving tour</a> links</a>$eol
 $eol $eol
 ";
                 $msg .= self::SearchForQuery("");
@@ -129,8 +149,84 @@ $eol $eol
         } // end switch
 
         return $msg;
-    } // end function fixit
+    } // end function FixTask
     //
+    private static function review()
+    {
+        global $eol, $wpdbExtra;
+        $msg = "Reviewing updated dinosaurs $eol";
+        $ql2Fix = "select fileName from $wpdbExtra->dinosaurs where not pageContent = '' order by dinoName ";
+        $recsFix = $wpdbExtra->get_resultsA($ql2Fix);
+        $msg .= str_repeat("- ", 80) . $eol;
+        $msg .= "found " . $wpdbExtra->num_rows . " dinosaurs $eol";
+        $cnt = 0;
+        $msg .= "<script>\n";
+        foreach ($recsFix as $dinoData) {
+            $cnt++;
+            if ($cnt > 200)
+                continue;
+            $fileName = trim($dinoData["fileName"]);
+            $url = "https://dinomitedays.org/designs/$fileName.htm";
+            $msg .= "window.open( '$url', '$fileName' );\n";
+        }
+        $msg .= "</script>\n";
+        return $msg;
+    }
+    private static function unBlankStreetView($attrbutes = array())
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
+        $msg = "";
+        $sql = "select keyId, dinoName, latitude, longitude,StreetViewList from " . $wpdbExtra->dinosaurs .
+            " where StreetViewList = '' and latitude != 0 order by dinoName";
+        $recs = $wpdbExtra->get_resultsA($sql);
+        foreach ($recs as $rec) {
+            $keyId = $rec["keyId"];
+            $dinoName = $rec["dinoName"];
+            $latitude = $rec["latitude"];
+            $longitude = $rec["longitude"];
+            $StreetViewList = $rec["StreetViewList"];
+            $msg .= "checking keyId=$keyId for dinosaur '$dinoName' with lat=$latitude and lng=$longitude, street view ='$StreetViewList' $eol";
+            $streetView = "0,o,$latitude,$longitude";
+
+            $set = array("StreetViewList" => "$streetView");
+            $which = array("keyId" => "$keyId");
+            $recCnt = $wpdbExtra->update($wpdbExtra->dinosaurs, $set, $which);
+            if (1 != $recCnt)
+                $msg .= "$errorBeg E#1378 Failed to streetview'$errorEnd";
+        } // for each
+        return $msg;
+    } // end function unBlankStreetView
+
+
+    private static function deleteImage($attribute)
+    {
+        global $eol, $errorBeg, $errorEnd;
+        global $homePath;
+        $msg = "";
+        $dire = rrwParam::String("dire", $attribute, "designs/images");
+        $file = rrwParam::String("file", $attribute);
+        if (empty($file)) {
+            return "$errorBeg E#1348 no file specified for deletion $errorEnd";
+        }
+        $fileFull = "$file";
+        if (file_exists($fileFull)) {
+            $iiSlash = strrpos($fileFull, "/");
+            $fileFullObsolete = substr($fileFull, 0, $iiSlash) . "obsolete/" . substr($fileFull, $iiSlash + 1);
+            $msg .= "renaming $fileFull to $fileFullObsolete $eol";
+            if (rename($fileFull, $fileFullObsolete)) {
+                $msg .= "moved to obsolete file $fileFull $eol";
+                $msg .= "<h2> You must now do a <a href=\"https://dinomitedays.org/build-dino-page/\">compare page</a>, and
+                            replace the old version</h2> $eol";
+            } else {
+                $msg .= "$errorBeg E#1348 failed to rename $fileFull to $fileFullObsolete for deletion $errorEnd";
+            }
+            //      $msg .= "deleted file $fileFull";
+        } else {
+            $msg .= "$errorBeg E#1348 file not found for deletion: '$fileFull' $errorEnd";
+        }
+        return $msg;
+    } // end function deleteImage
     private static function missing_author_jpg()
     {
         global $eol, $errorBeg, $errorEnd;
@@ -290,8 +386,7 @@ $eol $eol
             $cnt++;
             if ($cnt == $which) {
                 print "processing file $url $eol";
-                $file = "$dir/" . $urls[$cnt];
-                $file = "https://dinomitedays.org/designs/$name";
+                $file = "$dir/$url";
                 print "file is $file $eol";
                 $contents = file_get_contents($file);
                 print $contents;
@@ -752,6 +847,7 @@ $eol $eol
     private static function rejectDesginImage()
     {
         global $eol, $errorBeg, $errorEnd;
+        global $wpdbExtra;
         $msg = "";
         $debugreject = true;
 
@@ -773,8 +869,15 @@ $eol $eol
         if (true == $debugreject)
             throw new Exception("$msg $errorBeg dinomitedays_make_html::UpdateImages
                     ( $dino );$errorEnd ");
-
-        $msg .= dinomitedays_make_html::UpdateImages($dino);
+        $sqlOnePage = "select * from $wpdbExtra->dinosaurs where fileName = '$dino'";
+        $dinoData = $wpdbExtra->get_resultsA($sqlOnePage);
+        if (! $dinoData) {
+            $msg .= "$errorBeg E#1377 Dinosaur '$dino' not found $errorEnd";
+            return $msg;
+        }
+        $dinoData = $dinoData[0];
+        $msg .= BuildDinoHtml::generateOneDino($dinoData);    // create the HTML for this dinosaur
+        $msg .= BuildDinoHtml::moveNew2Old($fileName);
         $msg .= "<a href='/upload?dinofile=$dino' > Display images </a> $eol";
         return $msg;
     }
@@ -831,7 +934,7 @@ $eol $eol
             $recnames = $wpdbExtra->get_resultsA($sql);
             foreach ($recnames as $recname) {
                 $nameout = $recname["$name"];
-                $msg .= "[ <a href='/fix/?q=$nameout' >$nameout </a> ] ";
+                $msg .= "[ <a href='/FixTask/?q=$nameout' >$nameout </a> ] ";
             }
         }
         $msg .= $eol;
@@ -873,7 +976,7 @@ WAIT SECONDS=4$eol";
                 an  updated verson of <a href='/designs/$dino-new.htm'
                 target='new' > $dino-new.htm is here</a>.
                 Check it out. Do NOT forget to refreash. If okay
-                <a href='/fixit/?task=renamenewdino&dino=$dino' target='new'>
+                <a href='/FixTask/?task=renamenewdino&dino=$dino' target='new'>
                 move to production</a>
                 or <a href='/fix?task=deletenew&dino=$dino' >delete the newer version </a>
                 or <a href='/update/?dino=$dino' target='update'> retry the update </a> $eol";;
