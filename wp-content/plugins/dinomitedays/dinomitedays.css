@@ -183,6 +183,10 @@ body {
     background-color: var(--primary-color);
 }
 
+.dino-selectImage {
+    height: 75px;
+}
+
 .dino-info {
     padding-top: 10px;
     float: center;

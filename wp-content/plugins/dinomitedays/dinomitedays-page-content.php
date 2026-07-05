@@ -28,7 +28,7 @@ class dinomitedays_Page_Content
             return $msg;
         }
         if (1 != $wpdbExtra->num_rows) {
-            $msg .= $errorBeg . "E#1339  Multiple entries found for dinosaur '$dino'." . $errorEnd . $eol;
+            $msg .= $errorBeg . "E#1396  Multiple entries found for dinosaur '$dino'." . $errorEnd . $eol;
             return $msg;
         }
         $dinoData = $dinoData[0];
@@ -41,7 +41,7 @@ class dinomitedays_Page_Content
             $msg .= self::addClassAbout($contentNew);
             $msg .= self::addClassParagraph($contentNew);
             $contentNew = str_replace("</span>", "", $contentNew);  // remove all end span tags, they are left over
-            $contentNew = str_replace("<span", " ***** remove me", $contentNew);  // flag all start span tags, they are left over
+            $contentNew = str_replace("<span", " ** error *** remove me", $contentNew);  // flag all start span tags, they are left over
             $sqlUpdate = "update $wpdbExtra->dinosaurs set pageContent = '$contentNew' where fileName = '$FileName'";
             if ($debugRenderPageContent) $msg .= htmlspecialchars("I#1490 SQL Update: $sqlUpdate $eol");
             $recordUpdatedCount = $wpdbExtra->query($sqlUpdate);
@@ -123,7 +123,7 @@ class dinomitedays_Page_Content
             }
             if ($debugFindStartTagGivenEndTag) $msg .= "I#1480 Found closing tag '>' at position $iiLeft, keep looking left for start of tag $eol";
             $tempContent = substr($content, 0, $iiLeft);
-            if ($debugFindStartTagGivenEndTag) $msg .= "I#1481 length tempContent " . strlen($tempContent) . $eol;
+            if ($debugFindStartTagGivenEndTag) $msg .= "I#1489 length tempContent " . strlen($tempContent) . $eol;
             $iiLeft = strrpos($tempContent, "<"); // this is the start of a tag, so keep looking left
             if ($iiLeft === false) {
                 throw new Exception("$msg $errorBeg E#1498  No start tag found for heading  $errorEnd . $eol");

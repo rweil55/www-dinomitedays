@@ -29,8 +29,8 @@ class dinomitedays_fix
             return "$msg not allowed to fix things";
 
         $msg .= "entered task of $task $eol ";
-        switch ($task) {
-            case "deleteImage":
+        switch (strtolower($task)) {
+            case "deleteimage":
                 $msg .= self::deleteImage($attributes);
                 return $msg;
             case "deletenew":
@@ -89,7 +89,7 @@ class dinomitedays_fix
             case "print2":
                 $msg .= self::print2($attributes);
                 break;
-            case "rejectdesginimage":
+            case "rejectdesignimage":
                 $msg .= self::rejectDesginImage();
                 return $msg;
             case "renamenewdino":
@@ -100,8 +100,11 @@ class dinomitedays_fix
                 $fix = "replacefooter";
                 $msg .= self::doFixLoop($fix, $dir, $attributes);
                 break;
-            case "review":
-                $msg .= self::review();
+            case "reviewdate":
+                $msg .= self::reviewDate();
+                break;
+            case "reviewnew":
+                $msg .= self::reviewNew();
                 break;
             case "test":
                 $msg .= "<img src='file://P:/digipix-trips/lake-pleasant/P8070586-adj-1067x800.jpg' width='768px'>
@@ -120,7 +123,7 @@ class dinomitedays_fix
                 $msg .= BuildDinoHtml::fixUpdateSome($attributes);
                 return $msg;
             default:
-                $msg .= "$errorBeg E#1346 no or invalid task specified $errorEnd
+                $msg .= "$errorBeg E#1460 no or invalid task specified $errorEnd
 <a href='/FixTask/?task=deleteimage' >deletes the /&image file in the design/images directory.or directory &dire=???</a>>$eol
 <a href='/FixTask/?task=deletenew' >deletes the dinosaur file in the designNew director. Use avter deleting/renameong a Dino</a>>$eol
 <a href='/FixTask/?task=designfooter' >Update the footers</a> - currently only workd on the the 200 detail pages</a>$eol
@@ -135,7 +138,8 @@ class dinomitedays_fix
 <a href='/FixTask/?task=phototogs' > Update the photographer list</a>$eol
 <a href='/FixTask/?task=reject' >update the footers </a>$eol
 <a href='/FixTask/?task=replacefooter' >update the footers </a>$eol
-<a href='/FixTask/?task=review' >review the updated dinosaurs</a>$eol
+<a href='/FixTask/?task=reviewDate' >review the dinosaurs with newer dates</a>$eol
+<a href='/FixTask/?task=reviewNew' >review the updated dinosaurs</a>$eol
 <a href='/FixTask/?task=test' >Some random test</a> of one off code </a>$eol
 <a href='/FixTask/?task=updatenew' >update the updated dinosaurs </a>$eol
 <strong> Database wp541 </strong>$eol
@@ -151,25 +155,44 @@ $eol $eol
         return $msg;
     } // end function FixTask
     //
-    private static function review()
+    private static function reviewDate()
     {
         global $eol, $wpdbExtra;
-        $msg = "Reviewing updated dinosaurs $eol";
-        $ql2Fix = "select fileName from $wpdbExtra->dinosaurs where not pageContent = '' order by dinoName ";
-        $recsFix = $wpdbExtra->get_resultsA($ql2Fix);
-        $msg .= str_repeat("- ", 80) . $eol;
-        $msg .= "found " . $wpdbExtra->num_rows . " dinosaurs $eol";
-        $cnt = 0;
-        $msg .= "<script>\n";
-        foreach ($recsFix as $dinoData) {
-            $cnt++;
-            if ($cnt > 200)
-                continue;
-            $fileName = trim($dinoData["fileName"]);
-            $url = "https://dinomitedays.org/designs/$fileName.htm";
-            $msg .= "window.open( '$url', '$fileName' );\n";
+        $msg = "Reviewing dinosaurs with newer dates $eol";
+        $sqlDate = "select fileName from $wpdbExtra->dinosaurs where mapDate > '2010-01-01' order by dinoName ";
+        $msg .= self::review($sqlDate);
+        return $msg;
+    }
+    private static function reviewNew()
+    {
+        global $eol, $wpdbExtra;
+        $msg = "Reviewing dinosaurs which have been updated $eol";
+        $sqlDate = "select fileName from $wpdbExtra->dinosaurs where not pageContent = '' order by dinoName ";
+        $msg .= self::review($sqlDate);
+        return $msg;
+    }
+    private static function review($sqlSource)
+    {
+        global $eol, $wpdbExtra;
+        $msg = "";
+        try {
+            $recsFix = $wpdbExtra->get_resultsA($sqlSource);
+            $msg .= str_repeat("- ", 80) . $eol;
+            $msg .= "found " . $wpdbExtra->num_rows . " dinosaurs $eol";
+            $cnt = 0;
+            $msg .= "<script>\n";
+            foreach ($recsFix as $dinoData) {
+                $cnt++;
+                if ($cnt > 200)
+                    continue;
+                $fileName = trim($dinoData["fileName"]);
+                $url = "https://dinomitedays.org/designs/$fileName.htm";
+                $msg .= "window.open( '$url', '$fileName' );\n";
+            }
+            $msg .= "</script>\n";
+        } catch (Exception $ex) {
+            $msg .= "Error: " . $ex->getMessage() . $eol;
         }
-        $msg .= "</script>\n";
         return $msg;
     }
     private static function unBlankStreetView($attrbutes = array())
@@ -193,7 +216,7 @@ $eol $eol
             $which = array("keyId" => "$keyId");
             $recCnt = $wpdbExtra->update($wpdbExtra->dinosaurs, $set, $which);
             if (1 != $recCnt)
-                $msg .= "$errorBeg E#1378 Failed to streetview'$errorEnd";
+                $msg .= "$errorBeg E#1430 Failed to streetView'$errorEnd";
         } // for each
         return $msg;
     } // end function unBlankStreetView
@@ -207,7 +230,7 @@ $eol $eol
         $dire = rrwParam::String("dire", $attribute, "designs/images");
         $file = rrwParam::String("file", $attribute);
         if (empty($file)) {
-            return "$errorBeg E#1348 no file specified for deletion $errorEnd";
+            return "$errorBeg E#1450 no file specified for deletion $errorEnd";
         }
         $fileFull = "$file";
         if (file_exists($fileFull)) {
@@ -219,11 +242,11 @@ $eol $eol
                 $msg .= "<h2> You must now do a <a href=\"https://dinomitedays.org/build-dino-page/\">compare page</a>, and
                             replace the old version</h2> $eol";
             } else {
-                $msg .= "$errorBeg E#1348 failed to rename $fileFull to $fileFullObsolete for deletion $errorEnd";
+                $msg .= "$errorBeg E#1451 failed to rename $fileFull to $fileFullObsolete for deletion $errorEnd";
             }
             //      $msg .= "deleted file $fileFull";
         } else {
-            $msg .= "$errorBeg E#1348 file not found for deletion: '$fileFull' $errorEnd";
+            $msg .= "$errorBeg E#1452 file not found for deletion: '$fileFull' $errorEnd";
         }
         return $msg;
     } // end function deleteImage
@@ -354,7 +377,7 @@ $eol $eol
             }
             $msg .= "</script>";
         } catch (Exception $ex) {
-            throw new Exception("$msg $errorBeg E#1335 dinomitedays_fix:print2:upload: $errorEnd $sql $eol" . $ex->getMessage());
+            throw new Exception("$msg $errorBeg E#1453 dinomitedays_fix:print2:upload: $errorEnd $sql $eol" . $ex->getMessage());
         }
         return $msg;
     } //  end function print
@@ -431,14 +454,14 @@ $eol $eol
                     $sql = "select * from " . $wpdbExtra->dinosaurs . " where name = '$dino'  and filename = '$designname' ";
                     $recs = $wpdbExtra->get_resultsA($sql);
                     if ($wpdbExtra->num_rows != 1)
-                        $msg .= "$errorBeg E#1377 Did not find (" . $wpdbExtra->num_rows . ") a dinosaur for $errorEnd
+                        $msg .= "$errorBeg E#1454 Did not find (" . $wpdbExtra->num_rows . ") a dinosaur for $errorEnd
                             $sql $eol";
                     $set = array("logoFileName" => "$logoName");
                     $which = array("dinoName" => "$dino");
                     if (empty($recs[0]["logoFileName"])) {
                         $recCnt = $wpdbExtra->update($wpdbExtra->dinosaurs, $set, $which);
                         if (1 != $recCnt)
-                            $msg .= "$errorBeg E#1378 Did not find a dinosour for $errorEnd
+                            $msg .= "$errorBeg E#1555 Did not find a dinosour for $errorEnd
                             $sql $eol";
                     } else {
                         $recCnt = "previously updated ";
@@ -532,32 +555,12 @@ $eol $eol
                 substr($buffer, $iienddiv + 6);
             $msg .= "footer replaced $eol";
         } else {
-            $msg .= "$errorBeg E#1364 no footer found $errorEnd";
+            $msg .= "$errorBeg E#1446 no footer found $errorEnd";
             $msg .= htmlspecialchars($buffer);
         }
         return $msg;
     }
-    /*
-        private static function tryDomDocument() {
 
-            $file = "/home/pillowan//www-dinomitedays/designs/stanford.htm";
-
-            $dom = new DomDocument();
-            $buffer = file_get_contents( $file );
-            $check = $dom->loadHTML( $buffer );
-            if ( $check )
-                $msg .= "good load $eol";
-            else
-                $msg = "$errorBeg E#xxx load of dom sodument failed $errorEnd";
-            $div = $dom->getElementById( 'dino-footer' );
-            print "<pre>";
-            $cnt++;
-            print "---------------------------------  $eol";
-            var_dump( $div );
-            print "</pre>";
-            return $msg;
-        }
-    */
     private static function designfooter()
     {
         global $eol, $errorBeg, $errorEnd;
@@ -572,7 +575,7 @@ $eol $eol
             if (mkdir($direFinal)) {
                 $msg .= "created directory $direFinal $eol";
             } else {
-                $msg .= "$errorBeg E#1347 failed to create directory $direFinal $errorEnd";
+                $msg .= "$errorBeg E#1457 failed to create directory $direFinal $errorEnd";
                 return $msg;
             } // end mkdire
         } // end check for directory and make is neccessary
@@ -624,7 +627,7 @@ $eol $eol
 
         $buffer = file_get_contents("$homePath/designs/$filesource");
         if (false === $buffer) {
-            $msg .= "$errorBeg E#1360 failed to read $homePath/designs/$filesource $errorEnd";
+            $msg .= "$errorBeg E#1448 failed to read $homePath/designs/$filesource $errorEnd";
             return $msg;
         }
         // has cmnh footer been replaced already
@@ -645,7 +648,7 @@ $eol $eol
             } else {
                 $iiClose = strrpos($buffer, "Close", -1);
                 if (false === $iiClose) {
-                    $msg .= "$msg $errorBeg E#1349 string 'close' not found in $homePath/$filesource $errorEnd
+                    $msg .= "$msg $errorBeg E#1459 string 'close' not found in $homePath/$filesource $errorEnd
                         while tryiing to update footer $errorEnd";
                     return $msg;
                 }
@@ -734,7 +737,7 @@ $eol $eol
                 $wpdbExtra->dinosaurs . " where filename = '$item' ";
             $recnames = $wpdbExtra->get_resultsA($sql);
             if (1 != $wpdbExtra->num_rows) {
-                $msg .= "$errorBeg E#1331 Did not find a dinosour for $errorEnd
+                $msg .= "$errorBeg E#1440 Did not find a dinosour for $errorEnd
                 $sql $eol";
                 continue;
             }
@@ -860,7 +863,7 @@ $eol $eol
             rename($fileName, $filenameNew);
             $msg .= " $fileName rejected $eol";
         } else {
-            $msg .= "$errorBeg E#1376 file '$fileName' not found to reject $errorEnd";
+            $msg .= "$errorBeg E#1441 file '$fileName' not found to reject $errorEnd";
         }
         $iiSlash = strrpos($fileName, "/");
         $dino = substr($fileName, $iiSlash + 1);
@@ -872,7 +875,7 @@ $eol $eol
         $sqlOnePage = "select * from $wpdbExtra->dinosaurs where fileName = '$dino'";
         $dinoData = $wpdbExtra->get_resultsA($sqlOnePage);
         if (! $dinoData) {
-            $msg .= "$errorBeg E#1377 Dinosaur '$dino' not found $errorEnd";
+            $msg .= "$errorBeg E#1442 Dinosaur '$dino' not found $errorEnd";
             return $msg;
         }
         $dinoData = $dinoData[0];
@@ -893,16 +896,16 @@ $eol $eol
         $fileNameOld = "$siteDir/$htmlPath/$dino.htm";
         $filenameSave = "$siteDir/wp-content/$dino" . "_" . date("Y-m-d") . ".htm";
         if (!file_exists($fileNameNew))
-            throw new Exception("$msg $errorBeg E#1362 file $fileNameNew not exist $errorEnd ");
+            throw new Exception("$msg $errorBeg E#1443 file $fileNameNew not exist $errorEnd ");
         if (file_exists($fileNameOld)) {
             $result3 = rename($fileNameOld, $filenameSave);
             if (false === $result3)
-                throw new Exception("$msg $errorBeg E#1371 failure of
+                throw new Exception("$msg $errorBeg E#1444 failure of
                             rename( $fileNameOld, $filenameSave ); $errorEnd");
         }
         $result2 = rename($fileNameNew, $fileNameOld);
         if (false === $result2)
-            throw new Exception("$msg $errorBeg E#1368 failure of
+            throw new Exception("$msg $errorBeg E#1445 failure of
                             rename( $fileNameNew, $fileNameOld ); $errorEnd");
         $msg .= "<a href='/designs/$dino.htm' > Check out final verion </a> $eol";
         return $msg;
@@ -1026,13 +1029,13 @@ WAIT SECONDS=4$eol";
 
         $handle = opendir("$dir");
         if (!is_resource($handle))
-            throw new Exception("$msg E#1373 that is not a directory");
+            throw new Exception("$msg E#1456 that is not a directory");
         $cnt = 0;
         $entry = true;
         while (($entry = readdir($handle)) !== false) {
             $cnt++;
             if ($cnt > 2000)
-                throw new Exception("$msg E#1348 - $entry Too mnay times $cnt in the while loop $eol");
+                throw new Exception("$msg E#1455 - $entry Too mnay times $cnt in the while loop $eol");
             if (("." == substr($entry, 0, 1)) || ("wp" == substr($entry, 0, 2)))
                 continue;
             if (strpos($entry, "fix") !== false)
@@ -1171,7 +1174,7 @@ WAIT SECONDS=4$eol";
 
         $iiloc = strpos($buffer, "Location");
         if (false === $iiloc)
-            return "$msg $errorBeg E#1366 the word location was not found. $errorEnd";
+            return "$msg $errorBeg E#1458 the word location was not found. $errorEnd";
         $iiloc = $iiloc + 8; // iiloc is hust after the N
         $msg .= "'" . substr($buffer, $iiloc, 2) . "' $eol";
         if (substr($buffer, $iiloc, 2) == " (")

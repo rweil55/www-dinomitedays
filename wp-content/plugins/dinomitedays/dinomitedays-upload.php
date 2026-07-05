@@ -168,10 +168,10 @@ class dinomitedays_upload
         } // end foreach
         $msg .= "</select>
             </td>
-            <td>";
+            <td class='dino-selectImage'>";
         $source = site_url() . "/graphics/$SavedLogoFilename"; // default at the end of the selection
         $msg .= "
-                <img height='75' src='$source'  />
+                <img class='dino-selectImage' src='$source'  />
             </td>
         </tr>
         </table>
@@ -470,7 +470,7 @@ class dinomitedays_upload
             $msg .= self::ProcessFixedFields();
             $msg .= self::ProcessPhotos();          // i.e. $_FILES
         } catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#1350 update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1354 update $errorEnd";
             throw new Exception("$msg");
         }
         return $msg;
@@ -544,7 +544,7 @@ class dinomitedays_upload
                     continue;
                 }
                 if (!is_dir($uploads_dir . "_new")) {
-                    $msg .= "$errorBeg E#1371 the upload directory $uploads_dir" . "_new does not exist $errorEnd";
+                    $msg .= "$errorBeg E#1373 the upload directory $uploads_dir" . "_new does not exist $errorEnd";
                     continue;
                 }
                 if ($debugSave) $msg .= "moving $tmp_name to $resizeName $eol";
@@ -577,7 +577,7 @@ class dinomitedays_upload
             }
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#1350 at the bottom of process photo $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1353 at the bottom of process photo $errorEnd";
             throw new Exception("$msg");
         }
         return $msg;
@@ -648,7 +648,7 @@ class dinomitedays_upload
                 // << TODO  do the file update>>
             }
         } catch (Exception $ex) {
-            throw new Exception($ex->getMessage() . "$errorBeg  E#1352 at the bottom of process fixed fields $errorEnd");
+            throw new Exception($ex->getMessage() . "$errorBeg  E#1355 at the bottom of process fixed fields $errorEnd");
         }
         return $msg;
     } // end Process fixed fields

@@ -391,7 +391,7 @@ class dinomitedays_email_photo
                     //      $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
                     if ($debugSave)
-                        $msg .= "I#1430 $saveName resized, attributed to $finalName $eol";
+                        $msg .= "I#1335 $saveName resized, attributed to $finalName $eol";
                 } // end if (!empty($photographer))
                 else {
                     $msg .= "$errorBeg E#1473 No photographer so no attribution $errorEnd ";
@@ -400,7 +400,7 @@ class dinomitedays_email_photo
             } // end foreach ($files)
             $msg .= $eol;
             if ($numberOfSavedImages > 0) {
-                $msg .= "I#1459 $$numberOfSavedImages files uploaded with names of: $fileNamesMoved $eol";
+                $msg .= "I#1461 $$numberOfSavedImages files uploaded with names of: $fileNamesMoved $eol";
             }
             $to = "dinoAdmin@royweil.com";
             $subject = "New dinosaur(s) uploaded to dinomitedays.org";
@@ -420,7 +420,7 @@ class dinomitedays_email_photo
             $body $eol $headers[0] $eol ";
         } // end try
         catch (Exception $ex) {
-            $msg .= $ex->getMessage() . "$errorBeg  E#1450 update $errorEnd";
+            $msg .= $ex->getMessage() . "$errorBeg  E#1462 update $errorEnd";
             throw new Exception("$msg");
         }
         return $msg;

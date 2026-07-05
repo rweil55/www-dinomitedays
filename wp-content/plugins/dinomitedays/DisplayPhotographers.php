@@ -10,7 +10,7 @@ class DisplayPhotographers
         global  $rrw_photographers;
         $msg = "";
         if (rrwUtil::notAllowedToEdit("design_html", "all", false)) {
-            $msg .= "$errorBeg E#1445 not allowed to edit $errorEnd";
+            $msg .= "$errorBeg E#1331 not allowed to edit $errorEnd";
             return $msg;
         }
         $action = rrwUtil::fetchparameterString("action");

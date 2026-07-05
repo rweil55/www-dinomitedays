@@ -12,7 +12,7 @@ class dinomitedays_information_block
 
         try {
             if (rrwUtil::notAllowedToEdit("design_html", "all", false)) {
-                $msg .= "$errorBeg E#1342 not allowed to edit $errorEnd";
+                $msg .= "$errorBeg E#1343 not allowed to edit $errorEnd";
                 return $msg;
             }
             $msg .= dinomitedays_upload::buildDinoSelectionForm($dinoInput);
