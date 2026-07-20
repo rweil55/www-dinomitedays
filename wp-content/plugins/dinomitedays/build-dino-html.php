@@ -3,18 +3,23 @@
 // This class is responsible for generating and displaying the HTML for a dinosaur, including
 class BuildDinoHtml
 {
+    const httpDesign = "https://dinomitedays.org/designs/";
+    const httpDesignNew = self::httpDesign . "New/";
+    const httpDesignImages = self::httpDesign . "images/";
+    const httpDesignFirstImage = self::httpDesign . "images/";
+    const direDesignImages = "/home/pillowan/www-dinomitedays/designs/images/";
+
     public static function fixUpdateSome($attribute)
     {
         global $wpdbExtra, $eol, $errorBeg, $errorEnd;
+        $maxDinosToProcess = 1;
         $msg = "";
         try {
-            $ql2Fix = "select * from $wpdbExtra->dinosaurs where not pageContent = ''  order by dinoName ";
-            $recsFix = $wpdbExtra->get_resultsA($ql2Fix);
+            $sql2Fix = "select * from $wpdbExtra->dinosaurs where not pageContent = ''  order by dinoName limit " . $maxDinosToProcess;
+            $recsFix = $wpdbExtra->get_resultsA($sql2Fix);
             $cnt = 0;
             foreach ($recsFix as $dinoData) {
                 $cnt++;
-                if ($cnt > 120)
-                    continue;
                 $fileName = trim($dinoData["fileName"]);
                 $dinoName = trim($dinoData["dinoName"]);
                 $msg .= "I#1350 Processing dinosaur $dinoName -- $fileName" . $eol;
@@ -164,7 +169,6 @@ class BuildDinoHtml
 <link rel='stylesheet' id='genericons-css' href='https://dinomitedays.org/wp-content/themes/twentythirteen/genericons/genericons.css?ver=20251101' media='all' />
 <link rel='stylesheet' id='twentythirteen-style-css' href='https://dinomitedays.org/wp-content/themes/roys-header/style.css?ver=20251202' media='all' />
 <link rel='stylesheet' id='twentythirteen-block-style-css' href='https://dinomitedays.org/wp-content/themes/twentythirteen/css/blocks.css?ver=20240520' media='all' />
-<link rel='stylesheet' id='newsletter-css' href='https://dinomitedays.org/wp-content/plugins/newsletter/style.css?ver=9.2.5' media='all' />
 <link rel='stylesheet' id='dinomitedays-css'  href='$cssFile' />
         </head>
 
@@ -285,7 +289,9 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
     {
         global $eol;
         $html = "<div class='dino-page-content'>\n";
-        $html .= "<img class='dino-body-image-left' src= 'https://dinomitedays.org/designs/images/" . $dinoData["fileName"] . ".jpg'
+        $imageurl = self::httpDesignFirstImage . $dinoData["fileName"] . ".jpg";
+
+        $html .= "<img class='dino-body-image-left' src= '$imageurl'
                     alt='picture of the " . htmlspecialchars($dinoData["dinoName"]) . " dinosaur'  >\n";
         $html .= $dinoData["pageContent"] . $eol;
         $html .= "\n</div>\n"; // close dino-page-content
@@ -318,7 +324,7 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
         global $eol;
         $debugPictures = false;
         $html = "";
-        $Dire = ABSPATH . "designs/images/";
+        $Dire = self::direDesignImages;
         $filePreFix = $dinoData["fileName"];
         $numChars = strlen($filePreFix);
         if ($debugPictures)
@@ -336,7 +342,8 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
             if (0 == $nn) {
                 //$msg .= "I#1391 found file: $fileName $eol";
                 $fileName = str_replace(" ", "%20", $fileName);
-                $html .= "<img class='dino-bottom-image' src='https://dinomitedays.org/designs/images/$fileName'
+                $url = self::httpDesignImages . $fileName;
+                $html .= "<img class='dino-bottom-image' src='$url'
                                 alt='picture of the " . htmlspecialchars($dinoData["dinoName"]) . " dinosaur - $fileName'> \n";
                 // alt='picture of the " . htmlspecialchars($dinoData["dinoName"]) . " dinosaur' >\n";
             }

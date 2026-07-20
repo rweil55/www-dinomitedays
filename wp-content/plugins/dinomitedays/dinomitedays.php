@@ -71,7 +71,7 @@ add_shortcode('dinomitedays-header-block', array("dinomitedays_header_block", "c
 add_shortcode('dinomitedays-homeOriginal', array("homeOriginal", "display"));
 add_shortcode('dinomitedays-known-locations', array("dinomitedays_misc_pages", "knownLocation"));
 add_shortcode('dinomitedays-menu', array("Dinomitedays_menu", "Display"));
-add_shortcode("dinomitedays-neighborhood", array("dinomitedays_misc_pages", "neighborhood"));
+//add_shortcode("dinomitedays-neighborhood", array("dinomitedays_misc_pages", "neighborhood"));
 add_shortcode('dinomitedays_page_content', array("dinomitedays_Page_Content", "render_page_content"));
 add_shortcode('freewheeling-panorama-missing', array('PanoramaUpdate', 'streetViewMissing'));
 add_shortcode("dinomitedays-print", array("dinomitedays_print", "print"));

@@ -103,10 +103,6 @@ a.external {
     overflow-wrap: normal;
 }
 
-.badlink {
-    text-decoration: line-through;
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -198,6 +194,8 @@ body {
     /* font-size: smaller;  */
     margin-top: 20px;
     margin-right: inherit;
+    font-weight: normal;
+    font-style: normal;
     color: black;
     background-color: white;
 }

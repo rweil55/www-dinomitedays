@@ -40,11 +40,16 @@ class dinomitedays_misc_pages
         $msg = "";
 
         $debugLoc = false;
+        $target = rrwParam::string("target");
+        $targetTab = "";
+        if (!empty($target))
+            $targetTab = " target=\"$target\" ";
+        else
+            $targetTab = "";
         $msg .= " <!-- const dinoWhereKnown = " . self::dinoWhereKnown . " --> ";
         $msg .= "This is the current (" . date("m/Y") . ") list of seen dinosaurs and when they were last seen. If you would like to be notified when a dinosaur is newly located, <a href='https://dinomitedays.org/get-notified-when-a-inosauer-is-newly-located/' >sign up on our subscription page</a>.$eol";
 
         $msg .= self::copyrightMessage();
-
         $msg .= self::messageRequest();
 
         $sqlKnown = self::dinoSglSelect .  $wpdbExtra->dinosaurs .
@@ -76,7 +81,7 @@ class dinomitedays_misc_pages
             $mapDateDisplay = "<a href='/update/?dino=$filename' target='update' >$mapDate</a> \n";
             $mapLoc = $rec["mapLoc"];
             $color = rrwFormat::colorSwap($color);
-            $msgLeft .= rrwFormat::CellRow($color, $mapDateDisplay, "<a href='/designs/$filename.htm'>$dinoName</a>", $status, "$mapLoc");
+            $msgLeft .= rrwFormat::CellRow($color, $mapDateDisplay, "<a href='/designs/$filename.htm' $targetTab >$dinoName</a>", $status, "$mapLoc");
         }
         $msgLeft .= "</table>";  // end table if listed addresses
 
@@ -134,7 +139,7 @@ class dinomitedays_misc_pages
         $msg .= self::messageRequest();
         return $msg;
     } // end feedback
-
+    /*
     public static function neighborhood(array $attributes)
     {
         global $eol, $errorBeg, $errorEnd;
@@ -151,6 +156,7 @@ class dinomitedays_misc_pages
         $msg .= "Google search for <a href='$search'>search</a> returned: $eol $buffer $eol";
         return $msg;
     } // end neighborhood
+     */
     private static function messageRequest()
     {
         global $eol, $wpdbExtra;
@@ -194,6 +200,11 @@ class dinomitedays_misc_pages
         try {
             ini_set("display_errors", 1);
             error_reporting(E_ALL);
+            $target = rrwParam::string("target");
+            if (!empty($target))
+                $targetTab = " target=\"$target\" ";
+            else
+                $targetTab = "";
             $recs = $wpdbExtra->get_resultsA($sql);
             if (empty($recs)) {
                 $msg .= "No records found for $sql $eol";
@@ -207,7 +218,7 @@ class dinomitedays_misc_pages
                     continue;   // igmore testing record
                 $dinoName = $rec["dinoName"];
                 $dinoNameDisplay1 = str_replace("'", "&quot;", $dinoName);
-                $dinoNameDisplay = "<a href='/designs/$filename.htm' >$dinoNameDisplay1</a>";
+                $dinoNameDisplay = "<a href='/designs/$filename.htm' $targetTab>$dinoNameDisplay1</a>";
                 $status = $rec["status"];
                 $logoFileName = $rec["logoFileName"];
                 $logoFileName = str_replace(" ", "%20", $logoFileName);
@@ -249,7 +260,7 @@ class dinomitedays_misc_pages
                     default:
                         $displayName = "$dinoName";
                 } // end switch
-                $displayImage = "<a href='/designs/$filename.htm'><img src='/" . self::imagePath . "/$logoFileName' alt='$dinoName' width='120' ></a>";
+                $displayImage = "<a href='/designs/$filename.htm' $targetTab><img src='/" . self::imagePath . "/$logoFileName' alt='$dinoName' width='120' ></a>";
                 $divStyle = "style='float:left; margin: 5px; text-align: center; width: 120px; height: {$displayHeight}px;' ";
                 $msg .= "<div class='dinomitedaysGridItem' >$displayImage ";
                 if (! empty($displayLeft))

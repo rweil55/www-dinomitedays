@@ -5,9 +5,8 @@ class dinomitedays_Page_Content
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;
-        $eol = "<br>\n";
-
         $eol = "\n";
+
         $msg = "";
         $debugRenderPageContent = false;
         ini_set("display_errors", 1);
@@ -38,10 +37,12 @@ class dinomitedays_Page_Content
             // submit was pressed, now update the database
             $contentNew = $_POST[$editor_id];  // then new data
             $contentNew = str_replace("'", "'", $contentNew);
-            $msg .= self::addClassAbout($contentNew);
+            $contentNew = str_replace("\n", "", $contentNew);   // remove previously installed newlines
+
+            $msg .= self::addClassAbout($contentNew);           // add class to the about strings
             $msg .= self::addClassParagraph($contentNew);
-            $contentNew = str_replace("</span>", "", $contentNew);  // remove all end span tags, they are left over
-            $contentNew = str_replace("<span", " ** error *** remove me", $contentNew);  // flag all start span tags, they are left over
+            $contentNew = str_replace("<p", "\n\n<p", $contentNew);   // add newlines before each paragraph
+
             $sqlUpdate = "update $wpdbExtra->dinosaurs set pageContent = '$contentNew' where fileName = '$FileName'";
             if ($debugRenderPageContent) $msg .= htmlspecialchars("I#1490 SQL Update: $sqlUpdate $eol");
             $recordUpdatedCount = $wpdbExtra->query($sqlUpdate);
@@ -96,7 +97,7 @@ class dinomitedays_Page_Content
                     throw new Exception("$msg $errorBeg E#1493  Expected to find closing tag '&gt;' for heading '$aboutHeading' but not found $errorEnd . $eol");
                 }
                 $msg .= self::findEndTagGivenStartTag($content, $iiRight);
-                $content = substr($content, 0, $iiNewEnd) . "</p><p>" . substr($content, $iiRight);
+                $content = substr($content, 0, $iiNewEnd) . "<br><span class=\'dino-page-content\'>" . substr($content, $iiRight);
             }
         }
         return "</pre>

@@ -190,7 +190,7 @@ class dinomitedays_upload
         $debugProgress = false;
         $photographer = rrwUtil::fetchparameterString("photographer");
 
-        $msg .= "<form method=\"post\" action=\"/update\" enctype=\"multipart/form-data\" >
+        $msg .= "<form method=\"post\" action=\"/upload\" enctype=\"multipart/form-data\" >
             <input type='hidden' name='dino' id='dino' value='$dino' />
         ";
         $sqlDino = "select * from $wpdbExtra->dinosaurs where filename = '$dino' ";
@@ -398,7 +398,6 @@ class dinomitedays_upload
     private static function displayPhoto(string $directory, string $file)
     {
         global $eol, $errorBeg, $errorEnd;
-        global $wpdbExtra;
         $msg = "";
         try {
             if (empty($file))
@@ -413,7 +412,7 @@ class dinomitedays_upload
             $size = getimagesize($fileName);
             $meta = "($filesize) " . $size[0] . "px X " . $size[1] . "px";
 
-            $msg .= "<a href='$fileName' ><img src='$fileSitePathName' width='300px' /></a> <br>$file <br > $meta ";
+            $msg .= "<a href='https://" . $_SERVER['HTTP_HOST'] . "$fileSitePathName' ><img src='$fileSitePathName' width='300px' /></a> <br>$file <br > $meta ";
             $msg .= "<a href='/FixTask/?task=deleteImage&file=$fileName' > delete</a>
                 </div>\n";
         } catch (Exception $ex) {
