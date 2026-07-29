@@ -170,17 +170,26 @@ class BuildDinoHtml
 <link rel='stylesheet' id='twentythirteen-style-css' href='https://dinomitedays.org/wp-content/themes/roys-header/style.css?ver=20251202' media='all' />
 <link rel='stylesheet' id='twentythirteen-block-style-css' href='https://dinomitedays.org/wp-content/themes/twentythirteen/css/blocks.css?ver=20240520' media='all' />
 <link rel='stylesheet' id='dinomitedays-css'  href='$cssFile' />
+<!-- Google tag (gtag.js) -->
+<script async src='https://www.googletagmanager.com/gtag/js?id=G-QLGRVDXLSZ'></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QLGRVDXLSZ');
+</script>
+
         </head>
 
         <body class='body-outside'>
         ";
-            $html .= self::header($dinoData, $msg);
+            $html .= self::header($dinoData);
             $html .= '<div class="body-inside" >
             <div class="body-inside-margin" >';
             $html .= self::details($dinoData, $msg);
             $html .= self::body($dinoData, $msg);
             $html .= self::showPictures($dinoData, $msg);
-            $html .= BuildMenus::footer($dinoData, $msg);
+            $html .= self::footer();
             $html .= '</div> <!-- class body-inside-margin -->
             </div> <!-- class body-inside -->
            </div> <!-- class body-outside -->
@@ -198,7 +207,7 @@ class BuildDinoHtml
         }
         return $msg;
     } // generateHtml
-    private static function header(array $dinoData, string &$msg)
+    private static function header(array $dinoData)
     {
         global $eol;
         $title = htmlspecialchars($dinoData["dinoName"]);
@@ -215,7 +224,7 @@ class BuildDinoHtml
         $html .= "
                 </td>
                 <td class='menucolor' >
-                    <a href='/' ><img src='/wp-content/themes/roys-header/images/dinomiteLogo-85.png' alt='dinomitedays logo image' > </a>
+                    <a href='/' ><img src='" . site_url("/wp-content/themes/roys-header/images/dinomitedaysLogo-85.png") . "' alt='dinomitedays logo image' > </a>
                 </td>
             </tr>
             </table>
@@ -241,16 +250,16 @@ class BuildDinoHtml
         $status = $dinoData["Status"];
         if ($lat != 0 && $lng != 0 && ! is_null($lat) && ! is_null($lng)) {
             $locationDisplay .= " <a href='https://dinomitedays.org/map/?latitude=$lat&longitude=$lng'>map</a> ";
-            $locationDisplay .= " <a href='https://google.com/maps/dir/[$lat,$lng]' >directions</a>";
+            $locationDisplay .= " <a href='https://google.com/maps/dir/$lat,$lng' >directions</a>";
         } else {
             $locationDisplay .= " $status ";
         }
         if (! empty($streetViewList)) {
             $view = $dinoData["streetViewList"];
-            $pano = explode(",", $view);
-            $locationDisplay .= "<a href='https://dinomitedays.org/wp-content/plugins/freewheeling-map/pano/panora345.php?&fileName=" . $dinoData["filename"] .
-                "&amp;lat=$pano[2]&amp;lng=$pano[3]&amp;zoom=$pano[5]&amp;heading=$pano[0]&amp;pitch=$pano[1]&amp;nohead=1' >
-                            <img src='pegman' alt='street view pegman' ></a>";
+            $viewExploded = explode(",", $view);
+            $locationDisplay .= "<a href='" . site_url("/wp-content/plugins/freewheeling-map/pano/panora345.php?&fileName=") . $dinoData["filename"] .
+                "&amp;lat=$viewExploded[2]&amp;lng=$viewExploded[3]&amp;zoom=$viewExploded[5]&amp;heading=$viewExploded[0]&amp;pitch=$viewExploded[1]&amp;nohead=1' >
+                            <img src='pegman' alt='street view pegMan' ></a>";
         }
         if (empty($dinoData["ActionPrice"])) {
             $actionDisplay = "";
@@ -289,9 +298,9 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
     {
         global $eol;
         $html = "<div class='dino-page-content'>\n";
-        $imageurl = self::httpDesignFirstImage . $dinoData["fileName"] . ".jpg";
+        $imageUrl = self::httpDesignFirstImage . $dinoData["fileName"] . ".jpg";
 
-        $html .= "<img class='dino-body-image-left' src= '$imageurl'
+        $html .= "<img class='dino-body-image-left' src= '$imageUrl'
                     alt='picture of the " . htmlspecialchars($dinoData["dinoName"]) . " dinosaur'  >\n";
         $html .= $dinoData["pageContent"] . $eol;
         $html .= "\n</div>\n"; // close dino-page-content
@@ -350,4 +359,24 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
         }   // end foreach file in directory
         return "<div class='dino-pictures'>$html</div>\n";
     }   // end showPictures
+
+    public static function footer()
+    {
+        $html = '
+<div class="dino-footer">
+	<div class="menu-menu-1-container">';
+        $html .= wp_nav_menu(array(
+            'theme_location' => 'primary',
+            'menu_class' => 'nav-menu menucolor',
+            'echo' => false
+        ));
+        $html .= "<span class='dino-footer-copyright'>Copyright <a href='https://carnegiemnh.org/'>Carnegie Museum of Natural History</a> &nbsp;
+					Hosted by the book <em><a href='https://freewheelingeasy.com/'>FreewheelingEasy in Western Pennsylvania</a></em> &nbsp;
+					<a href='" . site_url('/feedback/')  . "'>Contact Us</a>
+					</span>
+	</div> <!-- close menu-menu-1-container -->
+</div> <!-- close dino-footer -->"; // close container
+        return $html;
+    } // end function footer
+
 }// end class BuildDinoHtml

@@ -180,7 +180,8 @@ body {
 }
 
 .dino-selectImage {
-    height: 75px;
+    max-height: 75px;
+    max-width: 67px;
 }
 
 .dino-info {
@@ -339,6 +340,10 @@ iframe {
     min-height: 26px;
 }
 
+.dino-footer div.navmenu {
+    display: inline-block;
+}
+
 .nav-menu a {
     color: #000000 !important;
     background-color: var(--primary-color);
@@ -365,6 +370,15 @@ iframe {
 .nav-menu li a:focus {
     background-color: var(--primary-color);
     color: #ff0000;
+}
+
+wp-editor-area {
+    border: 2px solid green;
+    column-width: 100%;
+    width: 100%;
+    cols: 180;
+    max-width: 700px;
+    padding: 5px;
 }
 
 .site-footer a {

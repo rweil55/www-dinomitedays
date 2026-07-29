@@ -131,9 +131,19 @@ class dinomitedays_upload
             $msg .= " [ <a href='/designs/$dinoFile.htm' target='finalPage' >Show Page</a> ]";
         }
         $msg .= "</h2>";
-
-        $msg .= "<form method=\"post\" > ";
-
+        //  button for dinosaurs that need page content updates
+        $sqlPageContent = "SELECT  dinoName FROM $wpdbExtra->dinosaurs
+                    WHERE not pageContent like '%<br><span%'
+                         and not pageContent = '' ORDER BY dinoName limit 1";
+        $PageContentName = $wpdbExtra->get_var($sqlPageContent);
+        if (! empty($PageContentName)) {
+            $PageContentForm = "<form method='post' action='/content' >
+            <input type='hidden' name='dino' value='$PageContentName' />
+            <input type='submit' value='Update Page Content $PageContentName' />
+        </form>";
+        } else {
+            $PageContentForm = "";
+        }
         $sql = "select dinoName, filename, logoFilename from $wpdbExtra->dinosaurs order by dinoName ";
         $recs = $wpdbExtra->get_resultsA($sql);
         //      $msg .= "$sql &nbsp; found " . $wpdbExtra->num_rows . " records $eol ";
@@ -141,8 +151,8 @@ class dinomitedays_upload
             <tr class=\"freewheel_td\" >
             <td style=\"vertical-align:middle; \">
         ";
-        $msg .= '<font color=red >Required</font><br />
-            <select id="dino" name="dino" oninput="submit();" >';
+        $msg .= "<form method=\"post\" > ";
+        $msg .= '<select id="dino" name="dino" oninput="submit();" >';
         if (empty($dinoFile))
             $msg .= '<option value="" disabled selected >Pick a dinosaur. </option>
         ';
@@ -167,16 +177,18 @@ class dinomitedays_upload
             $msg .= "<option value=\"$file\">$file</option>\n";
         } // end foreach
         $msg .= "</select>
+                 </form>
             </td>
             <td class='dino-selectImage'>";
         $source = site_url() . "/graphics/$SavedLogoFilename"; // default at the end of the selection
-        $msg .= "
-                <img class='dino-selectImage' src='$source'  />
+        $msg .= "<img class='dino-selectImage' src='$source'  />
+            </td>
+            <td>
+                <br>$PageContentForm
             </td>
         </tr>
         </table>
-        <br />
-            </form>";
+           ";
         return $msg;
     } // end buildDinoSelectionForm
 
@@ -204,6 +216,7 @@ class dinomitedays_upload
         $mapDate = $recDino["mapDate"];
         $latitude = $recDino["Latitude"];
         $longitude = $recDino["Longitude"];
+        $streetView = $recDino["streetViewList"];
         $sponsor = $recDino["Sponsor"];
         $status = $recDino["Status"];
         $notes = $recDino["notes"];
@@ -259,7 +272,8 @@ class dinomitedays_upload
                 <td align='left' valign='center' >
                     Drop file with embedded location data or enter values $eol
                     Latitude  <input name='latitude' id='latitude' type='text' value='$latitude' > $eol
-                    Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol";
+                    Longitude <input name='longitude' id='longitude' type='text' value='$longitude' > $eol
+                    street View <input name='streetView' id='streetView' type='text' value='$streetView' > $eol";
         $msg .=  "Status:" . self::statusField("status", $status);
         $msg .= "$eol Notes: <textarea name='notes' id='notes' width='auto' > $notes</textarea>$eol $eol
                     sponsored by <a href='https://www.google.com/search?q=$sponsor' target='sponsor' > $sponsor </a> $eol
@@ -488,7 +502,7 @@ class dinomitedays_upload
 
             //
             $numberOfSavedImages = 0;
-            $fileSort = rrwParam::Integer("fileSort");      // curent highest number in the existing file names, so we can add one to it for the next file
+            $fileSort = rrwParam::Integer("fileSort");      // current highest number in the existing file names, so we can add one to it for the next file
             foreach ($_FILES as $key => $fileInfo) {
                 if ($debugSave) {
                     $msg .= "debugSave in print is $debugSave$eol";
@@ -566,7 +580,7 @@ class dinomitedays_upload
                     $msg .= uploadProcessDire::nameToBottom($finalName, $photographer);
 
                     if ($debugSave)
-                        $msg .= "I#1330 tmp_name moved to $resizeName then resizedto finalName $finalName then name added? $eol";
+                        $msg .= "I#1330 tmp_name moved to $resizeName then resized to finalName $finalName then name added? $eol";
                 } // end if (!empty($photographer))
             } // end foreach ($files)
             $msg .= $eol;
@@ -582,7 +596,7 @@ class dinomitedays_upload
         return $msg;
     } // end process_upload
 
-    private static function Processfixedfields()
+    private static function ProcessFixedFields()
     {
         global $eol, $errorBeg, $errorEnd;
         global $wpdbExtra;

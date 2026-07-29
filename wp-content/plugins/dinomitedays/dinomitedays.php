@@ -32,10 +32,8 @@ require_once "database.php";
 //require_once "dinomitedays-database.php";
 
 require_once "build-dino-html.php";
-require_once "menu_dino.php";
 require_once "dinomitedays-email-photo.php";
 require_once "dinomitedays-fix.php";
-//require_once "dinomitedays-format.php";
 require_once "dinomitedays-homeFlex.php";
 require_once "dinomitedays-header-block.php";
 require_once "dinomitedays-info-block.php";

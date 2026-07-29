@@ -201,7 +201,7 @@ $eol $eol
         global $wpdbExtra;
         $msg = "";
         $sql = "select keyId, dinoName, latitude, longitude,StreetViewList from " . $wpdbExtra->dinosaurs .
-            " where StreetViewList = '' and latitude != 0 order by dinoName";
+            " where StreetViewList like '0,0%' and latitude != 0 order by dinoName";
         $recs = $wpdbExtra->get_resultsA($sql);
         foreach ($recs as $rec) {
             $keyId = $rec["keyId"];
@@ -210,7 +210,7 @@ $eol $eol
             $longitude = $rec["longitude"];
             $StreetViewList = $rec["StreetViewList"];
             $msg .= "checking keyId=$keyId for dinosaur '$dinoName' with lat=$latitude and lng=$longitude, street view ='$StreetViewList' $eol";
-            $streetView = "0,o,$latitude,$longitude";
+            $streetView = "0,0,$latitude,$longitude";
 
             $set = array("StreetViewList" => "$streetView");
             $which = array("keyId" => "$keyId");

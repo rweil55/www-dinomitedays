@@ -128,23 +128,4 @@ class dinomitedays_header_block
             return "<span class='headerItalic' >$header: </span>$value$eol";
         }
     }   // end oneLine
-    /*
-    public static function createHeaderNavMenu()
-    {
-        $msg = "";
-        $msg .= '
-			<div id="navbar" class="navbar">
-				<nav id="site-navigation" class="navigation main-navigation">
-					<button class="menu-toggle">Menu</button>
-					<div class="menu-menu-1-container">
-                    ';
-        $msg .=  BuildMenus::getMenu()();
-        print "
-                    </div>
-                </nav>
-            </div>
-";
-        return $msg;
-    } // end createHeaderNavMenu
-     */
 } //end class

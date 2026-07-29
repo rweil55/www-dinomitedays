@@ -37,6 +37,7 @@ class dinomitedays_Page_Content
             // submit was pressed, now update the database
             $contentNew = $_POST[$editor_id];  // then new data
             $contentNew = str_replace("'", "'", $contentNew);
+            $contentNew = str_replace("\n\n<p", "<p", $contentNew);
             $contentNew = str_replace("\n", "", $contentNew);   // remove previously installed newlines
 
             $msg .= self::addClassAbout($contentNew);           // add class to the about strings
@@ -61,8 +62,9 @@ class dinomitedays_Page_Content
         $msg .= "<form method='post' >";
         // $msg .= rrwUtil::print_r($contentCurrent, true, "I#1388 Current Content") . $eol;
         ob_start();
-        wp_editor($contentCurrent, $editor_id,  array('textarea_name' => $editor_id, 'media_buttons' => false, 'editor_height' => 350, 'editor_width' => 700, 'teeny' => true));
+        wp_editor($contentCurrent, $editor_id,  array('textarea_name' => $editor_id, 'media_buttons' => false, 'editor_height' => 350, 'editor_width' => 1200, 'teeny' => true));
         $editor_html = ob_get_clean();
+        $editor_html = str_replace('cols="40"', 'cols="120"', $editor_html);
         $msg .= $editor_html;
         $msg .= '<input type="hidden" name="dino" value="' . $dino . '" />
         <input type="submit" value="Accept these changes" />
@@ -98,8 +100,14 @@ class dinomitedays_Page_Content
                 }
                 $msg .= self::findEndTagGivenStartTag($content, $iiRight);
                 $content = substr($content, 0, $iiNewEnd) . "<br><span class=\'dino-page-content\'>" . substr($content, $iiRight);
-            }
-        }
+                $iiEndParagraph = strpos($content, "</p>", $iiNewEnd);
+                if ($iiEndParagraph !== false) {
+                    if (substr($content, $iiEndParagraph - 1, 1) != ">") {
+                        $content = substr($content, 0, $iiEndParagraph) . "<span>" . substr($content, $iiEndParagraph);
+                    }
+                }
+            } // end if found an about heading
+        } // end foreach aboutHeading
         return "</pre>
         $msg";
     } // end function addClassAbout
