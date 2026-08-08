@@ -7,13 +7,9 @@
   <META http-equiv="PICS-Label"
     content='(PICS-1.1 "http://www.classify.org/safesurf/" l gen true for "https://dinomitedays.org/" r (SS~~000 1))'>
   <META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
-  <SCRIPT language=JavaScript type="text/javascript">
-< !--
+  < !-- defauult.htm -->
 
-
-< !--
-
-< !--
+    <SCRIPT language=JavaScript type="text/javascript">
       function MM_preloadImages() { //v3.0
         var d = document; if (d.images) {
           if (!d.MM_p) d.MM_p = new Array();
@@ -22,47 +18,47 @@
         }
       }
 
-    function MM_swapImgRestore() { //v3.0
-      var i, x, a = document.MM_sr; for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;
-    }
-
-    function MM_swapImage() { //v3.0
-      var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)
-        if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }
-    }
-
-    function MM_findObj(n, d) { //v4.01
-      var p, i, x; if (!d) d = document; if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
-        d = parent.frames[n.substring(p + 1)].document; n = n.substring(0, p);
-      }
-      if (!(x = d[n]) && d.all) x = d.all[n]; for (i = 0; !x && i < d.forms.length; i++) x = d.forms[i][n];
-      for (i = 0; !x && d.layers && i < d.layers.length; i++) x = MM_findObj(n, d.layers[i].document);
-      if (!x && d.getElementById) x = d.getElementById(n); return x;
-    }
-
-    function jumpPage(newLoc) {
-
-      newPage = newLoc.options[newLoc.selectedIndex].value
-
-
-
-      if (newPage != "") {
-
-        window.location.href = newPage
-
+      function MM_swapImgRestore() { //v3.0
+        var i, x, a = document.MM_sr; for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;
       }
 
-    }
-    //-->
-  </SCRIPT>
+      function MM_swapImage() { //v3.0
+        var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)
+          if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }
+      }
 
-  <META
-    content="DinoMite Days, Dynomite Days, Dinosaurs, public art, Pittsburgh, Carnegie Museum of Natural History, street art, Dinosaurs on Parade, Tyrannosaurus rex, Torosaurus, Stegosaurus, cultural display, paintings, sculptures"
-    name=keywords>
-  <META
-    content="Carnegie Museum of Natural History and the City of Pittsburgh, Pennsylvania are proud to announce DinoMite Days -- a citywide art event that celebrates Pittsburgh's international reputation for scientific excellence while showcasing emerging and established artists."
-    name=description>
-  <META content="MSHTML 5.50.4522.1800" name=GENERATOR>
+      function MM_findObj(n, d) { //v4.01
+        var p, i, x; if (!d) d = document; if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+          d = parent.frames[n.substring(p + 1)].document; n = n.substring(0, p);
+        }
+        if (!(x = d[n]) && d.all) x = d.all[n]; for (i = 0; !x && i < d.forms.length; i++) x = d.forms[i][n];
+        for (i = 0; !x && d.layers && i < d.layers.length; i++) x = MM_findObj(n, d.layers[i].document);
+        if (!x && d.getElementById) x = d.getElementById(n); return x;
+      }
+
+      function jumpPage(newLoc) {
+
+        newPage = newLoc.options[newLoc.selectedIndex].value
+
+
+
+        if (newPage != "") {
+
+          window.location.href = newPage
+
+        }
+
+      }
+      //-->
+    </SCRIPT>
+
+    <META
+      content="DinoMite Days, Dynomite Days, Dinosaurs, public art, Pittsburgh, Carnegie Museum of Natural History, street art, Dinosaurs on Parade, Tyrannosaurus rex, Torosaurus, Stegosaurus, cultural display, paintings, sculptures"
+      name=keywords>
+    <META
+      content="Carnegie Museum of Natural History and the City of Pittsburgh, Pennsylvania are proud to announce DinoMite Days -- a citywide art event that celebrates Pittsburgh's international reputation for scientific excellence while showcasing emerging and established artists."
+      name=description>
+    <META content="MSHTML 5.50.4522.1800" name=GENERATOR>
 </HEAD>
 
 <BODY background="graphics/bg.gif" text="000000" leftmargin=0 topmargin=0 marginwidth=0 marginheight=0
@@ -150,7 +146,8 @@
                                                         <font color="#003399" size="2">of
                                                           your favorite dinos: <br>
                                                         </font>
-                                                      </b></font><b><a href="sold_price.htm">
+                                                      </b>
+                                                    </font><b><a href="sold_price.htm">
                                                         <font color="#FF9900" size="2"
                                                           face="Arial, Helvetica, sans-serif">By
                                                           Price</font>
@@ -176,27 +173,22 @@
                                                       <font color="#FF9900" size="2"
                                                         face="Arial, Helvetica, sans-serif"><b>By
                                                           Last seen date</b></font>
-                                                    </a><a href="/last_seen/?lastorkey=key">
-                                                      <font color="#FF9900" size="2"
-                                                        face="Arial, Helvetica, sans-serif"><b>.
-                                                    </a> |
-                                                    <a href="/map/">
-                                                      <font color="#FF9900" size="2"
-                                                        face="Arial, Helvetica, sans-serif"><b>By Map</b></font>
-                                                    </a><br>
+                                                    </a> | <font color="#FF9900" size="2"
+                                                      face="Arial, Helvetica, sans-serif"><b>By Map</b></font><br>
 
                                                   </p>
                                                   <p align="center">
                                                     <font color="#009900" size="2" face="Arial, Helvetica, sans-serif">
                                                       <b>If
-                                                        you are a dinosaur owner, please</b></font><br>
-                                                    <a href="/online.htm">
+                                                        you are a dinosaur owner, please</b>
+                                                    </font><br>
+                                                    <a href="online.htm">
                                                       <font color="#009900" size="2"
                                                         face="Arial, Helvetica, sans-serif"><b>click
                                                           for repair information</b></font>
                                                     </a>
                                                     <br>
-                                                    <a href="/update/">
+                                                    <a href="upload">
                                                       <font color="#009900" size="2"
                                                         face="Arial, Helvetica, sans-serif"><b>click
                                                           to update information</b></font>
@@ -209,10 +201,11 @@
                                                   <p align="center">
                                                     <font color="#003399" size="2" face="Arial, Helvetica, sans-serif">
                                                       <b>Search by picture !<br>
-                                                        <a href="/pictures.htm"><img
+                                                        <a href="pictures.htm"><img
                                                             src="graphics/pictureCollection2.png" alt="magnet"
                                                             width="200" border="0"></a>
-                                                      </b></font>
+                                                      </b>
+                                                    </font>
                                                   </p>
                                                 </td>
                                                 <td width=20 valign=top background="graphics/green_right.gif"><img
@@ -240,7 +233,7 @@
                                                         face="Arial, Helvetica, sans-serif">
                                                         <font color="#CC0000" size="3"
                                                           face="Arial, Helvetica, sans-serif">
-                                                          <font color="#000000" size="2"><b><a href="/sold_dino.htm">
+                                                          <font color="#000000" size="2"><b><a href="sold_dino.htm">
                                                                 <font color="#FF9900" size="3"
                                                                   face="Arial, Helvetica, sans-serif"><b><img
                                                                       src="graphics/sq_t_keating.gif"
@@ -262,7 +255,7 @@
                                                           parts of the region as </font>
                                                         <font color="#CC0000" size="3"
                                                           face="Arial, Helvetica, sans-serif"><b><a
-                                                              href="/sold_lot.htm"><img src="graphics/rex_sm.gif"
+                                                              href="sold_lot.htm"><img src="graphics/rex_sm.gif"
                                                                 alt="Amazing Hands" width="66" height="80" border=0
                                                                 align="right"></a></b></font>
                                                         <font color="#000000" size="2">a
@@ -320,7 +313,7 @@
                                 <TBODY>
                                   <TR vAlign=top>
                                     <!-- row 1 -->
-                                    <TD width="175" bgcolor="#FFFFFF"><a href="/index.htm"><IMG src="graphics/logo.gif"
+                                    <TD width="175" bgcolor="#FFFFFF"><a href="index.htm"><IMG src="graphics/logo.gif"
                                           alt="logo" width=175 height=111 hspace="0" border=0></a></TD>
                                   </TR>
                                   <TR vAlign=top>
@@ -332,7 +325,7 @@
                                   </TR>
                                   <TR vAlign=top>
                                     <!-- row 2 -->
-                                    <TD><a href="/online.htm"><img
+                                    <TD><a href="online.htm"><img
                                           onMouseOver="MM_swapImage('auction_info','','graphics/auction_over.gif',1)"
                                           onMouseOut=MM_swapImgRestore() height=29 alt="Auction Information"
                                           src="graphics/auction.jpg" width=175 border=0 name=auction_info></a></TD>
@@ -353,7 +346,7 @@
                                   </TR>
                                   <TR vAlign=top>
                                     <!-- row 5 -->
-                                    <TD><A href="/events.htm"><IMG
+                                    <TD><A href="events.htm"><IMG
                                           onmouseover="MM_swapImage('event_sched','','graphics/event_over.gif',1)"
                                           onmouseout=MM_swapImgRestore() height=29 alt="Event Schedule"
                                           src="graphics/event.jpg" width=175 border=0 name=event_sched></A></TD>
@@ -367,7 +360,7 @@
                                   </TR>
                                   <TR vAlign=top>
                                     <!-- row 5 -->
-                                    <TD><a href="/media.htm"><img
+                                    <TD><a href="media.htm"><img
                                           onMouseOver="MM_swapImage('sponsaurships','','graphics/media_over.gif',1)"
                                           onMouseOut=MM_swapImgRestore() height=29 alt="Press Releases and News"
                                           src="graphics/media.jpg" width=175 border=0 name=sponsaurships></a></TD>
@@ -381,7 +374,7 @@
                                   </TR>
                                   <TR vAlign=top>
                                     <!-- row 7 -->
-                                    <TD><a href="/index.htm"><img
+                                    <TD><a href="index.htm"><img
                                           onMouseOver="MM_swapImage('home','','graphics/home_over.gif',1)" height=29
                                           onMouseOut=MM_swapImgRestore() alt="Home" src="graphics/home.jpg" width=175
                                           border=0 name=home></a></TD>
@@ -389,10 +382,11 @@
                                 </TBODY>
                               </TABLE>
                               <img src="graphics/laurel.gif" name="Laurel" alt="Major sponsor: The Laurel Foundation"
-                                width="147" border="0"><br><br />
+                                width="175" height="86" border="0"><br>
                               <a href="https://carnegiemnh.org/" onMouseOut="MM_swapImgRestore()"
                                 onMouseOver="MM_swapImage('cmnh','','graphics/cmnh_over.gif',1)" target="top"><img
-                                  src="graphics/logo2022.jpg" name="cmnh" alt="CMNH website" width="147" border="0"></a>
+                                  src="graphics/cmnh.gif" name="cmnh" alt="CMNH website" width="147" height="114"
+                                  border="0"></a>
                               <p>
                               </p>
                             </DIV>
@@ -421,44 +415,27 @@
                 <tr>
                   <td colspan="2" width=751>
                     <DIV align=center>
-                      <font size="2" face="Arial, Helvetica, sans-serif">
-                        <div id="dinofooter" class="dinoFooter">
-                          <!-- udated 2025-11-24 -->
-                          <div id="dinofoorterlinks" align=left>
-                            <font size="2" face="Arial, Helvetica, sans-serif" style="background-color:orange;">
-                              <b>Dinosaurs:&nbsp; </b>
-                              <a href="/map/">map</a> .
-                              <a href="/auctions.htm">gala &amp; auction</a> .
-                              <a href="/pictures.htm">dino pictures</a> .
-                              <a href="/store.htm">dinostore</a> .
-                              <a href="/awards.htm">people's choice</a>
-                              <br>
-                              <b>Information:&nbsp; </b>
-                              <a href="/media.htm">media room</a> .
-                              <a href="/sponsorship.htm">sponsorship</a> .
-                              <a href="/events.htm">events</a> .
-                              <a href="/index.htm">home</a> .
-                              <a href="mailto:dinomite@carnegiemuseums.org">contact us</a> .
-                              <a href="/web.htm">website</a> .
-                              <a href='https://carnegiemnh.org/jurassic-days-dino-statue-driving-tour/'> driving
-                                tour</a>
-                              <br>
-                              <b>Search by:</b>&nbsp; <a href="/steg.htm">stegosaurus</a> .
-                              <a href="/toro.htm">torosaurus</a> .
-                              <a href="/rex.htm">t-rex</a> .
-                              <a href="/map/">location</a> .
-                              <a href="/artist.htm">artist</a> .
-                              <a href="/sponsor.htm">sponsor</a>
-                            </font>
-                            <br align="center">
-                            <font size='1.95' face="Arial, Helvetica, sans-serif" style="background-color:orange;">
-                              <a name="floor"></a>&copy;
-
-                              2003 Carnegie Museum of Natural History<sup>&reg;</sup>, DinoMiteDays<sup>SM</sup>,
-                              hosted by<a href='https://freewheelingeasy.com' class="external"> freewheeling Easy</a>
-                            </font> <br />
-                          </div> <!-- end dinofoorterlinks -->
-                        </div> <!-- end dinofooter -->
+                      <font size="2" face="Arial, Helvetica, sans-serif"><b>Dinosaurs:&nbsp;
+                        </b> <a href="maps/">maps</a> . <a href="auctions.htm">gala & auctions</a> . <a
+                          href="pictures.htm">dino pictures</a> . <a href="fun.htm">fun
+                          stuff!</a> . <a href="store.htm">dinostore</a> . <a href="awards.htm">people's
+                          choice</a><br>
+                        <b>Information:&nbsp; </b><a href="media.htm">media room</a>
+                        . <a href="sponsorship.htm">sponsorship</a> . <a href="fun.htm"></a><b>
+                        </b> <a href="events.htm">events</a> . <a href="index.htm">home</a>
+                        . <a href="mailto:cmnhweb@carnegiemnh.org">contact us</a>
+                        . <a href="web.htm">website</a><br>
+                        <b>Search by:</b>&nbsp; <a href="steg.htm">stegosaurus</a>
+                        . <a href="toro.htm">torosaurus</a> . <a href="rex.htm">t.
+                          rex</a> . <a href="maps/">location</a> . <a href="artist.htm">artist</a>
+                        . <a href="sponsor.htm">sponsor</a>
+                      </font>
+                      <p align="center">
+                        <font size="2" face="Arial, Helvetica, sans-serif"><a name="floor"></a>&copy;
+                          2003 Carnegie Museum of Natural History<sup>&reg;</sup> and DinoMite
+                          Days<sup>SM</sup></font>
+                      </p>
+                      <p align="center">&nbsp;</p>
                     </DIV>
                   </TD>
                 </TR>

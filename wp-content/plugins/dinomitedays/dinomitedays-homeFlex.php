@@ -90,13 +90,11 @@ class homeOriginal
                     <b>click for repair information</b></font>
                 </a>
                 <br>
-                <a href="/update/">
-                    <font color="#009900" size="2" face="Arial, Helvetica, sans-serif"><b>
-                        click to update information</b></font></a>
             </div>
             <div class="flex-col">
              <font color="#003399" size="2" face="Arial, Helvetica, sans-serif">
-                    <b>Search by picture !</b></font><br>
+                    <b>Search by picture !</b>
+                    </font>
     ';
         $sqlAll = dinomitedays_misc_pages::dinoSglSelect . " $wpdbExtra->dinosaurs ORDER BY dinoName";
         $msg .= dinomitedays_misc_pages::gridDisplay($sqlAll, "nameOnly");
@@ -111,11 +109,9 @@ class homeOriginal
                                                 <div align="center">
                                                     <p align="left">
                                                         <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif">
-                                                            <font color="#CC0000" size="3" face="Arial, Helvetica, sans-serif">
-                                                                <font color="#000000" size="2"><b><a href="/sold_dino.htm">
-                                                                            <font color="#FF9900" size="3" face="Arial, Helvetica, sans-serif"><b><img src="graphics/0006_sm.gif" alt="Cogitatio Aeterna" width="120" height="110" border="0" align="left"></b></font>
-                                                                        </a></b></font>
-                                                            </font>
+                                                            <a href="/designs/childhosp.htm">
+                                                                           <b><img src="graphics/sq_r_T.%20reX%20Ray.jpg" alt="T. reX Ray" width="120" height="110" border="0" align="left"></b>
+                                                            </a>
                                                             <font color="#000000" size="2">&quot;TIME
                                                                 MARCHES ON, so it\'s only natural
                                                                 that Pittsburgh\'s age of the
