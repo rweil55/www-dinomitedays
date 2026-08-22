@@ -116,15 +116,15 @@ class dinomitedays_upload
         $target = "target='edit'";
         $msg .= "
         <h2>Update
-            [ <a href='/hunters' $target >Hunters</a> ]
-            [ <a href='/tracker' $target >Tracker </a> ]
-            [ <a href='/leads' $target >hints about where to look </a> ]
-             [ <a href='/upload' $target >Upload</a> ]";
+            [ <a href='/hunters/' $target >Hunters</a> ]
+            [ <a href='/tracker/' $target >Tracker </a> ]
+            [ <a href='/leads/' $target >hints about where to look </a> ]
+             [ <a href='/upload/' $target >Upload</a> ]";
         if (is_user_logged_in()) {
             $msg .= "
-            [ <a href='/info-update' target='infoUpdate' >Information Block</a> ]
+            [ <a href='/info-update/' target='infoUpdate' >Information Block</a> ]
             [ <a href='/update/' $target >Photos</a> ]
-            [ <a href='/content/' $target>Page Content</a> ]
+            [ <a href='/content/' $target >Page Content</a> ]
             [ <a href='/build-dino-page/' $target >Compare Page Content</a> ]";
         }
         if (! empty($dinoFile)) {

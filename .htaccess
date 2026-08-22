@@ -5,9 +5,20 @@ RewriteOptions inherit
 Options -Indexes
 
 RewriteRule ^.*maps.index.htm$ /map/ [R=301,L]
-RewriteRule ^$ /index.htm [R=301,L]
 
 RewriteRule ^.*\/fun\/.*.htm$ /fun.htm [R=301,L]
+
+RewriteRule ^index.htm.*$ / [R=301,L]
+
+RewriteRule ^.*maps.htm.*$ /map [R=301,L]
+RewriteRule ^.*pictures.htm$ /thumbnails [R=301,L]
+RewriteRule ^.*pictures_[1-5].htm$ /thumbnails [R=301,L]
+RewriteRule ^.*steg.htm$ /thumbnails/?type=stegosaurus [R=301,L]
+RewriteRule ^.*steg2.htm$ /thumbnail/?type=stegosaurus [R=301,L]
+RewriteRule ^.*toro.htm$ /thumbnails/?type=triceratops [R=301,L]
+RewriteRule ^.*toro2.htm$ /thumbnails/?type=triceratops [R=301,L]
+RewriteRule ^.*rex.htm$ /thumbnails/?type=t-rex [R=301,L]
+
 
 # BEGIN WordPress
 # The directives (lines) between "BEGIN WordPress" and "END WordPress" are

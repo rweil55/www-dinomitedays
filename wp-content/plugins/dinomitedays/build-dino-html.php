@@ -224,7 +224,7 @@ class BuildDinoHtml
         $html .= "
                 </td>
                 <td class='menucolor' >
-                    <a href='/' ><img src='" . site_url("/wp-content/themes/roys-header/images/dinomitedaysLogo-85.png") . "' alt='dinomitedays logo image' > </a>
+                    <a href='/' ><img src='" . site_url("/wp-content/themes/roys-header/images/dinomiteLogo-85.png") . "' alt='dinomitedays logo image' > </a>
                 </td>
             </tr>
             </table>

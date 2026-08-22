@@ -27,4 +27,4 @@ RewriteRule . /index.php [L]
 # END WordPress
 
 php_value post_max_size 64M
-DirectoryIndex default.htm
+

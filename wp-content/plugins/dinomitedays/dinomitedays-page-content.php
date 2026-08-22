@@ -69,6 +69,14 @@ class dinomitedays_Page_Content
         $msg .= '<input type="hidden" name="dino" value="' . $dino . '" />
         <input type="submit" value="Accept these changes" />
         </form>';
+        $msg .=  "<P>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxxx is on a private residence.
+        Please respect personal property. Do not leave the road to approach the dinosaur.</span></p>") .
+            "</p><p>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxx is inside a place of business.
+         Please be respectful and do not cause any disruption.</span></p>") .
+            "</p><p>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxx is on a private residence and is not visible from the road.
+                Please respect personal property.
+                Do not leave the road to approach the dinosaur without asking permission.</span></p>");
+
         return $msg;
     } // end function render_page_content
 
