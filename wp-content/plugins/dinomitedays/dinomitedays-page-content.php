@@ -36,6 +36,9 @@ class dinomitedays_Page_Content
         if (! empty($_POST[$editor_id])) {
             // submit was pressed, now update the database
             $contentNew = $_POST[$editor_id];  // then new data
+            $sqlPage = "update $wpdbExtra->dinosaurs set pageContent = '$contentNew' where fileName = '$FileName'";
+            $wpdbExtra->query($sqlPage);
+
             $contentNew = str_replace("'", "'", $contentNew);
             $contentNew = str_replace("\n\n<p", "<p", $contentNew);
             $contentNew = str_replace("\n", "", $contentNew);   // remove previously installed newlines
@@ -69,13 +72,17 @@ class dinomitedays_Page_Content
         $msg .= '<input type="hidden" name="dino" value="' . $dino . '" />
         <input type="submit" value="Accept these changes" />
         </form>';
-        $msg .=  "<P>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxxx is on a private residence.
+        $msg .= "<P>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxxx is on a private residence.
         Please respect personal property. Do not leave the road to approach the dinosaur.</span></p>") .
             "</p><p>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxx is inside a place of business.
          Please be respectful and do not cause any disruption.</span></p>") .
             "</p><p>" . htmlspecialchars("<p class='dino-page-about'>About the Location<br><span class='dino-page-content'>xxxxx is on a private residence and is not visible from the road.
                 Please respect personal property.
                 Do not leave the road to approach the dinosaur without asking permission.</span></p>");
+        $msg .= "</p>" . htmlspecialchars("<a href=\"../online.htm\" target=\"_blank\"><img src=\"../graphics/sold_online.gif\" width=\"225\" height=\"179\"
+                    align=right alt=\"Sold!\" border=0></a>")
+            . "<br> " . htmlspecialchars("<a href=\"https://dinomitedays.org/online.htm\" target=\"_blank\" rel=\"noopener\">
+                    <img src=\"https://dinomitedays.org/graphics/click_sold.gif\" alt=\"I've been adopted!\" width=\"225\" height=\"179\" align=\"right\" border=\"0\" /></a>");
 
         return $msg;
     } // end function render_page_content

@@ -217,6 +217,8 @@ class dinomitedays_misc_pages
                 if ($filename == "aa")
                     continue;   // igmore testing record
                 $dinoName = $rec["dinoName"];
+                if (empty($dinoName))
+                    $dinoName = "Unknown Dinosaur";
                 $dinoNameDisplay1 = str_replace("'", "&quot;", $dinoName);
                 $dinoNameDisplay = "<a href='/designs/$filename.htm' $targetTab>$dinoNameDisplay1</a>";
                 $status = $rec["status"];

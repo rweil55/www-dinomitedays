@@ -103,6 +103,9 @@ class dinomitedays_fix
             case "reviewdate":
                 $msg .= self::reviewDate();
                 break;
+            case "reviewall":
+                $msg .= self::reviewAll();
+                break;
             case "reviewnew":
                 $msg .= self::reviewNew();
                 break;
@@ -163,6 +166,14 @@ $eol $eol
         $msg .= self::review($sqlDate);
         return $msg;
     }
+    private static function reviewAll()
+    {
+        global $eol, $wpdbExtra;
+        $msg = "Reviewing alldinosaurs  $eol";
+        $sqlDate = "select fileName from $wpdbExtra->dinosaurs order by dinoName";
+        $msg .= self::review($sqlDate);
+        return $msg;
+    }
     private static function reviewNew()
     {
         global $eol, $wpdbExtra;
@@ -181,6 +192,8 @@ $eol $eol
             $msg .= "found " . $wpdbExtra->num_rows . " dinosaurs $eol";
             $cnt = 0;
             $msg .= "<script>\n";
+            $msg .= "function doit() {\n";
+            $msg .= "alert('Opening dinosaur pages');\n";
             foreach ($recsFix as $dinoData) {
                 $cnt++;
                 if ($cnt > 200)
@@ -189,6 +202,7 @@ $eol $eol
                 $url = "https://dinomitedays.org/designs/$fileName.htm";
                 $msg .= "window.open( '$url', '$fileName' );\n";
             }
+            $msg .= "} \ndoit();\n";
             $msg .= "</script>\n";
         } catch (Exception $ex) {
             $msg .= "Error: " . $ex->getMessage() . $eol;
@@ -235,7 +249,11 @@ $eol $eol
         $fileFull = "$file";
         if (file_exists($fileFull)) {
             $iiSlash = strrpos($fileFull, "/");
-            $fileFullObsolete = substr($fileFull, 0, $iiSlash) . "obsolete/" . substr($fileFull, $iiSlash + 1);
+            $direObsolete = substr($fileFull, 0, $iiSlash) . "/obsolete";
+            if (!file_exists($direObsolete)) {
+                mkdir($direObsolete, 0777, true);
+            }
+            $fileFullObsolete =  $direObsolete  . "/" . substr($fileFull, $iiSlash + 1);
             $msg .= "renaming $fileFull to $fileFullObsolete $eol";
             if (rename($fileFull, $fileFullObsolete)) {
                 $msg .= "moved to obsolete file $fileFull $eol";

@@ -1,22 +1,18 @@
 @charset "utf-8";
-
 /* CSS Document */
 :root {
     --primary-color: #dd9933;
 }
-
 a.external {
     background-position: right center;
     background-repeat: no-repeat;
     background-image: linear-gradient(transparent, transparent), url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%3E%3Cg%20transform%3D%22translate%28-826.429%20-698.791%29%22%3E%3Crect%20width%3D%225.982%22%20height%3D%225.982%22%20x%3D%22826.929%22%20y%3D%22702.309%22%20fill%3D%22%23fff%22%20stroke%3D%22%2306c%22%2F%3E%3Cg%3E%3Cpath%20d%3D%22M831.194%20698.791h5.234v5.391l-1.571%201.545-1.31-1.31-2.725%202.725-2.689-2.689%202.808-2.808-1.311-1.311z%22%20fill%3D%22%2306f%22%2F%3E%3Cpath%20d%3D%22M835.424%20699.795l.022%204.885-1.817-1.817-2.881%202.881-1.228-1.228%202.881-2.881-1.851-1.851z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
     padding-right: 13px;
 }
-
 .freewheel_td {
     border: 2px solid red;
     vertical-align: top;
 }
-
 .drop-zone {
     height: 180px;
     width: 180px;
@@ -33,15 +29,12 @@ a.external {
     border: 4px dashed #009578;
     border-radius: 10px;
 }
-
 .drop-zone--over {
     border-style: solid;
 }
-
 .drop-zone__input {
     display: none;
 }
-
 .drop-zone__thumb {
     width: 100%;
     height: 100%;
@@ -51,7 +44,6 @@ a.external {
     background-size: cover;
     position: relative;
 }
-
 .drop-zone__thumb::after {
     /*  content: attr(data-label);  */
     position: absolute;
@@ -64,7 +56,6 @@ a.external {
     font-size: 14px;
     text-align: center;
 }
-
 .rrwDinoGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180pt, 1fr));
@@ -73,7 +64,6 @@ a.external {
     grid-row-gap: 1px;
     padding: 0;
 }
-
 .rrwDinoItem {
     padding: 5px;
     margin: 0;
@@ -83,7 +73,6 @@ a.external {
     background-color: white;
     grid-column-gap: 1px;
 }
-
 .dinomitedaysGrid {
     display: grid;
     grid-gap: 2px;
@@ -91,50 +80,41 @@ a.external {
     color: black;
     grid-template-columns: repeat(auto-fill, minmax(120px, 120px));
 }
-
 .dinomitedaysGridItem {
     background-color: white;
     color: black;
     border-radius: 5px;
     padding: 0px;
 }
-
 .rrwDinoItemWrap {
     overflow-wrap: normal;
 }
-
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
     background-color: #ffffff;
 }
-
 .body-outside {
     font-family: Arial, sans-serif;
     background-color: var(--primary-color);
     height: 100%;
 }
-
 .body-inside {
     background-color: white;
     margin: 10px;
 }
-
 .body-inside-margin {
     margin: 5px;
 }
-
 .dinoMenu {
     color: black;
     background-color: var(--primary-color);
     text-align: left;
     line-height: 1;
 }
-
 .dinoMenu a {
     color: black;
 }
-
 .dino-header {
     font-size: 32px;
     font-weight: bold;
@@ -143,13 +123,11 @@ body {
     width: 100%;
     margin: 0px;
 }
-
 .dino-header-table {
     border: 2;
     width: 100%;
     background-color: var(--primary-color);
 }
-
 .dino-header-text {
     font-size: 32px;
     font-weight: bold;
@@ -157,7 +135,6 @@ body {
     text-align: left;
     background-color: var(--primary-color);
 }
-
 .site-title {
     font-size: 24px;
     line-height: 0.35;
@@ -167,7 +144,6 @@ body {
     padding-bottom: 5px;
     background-color: var(--primary-color);
 }
-
 .dino-header-image {
     height: 58px;
     width: auto;
@@ -178,21 +154,20 @@ body {
     justify-content: flex-end;
     background-color: var(--primary-color);
 }
-
 .dino-selectImage {
     max-height: 75px;
     max-width: 67px;
 }
-
 .dino-info {
     padding-top: 10px;
     float: center;
     Align-items: center;
     background-color: #ffffff;
 }
-
-.dino-page-content {
-    /* font-size: smaller;  */
+.dino-page-content,
+p {
+    font-size: small;
+    /* Changed from smaller to small */
     margin-top: 20px;
     margin-right: inherit;
     font-weight: normal;
@@ -200,7 +175,6 @@ body {
     color: black;
     background-color: white;
 }
-
 .dino-page-about {
     font-family: Arial, Helvetica, sans-serif;
     font-size: small;
@@ -208,7 +182,6 @@ body {
     font-style: italic;
     color: #003399;
 }
-
 .dino-body-image-left {
     max-width: 200px;
     height: auto;
@@ -219,7 +192,6 @@ body {
     justify-content: flex-end;
     background-color: #ffffff;
 }
-
 .dino-body-image-right {
     max-width: 200px;
     height: auto;
@@ -230,12 +202,10 @@ body {
     justify-content: flex-end;
     background-color: #ffffff;
 }
-
 .dino-subheader {
     font-weight: bold;
     font-style: italic;
 }
-
 .dino-bottom-image {
     max-width: 40%;
     width: 300px;
@@ -243,19 +213,16 @@ body {
     padding: 7px;
     background-color: #ffffff;
 }
-
 .dino-footer {
     margin-top: 20px;
     font-size: 14px;
     color: black;
     background-color: var(--primary-color);
 }
-
 .dino-footer-copyright {
     font-size: 10px;
     padding: 10px;
 }
-
 /* Optional styling for visualization */
 .dino-iframe-left,
 .dino-iframe-right {
@@ -264,37 +231,29 @@ body {
     height: 600px;
     width: 610px;
 }
-
 .dino-iframe-left {
     background-color: lightblue;
 }
-
 .dino-iframe-right {
     background-color: lightgreen;
 }
-
 iframe {
     width: 100%;
     height: 100%;
 }
-
 .container {
     display: flex;
 }
-
 .pageBreakBefore {
     clear: both;
     page-break-before: always;
 }
-
 .knownLoc {
     margin: 1px;
 }
-
 .knownLocTr td {
     vertical-align: top;
 }
-
 .menu-item {
     font-size: 18px;
     font-weight: bold;
@@ -302,7 +261,6 @@ iframe {
     color: black;
     background-color: var(--primary-color);
 }
-
 .dino-header {
     font-size: 32px;
     font-weight: bold;
@@ -311,13 +269,11 @@ iframe {
     width: 100%;
     margin: 0px;
 }
-
 .dino-header-table {
     border: 2;
     width: 100%;
     background-color: var(--primary-color);
 }
-
 .dino-header-menu {
     text-align: right;
     background-color: var(--primary-color);
@@ -327,29 +283,24 @@ iframe {
     text-align: left;
     line-height: 1;
 }
-
 .menucolor {
     color: black;
     background-color: var(--primary-color);
     min-height: 14px;
 }
-
 .menuitem {
     color: #000000;
     background-color: var(--primary-color);
     min-height: 26px;
 }
-
 .dino-footer div.navmenu {
     display: inline-block;
 }
-
 .nav-menu a {
     color: #000000 !important;
     background-color: var(--primary-color);
     min-height: 26px;
 }
-
 .nav-menu .current_page_item>a,
 .nav-menu .current_page_ancestor>a,
 .nav-menu .current-menu-item>a,
@@ -357,13 +308,11 @@ iframe {
     color: #000000 !important;
     background-color: var(--primary-color);
 }
-
 .nav-menu .sub-menu,
 .nav-menu .children {
     background-color: var(--primary-color);
     border: 2px solid var(--primary-color);
 }
-
 .nav-menu li:hover>a,
 .nav-menu li a:hover,
 .nav-menu li:focus>a,
@@ -371,7 +320,6 @@ iframe {
     background-color: var(--primary-color);
     color: #ff0000;
 }
-
 wp-editor-area {
     border: 2px solid green;
     column-width: 100%;
@@ -380,7 +328,6 @@ wp-editor-area {
     max-width: 700px;
     padding: 5px;
 }
-
 .site-footer a {
     color: #000000 !important;
     background-color: var(--primary-color);

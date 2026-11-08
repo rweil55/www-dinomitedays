@@ -106,7 +106,11 @@ class dinomitedays_upload
         $msg = "";
         $optionName = "dinomitedays_dino";
         $dinoFile1 = get_option($optionName);
+        $dinoFile1 = str_replace(" ", "", $dinoFile1);
+        $dinoFile1 = str_replace("-", "", $dinoFile1);
         $dinoFile2 = rrwParam::String("dino", $_POST);
+        $dinoFile2 = str_replace(" ", "", $dinoFile2);
+        $dinoFile2 = str_replace("-", "", $dinoFile2);
         if (empty($dinoFile2)) {
             $dinoFile = $dinoFile1;
         } else {
@@ -132,17 +136,18 @@ class dinomitedays_upload
         }
         $msg .= "</h2>";
         //  button for dinosaurs that need page content updates
-        $sqlPageContent = "SELECT  dinoName FROM $wpdbExtra->dinosaurs
-                    WHERE not pageContent like '%<br><span%'
-                         and not pageContent = '' ORDER BY dinoName limit 1";
-        $PageContentName = $wpdbExtra->get_var($sqlPageContent);
-        if (! empty($PageContentName)) {
-            $PageContentForm = "<form method='post' action='/content' >
-            <input type='hidden' name='dino' value='$PageContentName' />
-            <input type='submit' value='Update Page Content $PageContentName' />
+        $sqlPageContent = "SELECT  dinoName, fileName FROM $wpdbExtra->dinosaurs
+                    WHERE pageContent = '' ORDER BY dinoName limit 1";
+        $recs = $wpdbExtra->get_resultsA($sqlPageContent);
+        if ($wpdbExtra->num_rows > 0) {
+            $pageContentName = $recs[0]["dinoName"];
+            $pageFilename = $recs[0]["fileName"];
+            $pageContentForm = "<form method='post' action='/build-dino-page' >
+            <input type='hidden' name='dino' value='$pageFilename' />
+            <input type='submit' value='Update Page Content $pageContentName' />
         </form>";
         } else {
-            $PageContentForm = "";
+            $pageContentForm = "";
         }
         $sql = "select dinoName, filename, logoFilename from $wpdbExtra->dinosaurs order by dinoName ";
         $recs = $wpdbExtra->get_resultsA($sql);
@@ -184,7 +189,7 @@ class dinomitedays_upload
         $msg .= "<img class='dino-selectImage' src='$source'  />
             </td>
             <td>
-                <br>$PageContentForm
+                <br>$pageContentForm
             </td>
         </tr>
         </table>

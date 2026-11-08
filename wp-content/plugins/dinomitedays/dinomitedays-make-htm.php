@@ -18,12 +18,11 @@ class dinomitedays_make_html
             if ($fileInfo->isDot())
                 continue;
             $entry = $fileInfo->getFilename();
+            $extension = pathinfo($entry, PATHINFO_EXTENSION);
             if (strncasecmp($dino, $entry, $numChars) != 0)
                 continue;   // only want one that match the dino name at the start of the file name
-            if (strpos($entry, "LCK") !== false)
-                continue;
-            if (strpos($entry, "_th.") !== false)
-                continue;
+            if (strcasecmp($extension, "jpg") != 0 && strcasecmp($extension, "png") != 0)
+                continue;   // only want jpg or png files
             $list["$entry"] = 1;
             //   print "findRelated: looking at " . $fileInfo->getFilename() . $eol;
         }

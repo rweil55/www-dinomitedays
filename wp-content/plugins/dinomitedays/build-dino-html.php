@@ -346,8 +346,11 @@ This method builds and returns an HTML fragment for the main dinosaur content ar
             $nn = strncmp($fileName, $filePreFix, $numChars);
             if ($debugPictures)
                 $msg .= "Checking file: $fileName result = $nn $eol";
+            $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+            if (strcasecmp($extension, "jpg") != 0 && strcasecmp($extension, "png") != 0)
+                continue;   // only want jpg or png files
             if (strpos($fileName, "_sm.jpg") !== false || strpos($fileName, "_th.jpg") !== false)
-                continue;
+                continue;   // ignore small and thumbnail images
             if (0 == $nn) {
                 //$msg .= "I#1391 found file: $fileName $eol";
                 $fileName = str_replace(" ", "%20", $fileName);
